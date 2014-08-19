@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="UTF-8">
+
+	<meta name="google" value="notranslate">
+
+	<title>Basic Example of SVG Line Drawing, Backward and Forward - CodePen</title>
+
+
+	<style> 
+	.path {
+		stroke-dasharray: 1000;
+		stroke-dashoffset: 1000;
+		animation: dash 5s linear alternate infinite;
+		-webkit-animation: dash 5s linear alternate infinite;
+	}
+
+	@keyframes dash {
+		from {
+			stroke-dashoffset: 1000;
+		}
+		to {
+			stroke-dashoffset: 0;
+		}
+	}
+	.line-drawing {
+		-webkit-transition: opacity 0.5s;
+		transition: opacity 0.5s;
+	}
+	.line-drawing path {
+		fill: none;
+		stroke: #333;
+		stroke-width: 3;
+	}
+	path.stroke-medium {
+		stroke-width: 2;
+	}
+	</style>
+
+
+</head>
+
+<body >
+
+	<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	width="340px" height="333px" viewBox="0 0 340 333" enable-background="new 0 0 340 333" xml:space="preserve">
+	<path  fill="#FFFFFF" stroke="#000000" stroke-width="4" stroke-miterlimit="10" d="M66.039,133.545c0,0-21-57,18-67s49-4,65,8
+	s30,41,53,27s66,4,58,32s-5,44,18,57s22,46,0,45s-54-40-68-16s-40,88-83,48s11-61-11-80s-79-7-70-41
+	C46.039,146.545,53.039,128.545,66.039,133.545z"/>
+</svg>
+<svg class="line-drawing hide" id="mac" width="100%" height="600" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600">
+	<path d="M 257.85024,158.16843 754.90716,35.953537 731.06035,405.57906 228.78695,448.8014 z" style="stroke-dasharray: 1678.467529296875px, 1678.467529296875px; stroke-dashoffset: 0px;"></path> 
+	<path d="m 259.83736,136.30872 c 0,0 -6.74232,0.97288 -11.61303,5.46502 -3.96751,3.659 -6.12527,9.40831 -7.01729,20.86596 l -36.5158,346.77284 c 0,0 -3.47753,13.41382 10.68151,14.15903 l 517.67468,-21.11485 c 0,0 18.38216,0.74522 19.87257,-19.62369 L 784.07068,11.384991 c 0,0 0.059,-13.07475 -23.20111,-7.2266959 L 259.83736,136.30872 z" style="stroke-dasharray: 1972.668212890625px, 1972.668212890625px; stroke-dashoffset: 0px;"></path> 
+	<path d="m 211.29271,522.89381 c 0,0 12.5259,6.63947 19.72988,5.64573 l 513.45197,-19.12737 c 0,0 18.87884,0.74557 21.61112,-18.87848 l 29.5596,-462.528221 c 0,0 1.49047,-10.184447 -13.54272,-21.4997553" style="stroke-dasharray: 1056.0198974609375px, 1056.0198974609375px; stroke-dashoffset: 0px;"></path> 
+	<path d="M 208.59466,472.34637 756.27723,432.02629" style="stroke-dasharray: 549.1647338867188px, 549.1647338867188px; stroke-dashoffset: 0px;"></path> 
+	<path d="m 591.36015,515.11602 11.15099,41.36862 c 0,0 8.62435,33.16197 -11.15099,33.16197 l -55.35924,4.26821 c 0,0 -9.65275,0.58387 -13.08781,0.58387 -1.35069,0 -5.16991,0.0265 -5.16991,0.0265 l -149.57016,-0.0347 c 0,0 -1.45726,0.12035 -1.52173,-0.0853 -0.14195,-0.4531 1.2173,-0.44973 1.2173,-0.44973 l 93.42473,-4.68143 c 0,0 23.85536,1.49042 23.85127,-27.57288 l -2.70885,-42.52741" style="stroke-dasharray: 487.1298828125px, 487.1298828125px; stroke-dashoffset: 0px;"></path> 
+	<path d="m 595.82547,514.94947 11.52956,43.3982 c 0,0 8.23944,32.78936 -11.52956,38.00586 h -58.52044 l -12.10971,0.99374 -16.58099,-0.61332 -128.7355,0.17849 c 0,0 -10.74373,-0.45795 -13.22753,-2.50727" style="stroke-dasharray: 318.35205078125px, 318.35205078125px; stroke-dashoffset: 0px;"></path> 
+	<path d="m 486.38703,90.292617 c -0.3846,2.126175 -1.9686,3.619643 -3.5379,3.335758 -1.5693,-0.283875 -2.5297,-2.237606 -2.1451,-4.363775 0.38461,-2.12617 1.96859,-3.619642 3.53789,-3.335762 1.56931,0.283879 2.52971,2.23761 2.14511,4.363779 z" style="stroke-dasharray: 21.487436294555664px, 21.487436294555664px; stroke-dashoffset: 0px;"></path> 
+	<path d="m 483.95449,571.8934 120.41968,0" style="stroke-dasharray: 120.41964721679688px, 120.41964721679688px; stroke-dashoffset: 0px;"></path> 
+	<path class="line-round" d="m 783.49986,166.74023 -9.12881,133.48624" style="stroke-dasharray: 133.7980194091797px, 133.7980194091797px; stroke-dashoffset: 0px;"></path> 
+	<path class="line-round" d="m 773.91008,309.26031 -1.81646,29.43591" style="stroke-dasharray: 29.491905212402344px, 29.491905212402344px; stroke-dashoffset: 0px;"></path>
+</svg>
+<svg class="line-drawing hide" id="iphone" width="100%" height="600" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600">
+	<path d="m 579.44258,124.24714 c 0,0 26.94592,-21.17898 59.75842,0 l 123.29566,73.28106 c 0,0 33.20953,17.10157 -6.16339,38.18122 l -333.2977,213.97805 c 0,0 -27.64185,18.89166 -61.05094,-5.96649 L 237.49608,357.2156 c 0,0 -29.23265,-17.89804 0,-36.591 l 341.9465,-196.37746 z" style="stroke-dasharray: 1313.3173828125px, 1313.3173828125px; stroke-dashoffset: 0px;"></path>
+	<path d="m 279.79799,312.77734 c -0.40628,-0.27771 -0.39017,-0.70636 0.0358,-0.95245 L 570.0171,144.0838 c 0.42621,-0.24639 1.12037,-0.24103 1.54248,0.0122 l 159.74292,95.72926 c 0.42206,0.25297 0.42768,0.67595 0.0122,0.93994 L 443.55324,423.67047 c -0.41553,0.26401 -1.08759,0.25296 -1.49417,-0.0247 L 279.79799,312.77734 z" style="stroke-dasharray: 1064.4466552734375px, 1064.4466552734375px; stroke-dashoffset: 0px;"></path>
+	<path d="m 352.14146,381.97442 c 0,7.66059 -10.04974,13.87073 -22.44674,13.87073 -12.39698,0 -22.44672,-6.21014 -22.44672,-13.87073 0,-7.66058 10.04974,-13.87075 22.44672,-13.87075 12.397,0 22.44674,6.21017 22.44674,13.87075 z" id="ellipse38" style="stroke-dasharray: 115.70812225341797px, 115.70812225341797px; stroke-dashoffset: 0px;"></path>
+	<path d="m 764.95436,199.01191 c 18.61572,9.73636 15.39026,23.07615 15.39026,23.07615 l -1.04407,15.6605 c 0.29834,10.73863 -14.76562,18.4943 -14.76562,18.4943 L 430.59319,472.2088 c -40.41904,26.99573 -69.05539,3.43039 -69.05539,3.43039 L 228.05057,380.78125 c 0,0 -8.20313,-6.33878 -8.57601,-15.13849 l 0,-22.22303 c 0,0 -1.58065,-11.40978 17.20182,-22.26028" style="stroke-dasharray: 774.9054565429688px, 774.9054565429688px; stroke-dashoffset: 0px;"></path>
+	<path d="m 688.91731,169.48872 c 0,1.64745 -2.22589,2.98296 -4.97168,2.98296 -2.74579,0 -4.97168,-1.33551 -4.97168,-2.98296 0,-1.64745 2.22589,-2.98296 4.97168,-2.98296 2.74579,0 4.97168,1.33551 4.97168,2.98296 z" style="stroke-dasharray: 25.386505126953125px, 25.386505126953125px; stroke-dashoffset: 0px;"></path>
+	<path d="m 650.93416,162.32963 c 0,1.09835 -1.42462,1.98874 -3.18189,1.98874 -1.75732,0 -3.18194,-0.89039 -3.18194,-1.98874 0,-1.09835 1.42462,-1.98874 3.18194,-1.98874 1.75727,0 3.18189,0.89038 3.18189,1.98874 z" style="stroke-dasharray: 16.46378517150879px, 16.46378517150879px; stroke-dashoffset: 0px;"></path>
+	<path d="m 686.33144,185.74344 c -0.56708,0.94053 -1.78949,1.24299 -2.72998,0.67594 l -27.41663,-16.53482 c -0.94055,-0.56736 -1.24304,-1.78978 -0.67596,-2.73001 l 0,0 c 0.56707,-0.94052 1.78918,-1.24328 2.72998,-0.67593 l 27.41668,16.53482 c 0.9408,0.56706 1.24298,1.78947 0.67591,2.73 l 0,0 z" style="stroke-dasharray: 76.53092956542969px, 76.53092956542969px; stroke-dashoffset: 0px;"></path>
+	<path class="stroke-medium" d="m 588.24153,363.77246 c -1.16809,1.61905 -2.84607,2.40411 -3.74792,1.75345 -0.90186,-0.65064 -0.68604,-2.49057 0.48205,-4.10965 1.16803,-1.61902 2.84607,-2.40409 3.74793,-1.75345 0.90185,0.65063 0.68597,2.49063 -0.48206,4.10965 z" style="stroke-dasharray: 18.044830322265625px, 18.044830322265625px; stroke-dashoffset: 0px;"></path>
+	<path class="stroke-medium" d="m 230.85085,325.2605 c 0,0 -25.27755,17.82824 3.35882,36.83322 l 127.5213,89.33947 c 0,0 31.91761,23.56534 63.98438,2.38639 L 763.08748,238.30111 c 0,0 30.27698,-17.59944 4.41241,-36.22798" style="stroke-dasharray: 715.7244873046875px, 715.7244873046875px; stroke-dashoffset: 0px;"></path>
+	<path class="stroke-medium" d="m 239.70497,371.23965 c 2.18652,4.51798 2.5224,10.31534 -0.64343,11.84769 -2.85379,1.38113 -7.19249,-1.68387 -9.69042,-6.84586 -2.49882,-5.16202 -2.21067,-10.466 0.64313,-11.84741 2.85349,-1.3811 7.19218,1.68359 9.69072,6.84558 z" style="stroke-dasharray: 51.71894454956055px, 51.71894454956055px; stroke-dashoffset: 0px;"></path>
+	<path class="stroke-medium" d="m 759.60561,233.86953 2.9519,4.4088 -0.37286,19.48467" style="stroke-dasharray: 24.79400634765625px, 24.79400634765625px; stroke-dashoffset: 0px;"></path>
+	<path class="stroke-medium" d="m 429.98912,444.76443 2.95194,4.40879 -0.67981,21.95693" style="stroke-dasharray: 27.273239135742188px, 27.273239135742188px; stroke-dashoffset: 0px;"></path>
+	<path class="stroke-medium" d="m 285.82054,406.03701 c 0,0 14.24539,9.73667 18.89194,13.125 1.89477,1.38172 5.44391,4.16361 3.38058,8.75019 -0.30545,0.67892 -1.55352,1.34234 -3.7287,-0.44742 l -18.54412,-13.27417 c 0,0 -4.22596,-2.83411 -3.7287,-6.31403 3e-4,0 0.19928,-3.67917 3.729,-1.83957 z" style="stroke-dasharray: 73.38994598388672px, 73.38994598388672px; stroke-dashoffset: 0px;"></path>
+	<path class="stroke-medium" d="m 277.22832,400.84362 c 0.92495,2.05231 0.48422,4.2526 -0.98441,4.91449 -1.4686,0.66193 -3.409,-0.46521 -4.33395,-2.51751 -0.92496,-2.05228 -0.48426,-4.2526 0.98437,-4.91449 1.46863,-0.6619 3.40903,0.46524 4.33399,2.51751 z" style="stroke-dasharray: 22.123266220092773px, 22.123266220092773px; stroke-dashoffset: 0px;"></path>
+	<path class="stroke-medium" d="m 318.65367,430.76556 c 0.92496,2.05231 0.50604,4.24277 -0.9357,4.89255 -1.44177,0.64978 -3.36035,-0.48715 -4.28531,-2.53946 -0.92495,-2.05228 -0.50604,-4.24277 0.9357,-4.89255 1.44177,-0.64978 3.36035,0.48718 4.28531,2.53946 z" style="stroke-dasharray: 21.971092224121094px, 21.971092224121094px; stroke-dashoffset: 0px;"></path>
+</svg>
+
+<div id="test"></div>
+<script type="text/javascript" src="prefixfree.min.js"></script>
+<script type="text/javascript">
+var paths=document.querySelectorAll( 'path' ) ;
+for(var i=0; i<paths.length; i++){  
+	var l = paths[i].getTotalLength() ;		 
+	paths[i].style.strokeDasharray = l ; 
+	paths[i].style.strokeDashoffset = l;
+}
+var t ,stop=5000 ,total=0;
+function addlength() 
+{ 
+	if(total>=stop)
+	{
+		t=window.clearInterval(t);
+		console.log('停止了');
+	}else{
+		total+=100;
+		var paths=document.querySelectorAll( 'path' ) ;
+		for(var i=0; i<paths.length; i++){  
+			var l = paths[i].getTotalLength() ;			
+			l=l-l/(stop/total);
+			paths[i].style.strokeDashoffset = l;
+			// paths[i].style.strokeDashoffset=paths[i].style.strokeDashoffset-l;
+			// console.log(l+"--"+paths[i].style.strokeDashoffset)
+		}
+	// document.getElementById('test').innerHTML += paths[1].style.strokeDashoffset+" -- ";
+	}
+	// t=setTimeout("addlength()",100) 
+}  
+var t=self.setInterval("addlength()",50) 
+</script>
+
+</body>
+
+</html>
