@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!-- Generator: Adobe Illustrator 9.0, SVG Export Plug-In  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg id="svg" onload="settime(evt)">
+<defs>
+<script language="javascript">
+<![CDATA[
+function settime(evt)
+{
+var now=new Date();
+var Seconds=now.getSeconds();
+var Minutes=now.getMinutes()+Seconds/60;
+var Hours=now.getHours()+Minutes/60;
+// var SVG_Document=evt.getTarget().getOwnerDocument();
+var SVG_Document=document.getElementById("svg");
+SVG_Document.getElementById("seconds").setAttribute('transform','rotate('+(Seconds*6)+')');
+SVG_Document.getElementById("minutes").setAttribute('transform','rotate('+(Minutes*6)+')');
+SVG_Document.getElementById("hours").setAttribute('transform','rotate('+(Hours*30)+')');
+refresh=true;
+}
+]]>
+</script>
+<filter id="metallic"> 
+<feGaussianBlur result="blurredAlpha" in="SourceAlpha" stdDeviation="3"/> 
+<feOffset result="offsetBlurredAlpha" in="blurredAlpha" dx="2" dy="1"/> 
+<feDiffuseLighting result="bumpMapDiffuse" in="blurredAlpha" surfaceScale="5" diffuseConstant="0.5" style="lighting-color:rgb(255,255,255)"> 
+<feDistantLight azimuth="135" elevation="60"/> 
+</feDiffuseLighting> 
+<feComposite result="litPaint" in="bumpMapDiffuse" operator="arithmetic" k1="1" k2="0" k3="0" k4="0" in2="SourceGraphic"/> 
+<feSpecularLighting result="bumpMapSpecular" in="blurredAlpha" surfaceScale="5" specularConstant="0.5" specularExponent="10" style="lighting-color:rgb(255,255,255)"> 
+<feDistantLight azimuth="135" elevation="60"/> 
+</feSpecularLighting> 
+<feComposite result="litPaint" in="litPaint" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" in2="bumpMapSpecular"/> 
+<feComposite result="litPaint" in="litPaint" operator="in" in2="SourceAlpha"/> 
+<feMerge> 
+<feMergeNode in="offsetBlurredAlpha"/> 
+<feMergeNode in="litPaint"/> 
+</feMerge> 
+</filter> 
+</defs>
+<circle cx="100" cy="100" r="80" style="filter:url(#metallic);fill:white;stroke:rgb(11,11,13);stroke-width:4;"/>
+<g style="font-family:Times;font-size:15">
+<text x="130" y="46">I</text>
+<text x="154" y="71">II</text>
+<text x="165" y="106">III</text>
+<text x="155" y="140">IV</text>
+<text x="130" y="166">V</text>
+<text x="96" y="175">VI</text>
+<text x="62" y="166">VII</text>
+<text x="37" y="140">IIX</text>
+<text x="27" y="106">IX</text>
+<text x="34" y="71">X</text>
+<text x="58" y="46">XI</text>
+<text x="92" y="37">XII</text>
+</g>
+<g transform="translate(100 100)">
+<g id="hours">
+<line x1="0" y1="0" x2="0" y2="-35" style="stroke-width:4;stroke:black">
+<animateTransform attributeName="transform" type="rotate" dur="43200s" values="0;360" repeatCount="indefinite"/>
+</line>
+</g>
+<g id="minutes">
+<line x1="0" y1="0" x2="0" y2="-55" style="stroke-width:2;stroke:black">
+<animateTransform attributeName="transform" type="rotate" dur="3600s" values="0;360" repeatCount="indefinite"/>
+</line>
+</g>
+<g id="seconds">
+<line x1="0" y1="0" x2="0" y2="-75" style="stroke-width:1;stroke:red">
+<animateTransform attributeName="transform" type="rotate" dur="60s" values="0;360" repeatCount="indefinite"/>
+</line>
+</g>
+</g>
+<cirle cx="100" cy="100" r="3" style="fill:blue;stroke:black"/>
+</svg>
