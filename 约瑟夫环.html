@@ -1,0 +1,67 @@
+﻿<script type="text/javascript">
+//50个人的队伍围成圈，编号1到50，从1开始报数，报数为3或者3的倍数时离队，
+//如此循环，问最后剩下的人的初始编号是多少
+function josephus() {
+	var size = 50;
+	var arr = [];
+	arr.length = size;
+	var temp = 1;
+	var index = 0;
+	var target = size;
+
+	while (true) {
+		temp++;
+		if (index != (size - 1)) {
+			index++;
+		} else {
+			index = 0;
+		}
+		while (arr[index] == 1) {
+			if (index != (size - 1)) {
+				index++;
+			} else {
+				index = 0;
+			}
+		}
+		if (temp % 3 == 0) {
+			arr[index] = 1;
+			target--;
+			// console.log( arr  + "\ttemp: " + temp + " 编号:" + (index+1));
+		}
+		if (target == 0)
+			break;
+	}
+	console.log("最后留下的人编号："+(index + 1))
+}
+function my_josephus () { 
+	var arr=[],size=50;
+	for(var i=0;i<size;i++) 
+		arr[i]=i+1; 
+	var flag = 1,num = 1,index = 0,last=0;
+	while(true){
+		if(flag>49)break;
+		if(index == size)
+			index = 0;
+		if(arr[index]!=0){
+			if(num%3==0){
+			 // arr.splice(index,1);
+			// delete arr[index];
+			arr[index]=0;
+			// console.log("index:"+index+"  num:"+ num);
+			flag++;
+		}
+		num++;
+	}
+	index++;
+	// console.log(arr);
+} 
+for (var i = 0 ; i <arr.length; i++){
+	if(arr[i]!=0) console.log("最后剩下的人的初始编号是:"+arr[i]);
+};
+
+}
+josephus();
+my_josephus();
+</script>
+
+

@@ -1,0 +1,74 @@
+﻿<script type="text/javascript">
+//在8X8格的国际象棋上摆放八个皇后，使其不能互相攻击，
+//即任意两个皇后都不能处于同一行、同一列或同一斜线上，问有多少种摆法
+//立即执行函数 
+var queen =  (function(){ 
+	var gCount = 0; 
+	var gEightQueen=[];
+	function eight_queen (index) {
+		var loop;
+		for(loop=0;loop<arguments[1];loop++)
+		{
+			if(check_pos_valid(index,loop))
+			{
+				gEightQueen[index]=loop;
+				if(arguments[1]-1==index)
+				{
+					gCount++;
+					console.log("第"+gCount+"种")
+					print(arguments[1]);
+					gEightQueen[index]=0;
+					return;
+				}
+				eight_queen(index+1,arguments[1]);//递归
+				gEightQueen[index]=0;
+			}
+		}
+	}
+	function check_pos_valid(loop,value){
+		var index;
+		var data;
+		for(index=0;index<loop;index++)
+		{
+			data=gEightQueen[index];
+			if(value==data)
+				return 0;
+			if((index+data)==(loop+value))
+				return 0;
+			if((index-data)==(loop-value))
+				return 0;
+		}
+		return 1;
+	};
+	function print(){
+		var outer;
+		var inner;
+		var str = '';
+		for(outer=0;outer<arguments[0];outer++)
+		{
+			for(inner=0;inner<gEightQueen[outer];inner++)
+				str+='*';
+			str+='#';
+			for(inner=gEightQueen[outer]+1;inner<arguments[0];inner++)
+				str+='*'; 
+			str+='\n';
+		}
+		console.log(str);
+	};
+	function printCount(){ 
+		// console.log('%d皇后一共有:%d种',arguments[0],gCount)
+		return gCount;
+	};
+	return { 
+		printCount : printCount, 
+		eight_queen : eight_queen 
+	}; 
+})();  
+console.time("耗时");
+queen.eight_queen(0,8) 
+var answer=queen.printCount(8)
+console.timeEnd("耗时");
+document.write('八皇后一共有:'+answer+'种摆法')
+</script>
+
+
