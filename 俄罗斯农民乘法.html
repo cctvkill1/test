@@ -1,0 +1,24 @@
+﻿<script type="text/javascript"> 
+  // Russia farmer
+  // * 把每一个数字分别写在列头。
+  // * 将头一列的数字加倍，将第二列的数字减半。
+  //    如果在第二列的数字是奇数，将它除以二并把余数去掉。
+  // * 如果第二列的数字是偶数，将其所在行删除。
+  // * 继续加倍、减半和删除直到第二列的数字为1。
+  // * 将第一列中剩余的数字相加。于是就得出了根据原始数字计算出的结果。 
+  function farmer(a,b){
+  	var result = 0;
+  	b=b%2==0?b-1:b;
+  	while(b >= 1){
+  		result += b%2==0?0:a;
+  		a*=2;
+  		b=b%2==0?b/2:(b-1)/2;
+  	}
+  	return result;
+  }
+  console.time("耗时");
+  document.write('俄罗斯农民乘法: 8*9=' + farmer(8,9));
+  console.timeEnd("耗时");
+  </script>
+
+
