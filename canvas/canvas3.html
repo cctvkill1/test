@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>canvas入门-钟表</title>
+	<style>
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	body,html{
+		height: 100%;
+	}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" width="800" height="800"> 
+		<span>您的浏览器不支持canvas</span>
+	</canvas>
+	<script>
+	Date.prototype.format =function(format)
+	{
+		var o = {
+			"M+" : this.getMonth()+1, 
+			"d+" : this.getDate(), 
+			"h+" : this.getHours(), 
+			"m+" : this.getMinutes(),
+			"s+" : this.getSeconds(), 
+			"q+" : Math.floor((this.getMonth()+3)/3), 
+			"S" : this.getMilliseconds() 
+		}
+		if(/(y+)/.test(format)) format=format.replace(RegExp.$1,
+			(this.getFullYear()+"").substr(4- RegExp.$1.length));
+			for(var k in o)if(new RegExp("("+ k +")").test(format))
+				format = format.replace(RegExp.$1,
+					RegExp.$1.length==1? o[k] :
+					("00"+ o[k]).substr((""+ o[k]).length));
+			return format;
+		}
+		var c=document.getElementById("canvas");
+		c.width = document.body.offsetWidth;
+		c.height = document.body.offsetHeight;
+	// console.log(document.body.clientHeight+"--"+document.body.offsetHeight+"--"+window.screen.height+"--"+window.screen.availHeight)
+	var cGC=c.getContext("2d");  
+
+	// cGC.moveTo(200,200);
+	// //公式：弧度 = 角度 *Math.PI/180 
+	// //最后一个参数 false 顺时针 true 逆时针
+	// cGC.arc(200,200,150,0,90*Math.PI/180,true);
+	// // cGC.closePath();
+	// cGC.stroke();
+	var time = 100;
+	var senTime  = 0 ;
+	var _sen  = 0;	
+	function toDraw() {
+		var x =550;
+		var y =450;
+		var r =400;
+		//清空画布
+		cGC.clearRect(0,0,c.width,c.height);
+		//获取时间
+		var date  = new Date();
+		var hours = date.getHours();
+		var min   = date.getMinutes();
+		var sen   = date.getSeconds();	
+		//算对应弧度 
+		//2分钟对应时针1度
+		var hoursValue = (hours*30+min/2-90)*Math.PI/180;
+		var minValue = (min*6-90)*Math.PI/180;
+		if(sen>_sen){
+			senTime=0;
+			_sen = sen;
+		}
+		senTime+=time/1000;
+		var senValue = ((sen+senTime)*6-90)*Math.PI/180;
+
+
+		// cGC.moveTo(x,y);
+		// 参数 xy坐标 r半径 0起始度数 6*Math.PI/180终点度数 false 顺时针 (0弧度是3点的位置 90度是6点位置)
+		// cGC.arc(x,y,r,0,6*Math.PI/180,false);
+		// cGC.arc(x,y,r,0,12*Math.PI/180,false);
+		// cGC.stroke();
+		// 画分钟刻度
+		cGC.beginPath();
+		for(var i=0;i<60;i++){
+			cGC.moveTo(x,y);
+			cGC.arc(x,y,r,6*i*Math.PI/180,6*(i+1)*Math.PI/180,false);
+		}
+		cGC.closePath();
+		cGC.stroke();
+		//画圆盘 覆盖半径
+		cGC.beginPath();
+		cGC.moveTo(x,y);
+		cGC.arc(x,y,r*49/50,0,360*Math.PI/180,false);
+		cGC.closePath();
+		cGC.fillStyle='#fff';
+		cGC.fill();
+
+		// 画时钟刻度
+		cGC.lineWidth=3;
+		cGC.beginPath();
+		for(var i=0;i<12;i++){
+			cGC.moveTo(x,y);
+			cGC.arc(x,y,r,30*i*Math.PI/180,30*(i+1)*Math.PI/180,false);
+		}
+		cGC.closePath();
+		cGC.stroke();
+		//画圆盘 覆盖半径
+		cGC.beginPath();
+		cGC.moveTo(x,y);
+		cGC.arc(x,y,r*48/50,0,360*Math.PI/180,false);
+		cGC.closePath();
+		cGC.fillStyle='#fff';
+		cGC.fill();
+
+		//画时针
+		cGC.lineWidth=5;
+		cGC.beginPath();
+		cGC.moveTo(x,y);
+		cGC.arc(x,y,r*30/50,hoursValue,hoursValue,false);
+		cGC.closePath();
+		cGC.stroke();
+
+		//画分针
+		cGC.lineWidth=3;
+		cGC.beginPath();
+		cGC.moveTo(x,y);
+		cGC.arc(x,y,r*40/50,minValue,minValue,false);
+		cGC.closePath();
+		cGC.stroke();
+
+		//画分针
+		cGC.lineWidth=1;
+		cGC.beginPath();
+		cGC.moveTo(x,y);
+		cGC.arc(x,y,r*45/50,senValue,senValue,false);
+		cGC.closePath();
+		cGC.stroke();
+
+		//输出时间
+		cGC.fillStyle="#333";
+		cGC.font="30px 微软雅黑";
+		cGC.textBaseline="top";
+		var d =new Date().format('h:mm:ss');
+		cGC.fillText("现在时间是："+d,50,50);
+	} 
+	setInterval(toDraw,time);
+	toDraw();
+	//时间格式化
+	</script>
+</body>	
+</html>

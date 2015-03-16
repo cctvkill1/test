@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>canvas入门-鼠标画线</title>
+	<style>
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	body,html{
+		height: 100%;
+	}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" width="800" height="800"> 
+		<span>您的浏览器不支持canvas</span>
+	</canvas>
+	<script>
+	var c=document.getElementById("canvas");
+	c.width = document.body.offsetWidth;
+	c.height = document.body.offsetHeight;
+	console.log(document.body.clientHeight+"--"+document.body.offsetHeight+"--"+window.screen.height+"--"+window.screen.availHeight)
+	var cGC=c.getContext("2d"); 
+	 // cGC.strokeStyle  = 'rgb(128, 100, 162)'; 
+	 cGC.lineWidth=1;
+
+	 var grd=cGC.createLinearGradient(0,0,175,50);
+	 //三阶段色
+	 grd.addColorStop(0,"#FF0000");
+	 grd.addColorStop(0.5,"#00FF00");
+	 grd.addColorStop(1,"#00FF00");
+	 c.onmousedown = function(e){
+	 	var e= e || window.event;
+	 	// cGC.beginPath();
+	 	r=Math.floor(Math.random()*255);
+	 	g=Math.floor(Math.random()*255);
+	 	b=Math.floor(Math.random()*255);
+	 	//起点
+	 	cGC.moveTo(e.clientX - c.offsetLeft,e.clientY-c.offsetTop);
+	 	document.onmousemove = function(e){
+	 		var e=e||window.event;
+	 		//目标点
+	 		cGC.lineTo(e.clientX-c.offsetLeft,e.clientY-c.offsetTop);
+	 		cGC.strokeStyle='rgb(' + r + ',' + g +  ',' + b + ')';
+	 		cGC.stroke();
+	 		// cGC.restore();
+	 	}
+	 	document.onmouseup = function(){	 		
+	 		// oGC.closePath();
+	 		document.onmousemove = null;
+	 		document.onmouseup   = null;
+	 	}
+	 }
+	 //清除画布
+	 // oGC.clearRect(0,0,c.width,c.height);
+	 </script>
+	</body>	
+	</html>

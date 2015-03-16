@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>canvas入门-移动方块</title>
+	<style>
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	body,html{
+		height: 100%;
+	}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" width="800" height="800"> 
+		<span>您的浏览器不支持canvas</span>
+	</canvas>
+	<script>
+	var c=document.getElementById("canvas");
+	c.width = document.body.offsetWidth;
+	c.height = document.body.offsetHeight;
+	console.log(document.body.clientHeight+"--"+document.body.offsetHeight+"--"+window.screen.height+"--"+window.screen.availHeight)
+	var cGC=c.getContext("2d");  
+	var x = y = x1 = y1 = x2 = y2 = r = g = b = 0;
+	cGC.fillStyle = '#DB4141';
+	cGC.fillRect(0,0,100,100);
+	//1秒30帧
+	var time = 30;
+	setInterval(function(){
+		console.log(x+"|"+x1+"|"+x2)
+		if((x>=x2&&x2>=x1)||(x<x2&&x2<x1)){
+			x = x1 = x2;
+			y = y1 = y2;
+			x2=Math.random()*c.width;
+			y2=Math.random()*c.height;
+		}else{	
+			x+=(x2-x1)/time;
+			y+=(y2-y1)/time;
+		}
+		r=Math.floor(Math.random()*255);
+		g=Math.floor(Math.random()*255);
+		b=Math.floor(Math.random()*255);
+		curColor.r = getCur(begin.r, end.r, curColor.r, bo, rate.r);
+		curColor.g = getCur(begin.g, end.g, curColor.g, bo, rate.g);
+		curColor.b = getCur(begin.b, end.b, curColor.b, bo, rate.b);
+		cGC.fillStyle = getColor(curColor);
+		if(curColor.r == begin.r && curColor.g == begin.g && curColor.b == begin.b){
+			bo = true;
+		}
+		if(curColor.r == end.r && curColor.g == end.g && curColor.b == end.b){
+			bo = false;
+		}
+		cGC.clearRect(0,0,c.width,c.height);
+		cGC.fillRect(x,y,100,100);
+	},time)
+	 //清除画布
+	 // cGC.clearRect(0,0,c.width,c.height);
+	 //颜色渐变
+	 var begin = getRGB('#33FFAA');
+	 var end = getRGB('#FF0000');
+	 var curColor = getRGB('#33FFAA');
+	 var bo = true;
+	 var rate = getRate(begin, end);
+
+	 function blink()
+	 {
+	 	window.setInterval(function(){
+	 		curColor.r = getCur(begin.r, end.r, curColor.r, bo, rate.r);
+	 		curColor.g = getCur(begin.g, end.g, curColor.g, bo, rate.g);
+	 		curColor.b = getCur(begin.b, end.b, curColor.b, bo, rate.b);
+	 		document.getElementById('div1').style.color = getColor(curColor);
+	 		document.getElementById('span1').innerHTML = getColor(curColor);
+	 		if(curColor.r == begin.r && curColor.g == begin.g && curColor.b == begin.b)
+	 		{
+	 			bo = true;
+	 		}
+	 		if(curColor.r == end.r && curColor.g == end.g && curColor.b == end.b)
+	 		{
+	 			bo = false;
+	 		}
+	 	} , 100);
+	 }
+
+	 function getCur(beginValue, endValue, curValue, bo, rateValue)
+	 {
+	 	if(beginValue == endValue)
+	 	{
+	 		return beginValue;
+	 	}
+
+	 	rateValue = beginValue < endValue ? rateValue : -rateValue;
+	 	curValue += bo ? rateValue : -rateValue;
+	 	if(curValue < Math.min(beginValue, endValue))
+	 	{
+	 		curValue = Math.min(beginValue, endValue);
+	 	}
+	 	if(curValue > Math.max(beginValue, endValue))
+	 	{
+	 		curValue = Math.max(beginValue, endValue);
+	 	}
+
+	 	return curValue;
+	 }
+
+	 function getRate(b, e)
+	 {
+	 	var obj = new Object();
+	 	obj.r = Math.abs(b.r - e.r) / 50;
+	 	obj.g = Math.abs(b.g - e.g) / 50;
+	 	obj.b = Math.abs(b.b - e.b) / 50;
+
+	 	return obj;
+	 }
+
+	 function getRGB(color)
+	 {
+	 	var obj = new Object();
+	 	obj.r = parseInt(color.substr(1,2), 16);
+	 	obj.g = parseInt(color.substr(3,2), 16);
+	 	obj.b = parseInt(color.substr(5,2), 16);
+
+	 	return obj;
+	 }
+
+	 function getColor(obj)
+	 {
+	 	obj.r = Math.round(obj.r);
+	 	obj.g = Math.round(obj.g);
+	 	obj.b = Math.round(obj.b);
+	 	var color = '#';
+	 	color += (obj.r < 16 ? '0':'') + obj.r.toString(16);
+	 	color += (obj.g < 16 ? '0':'') + obj.g.toString(16);
+	 	color += (obj.b < 16 ? '0':'') + obj.b.toString(16);
+
+	 	return color;
+	 }
+	 </script>
+	</body>	
+	</html>
