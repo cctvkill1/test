@@ -2,11 +2,17 @@ test
 ========
 上传一些小实验
 ------------
-###2014-8-19
-实在无聊啊 上传上星期做的个SVG动画<br/>
-其中需要引用prefixfree.min.js 才能控制stroke-dashoffset 做出动画效果<br/>
-原理就是<br/>
-troke-dasharray 和 stroke-dashoffset
+###2015-3-16
+很久没学习了 突然想看下canvas<br/>
+学习了下canvas的入门用法<br/>
+写了3个demo页面<br/>
+鼠标画画<br/>
+移动方块<br/>
+时钟<br/>
+###2014-9-25
+很久没更新了<br/>
+随便搞了个俄罗斯农民乘法 js实现挺简单的 算是小儿科<br/>
+不过我觉得这种乘法本身挺有意思的
 ###2014-9-9
 上传了前些天无聊做的几道题<br/>
 猴子吃桃子 弱智算法 简单的循环或者递归<br/>
@@ -14,7 +20,8 @@ troke-dasharray 和 stroke-dashoffset
 八皇后 问题 代码简短的话采用递归<br/>
 arguments这个可以获得实参（包括隐藏的参数）<br/>
 熟悉下立即执行函数及js模块化编程<br/>
-###2014-9-25
-很久没更新了<br/>
-随便搞了个俄罗斯农民乘法 js实现挺简单的 算是小儿科<br/>
-不过我觉得这种乘法本身挺有意思的
+###2014-8-19
+实在无聊啊 上传上星期做的个SVG动画<br/>
+其中需要引用prefixfree.min.js 才能控制stroke-dashoffset 做出动画效果<br/>
+原理就是<br/>
+troke-dasharray 和 stroke-dashoffset
