@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>canvas入门-画图</title>
+	<style>
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	body,html{
+		height: 100%;
+	}
+	</style>
+</head>
+<body>
+	<input type="button" value="←"/>
+	<input type="button" value="→"/>
+	<div>
+		<img src="test.jpg" alt="" id="img"/>
+	</div>
+	<script> 
+	window.onload = function(){
+		var input = document.getElementsByTagName('input');
+		var bimg = document.getElementById('img');
+		
+		var img = new Image();
+		img.onload = function(){
+			draw(bimg);
+		}
+		img.src='test.jpg';
+		var clickNum=0;
+		function draw(obj){
+			//按钮旋转图片
+			var c=document.createElement("canvas");
+			c.width = document.body.offsetWidth;
+			c.height = document.body.offsetHeight;
+			var cGC=c.getContext("2d");  
+			// obj.parentNode.replaceChild(c,obj);
+			// 按钮旋转图片
+			c.width = obj.width;
+			c.height = obj.height; 
+			var cGC=c.getContext("2d");  
+			obj.parentNode.replaceChild(c,obj);
+			// cGC.drawImage(obj,0,0,400,400);//對象，坐标，宽高 默认是画布宽高
+			cGC.drawImage(obj,0,0);
+			input[1].onclick = function(){
+				if (clickNum==3) {
+					clickNum=0;
+				}else{
+					clickNum++;
+				}
+				toChange();
+			}
+			input[0].onclick = function(){
+				if (clickNum==0) {
+					clickNum=3;
+				}else{
+					clickNum--;
+				}
+				toChange();
+			}
+			function toChange(){
+				switch(clickNum){
+					case 1:
+					console.log(1)
+					c.width=obj.height;
+					c.height = obj.width;
+					cGC.rotate(90*Math.PI/180);//旋转
+					cGC.drawImage(obj,0,-obj.height);//平移
+					break;
+					case 2:
+					console.log(2)
+					c.width=obj.width;
+					c.height = obj.height;
+					cGC.rotate(180*Math.PI/180);
+					cGC.drawImage(obj,-obj.width,-obj.height);
+					break;
+					case 3:
+					console.log(3)
+					c.width=obj.height;
+					c.height = obj.width;
+					cGC.rotate(270*Math.PI/180);
+					cGC.drawImage(obj,-obj.width,0);
+					break;
+					case 0:
+					console.log(0)
+					c.width=obj.width;
+					c.height = obj.height;
+					cGC.rotate(0);
+					cGC.drawImage(obj,0,0);
+					break;
+				}
+			}
+			//背景图 平铺 repeat repeat-x repeat-y no-repeat
+			// var bg = cGC.createPattern(obj,'repeat');
+			// cGC.fillStyle = bg ;
+			// cGC.fillRect(0,0,3000,3000);
+		}
+	}
+	</script>
+</body>	
+</html>

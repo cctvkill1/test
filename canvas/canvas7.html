@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>canvas入门-文字</title>
+	<style>
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	body,html{
+		height: 100%;
+	}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" width="800" height="800"> 
+		<span>您的浏览器不支持canvas</span>
+	</canvas>
+	<script>
+	var c=document.getElementById("canvas");
+	c.width = document.body.offsetWidth;
+	c.height = document.body.offsetHeight;
+	var cGC=c.getContext("2d");   
+	cGC.font = '60px 微软雅黑';// 2个参数 中文字体识别较少 默认
+	//水平对齐
+	cGC.textAlign= 'left';//默认左起 还有 right center	
+	//垂直对齐
+	cGC.textBaseline = 'top';//middle bottom 默认是接近文字底部作为起始点
+	cGC.strokeText('canvas入门',0,200);//描边效果
+	var text = '这是居中的文字';
+	//获取文字宽度 没有高度 高度是文字大小像素既是高度
+	var w = cGC.measureText(text).width;
+	cGC.shadowOffsetX=3;
+	cGC.shadowOffsetY=3;
+	cGC.shadowBlur =3;
+	cGC.shadowColor='#999';//默认rgb(0,0,0,0)黑色透明
+	//文字居中显示
+	cGC.fillText(text,(c.width-w)/2,(c.height-60)/2);//填充文字
+
+	</script>
+</body>	 
+</html>

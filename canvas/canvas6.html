@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>canvas入门-渐变</title>
+	<style>
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	body,html{
+		height: 100%;
+	}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" width="800" height="800"> 
+		<span>您的浏览器不支持canvas</span>
+	</canvas>
+	<script>
+	var c=document.getElementById("canvas");
+	c.width = document.body.offsetWidth;
+	c.height = document.body.offsetHeight;
+	var cGC=c.getContext("2d");  
+	//线性渐变 起始点xy 终点xy
+	var obj = cGC.createLinearGradient(150,100,300,300);
+	obj.addColorStop(0,'red');
+	obj.addColorStop(0.4,'green');
+	obj.addColorStop(0.6,'yellow');
+	obj.addColorStop(1,'blue');
+	cGC.fillStyle=obj;
+	//填充坐标xy，宽高
+	cGC.fillRect(150,100,150,200);
+	//放射性渐变（圆形的）第一个圆中标xy 圆半径r，第二个圆xyr
+	obj1 = cGC.createRadialGradient(500,500,10,500,500,150);
+	obj1.addColorStop(0,'red');
+	obj1.addColorStop(0.4,'green');
+	obj1.addColorStop(0.6,'yellow');
+	obj1.addColorStop(1,'blue'); 
+	cGC.fillStyle=obj1;
+	cGC.fillRect(350,350,300,300);
+	</script>
+</body>	 
+</html>

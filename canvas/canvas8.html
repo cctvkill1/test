@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>canvas入门-像素</title>
+	<style>
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	body,html{
+		height: 100%;
+	}
+	</style>
+</head>
+<body>
+   <canvas id="c1" width="800" height="800"> 
+   </canvas>
+   <ul style="float:left;">
+    <li>像</li>
+    <li>素</li>
+    <li>显</li>
+    <li>字</li>
+   </ul>
+    <script type="text/javascript">
+        window.onload = function () {
+            var oC = document.getElementById("c1");
+            var oGC = oC.getContext("2d");
+            var lis = document.getElementsByTagName("li");
+            for (var i = 0; i < lis.length; i++) {
+                lis[i].onclick = function () {
+                    var timer = null;
+                    var inow = 10;
+                    clearInterval(timer);
+                    oGC.clearRect(0, 0, oC.width, oC.height);
+                    //在画布上写出文字
+                    var txt = this.innerHTML;
+                    var h = 180;
+                    oGC.font = h + "px 微软雅黑";
+                    oGC.fillStyle = "red";
+                    oGC.textBaseline = "top";
+                    var w = oGC.measureText(txt).width;
+                    oGC.fillText(txt, (oC.width - w) / 2, (oC.height - h) / 2);
+                    //得到已写出的文字像素
+                    var oImg = oGC.getImageData((oC.width - w) / 2, (oC.height - h) / 2, w, h);
+                    oGC.clearRect(0, 0, oC.width, oC.height);
+                    //从像素集合中随机取出十分之一的像素(对应的索引位置)
+                    timer = setInterval(function () {
+                        var arr = randomArr(w * h, w * h / inow);
+                        inow--;
+                        var nImg = oGC.createImageData(w, h);
+                        for (var i = 0; i < arr.length; i++) {
+                            nImg.data[4 * arr[i]] = oImg.data[4 * arr[i]];
+                            nImg.data[4 * arr[i] + 1] = oImg.data[4 * arr[i] + 1];
+                            nImg.data[4 * arr[i] + 2] = oImg.data[4 * arr[i] + 2];
+                            nImg.data[4 * arr[i] + 3] = oImg.data[4 * arr[i] + 3];
+                        }
+                        oGC.putImageData(nImg, (oC.width - w) / 2, (oC.height - h) / 2);
+                        if (inow == 0) {
+                            inow = 10;
+                            clearInterval(timer);
+                        }
+                    });
+                }
+            }
+        }
+        //从一个大数中取出十分之一的数
+        function randomArr(iAll, iNow) {
+            var arr = new Array();
+            var newarr = new Array();
+            for (var i = 0; i < iAll; i++) {
+                arr.push(i);
+            }
+            for (var i = 0; i < iNow; i++) {
+                newarr.push(arr.splice(Math.floor(Math.random()*arr.length),1));
+            }
+            return newarr;
+        }
+    </script>
+</body>
+</html>
