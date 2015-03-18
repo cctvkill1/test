@@ -2,6 +2,13 @@ test
 ========
 上传一些小实验
 ------------
+###2015-3-18
+今天没做什么 看了下视频 了解canvas去操作像素 可以以做倒立渐变反色 马赛克<br/>
+其中有个问题 canvas 需要加载 图片操作像素时 遇到getImageData 报错 查找了些资料<br/>
+<a href="http://www.cnblogs.com/jdksummer/articles/2565998.html">http://www.cnblogs.com/jdksummer/articles/2565998.html</a>
+为了阻止欺骗，浏览器会追踪 image data。当你把一个“跟canvas的域不同的”图片放到canvas上，这个canvas就成为 “tainted”(被污染的，脏的)，浏览器就不让你操作该canvas 的任何像素。这对于阻止多种类型的XSS/CSRF攻击（两种典型的跨站攻击）是非常有用的。<br/>
+搭建个本地服务器环境就ok了<br/>
+
 ###2015-3-17
 学习了下canvas的旋转 偏移 缩放<br/>
 画图 及 图片旋转，颜色渐变，显示文字，阴影<br/>

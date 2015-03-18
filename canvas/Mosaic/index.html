@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HTML5 canvas生成图片马赛克效果 - 站长素材</title>
+	<link rel="stylesheet" type="text/css" href="css/default.css">
+	<style type="text/css">
+		.thumb{margin-left: 5em;}
+		.thumb img{max-width: 400px;}
+	</style>
+	<!--[if IE]>
+		<script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<div class="container">
+		<div class="content bgcolor-8">
+			<h3 class="center">注意：文件下载到本地后在Chrome和IE浏览器中可能看不到效果<br>请使用Firefox浏览器在本地计算机查看该DEMO。</h3>
+			<p class="center">Change pixel resolution <input type="range" min="0" max="100" value="32" id="range" /> <span id="output">32</span></p>
+			<div class="thumb">
+			    <img src="img/1.jpg" id="dolly1" />
+			    <img src="img/2.jpg" id="dolly2" />
+			    <img src="img/3.jpg" id="dolly3" />
+			 </div>
+		</div>
+	</div>
+	
+	<script src="js/close-pixelate.js"></script>
+	<script>
+	window.onload = function() {
+	  var dolly1 = document.getElementById('dolly1')
+	  var dolly2 = document.getElementById('dolly2')
+	  var dolly3 = document.getElementById('dolly3')
+	  var pixelOpts = [ { resolution: 32 } ]
+	  var pixelDolly1 = dolly1.closePixelate( pixelOpts )
+	  var pixelDolly2 = dolly2.closePixelate( pixelOpts )
+	  var pixelDolly3 = dolly3.closePixelate( pixelOpts )
+	  var range = document.getElementById('range')
+	  var output = document.getElementById('output')
+
+	  range.addEventListener( 'change', function( event ) {
+	    var res = parseInt( event.target.value, 10 )
+	    res = Math.floor( res / 2 ) * 2
+	    res = Math.max( 4, Math.min( 100, res ) )
+	    output.textContent = res
+	    // console.log( res );
+	    pixelOpts = [ { resolution: res } ]
+	    pixelDolly1.render( pixelOpts )
+	    pixelDolly2.render( pixelOpts )
+	    pixelDolly3.render( pixelOpts )
+	  }, false )
+	}
+	</script> 
+</body>
+</html>
