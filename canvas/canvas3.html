@@ -17,7 +17,9 @@
 	<canvas id="canvas" width="800" height="800"> 
 		<span>您的浏览器不支持canvas</span>
 	</canvas>
+	<audio src="1.wav" id="audio"></audio>
 	<script>
+	//时间函数
 	Date.prototype.format =function(format)
 	{
 		var o = {
@@ -40,6 +42,18 @@
 		var c=document.getElementById("canvas");
 		c.width = document.body.offsetWidth;
 		c.height = document.body.offsetHeight;
+
+		var audio = document.getElementById("audio");
+		audio.ontimeupdate=function(){
+			if(audio.currentTime>=0.2){
+				audio.pause();
+			}
+		};
+		setInterval(function(){
+			audio.currentTime = 0;
+			audio.play();
+		},1000); 
+
 	// console.log(document.body.clientHeight+"--"+document.body.offsetHeight+"--"+window.screen.height+"--"+window.screen.availHeight)
 	var cGC=c.getContext("2d");  
 
@@ -63,11 +77,13 @@
 		var hours = date.getHours();
 		var min   = date.getMinutes();
 		var sen   = date.getSeconds();	
+		var ss   = date.getMilliseconds();//0-999
 		//算对应弧度 
 		//2分钟对应时针1度
 		var hoursValue = (hours*30+min/2-90)*Math.PI/180;
 		var minValue = (min*6-90)*Math.PI/180;
-		if(sen>_sen){
+		//增加了0-1秒的时候判断
+		if(sen>_sen||(sen==0&&ss<=100)||senTime >=1){
 			senTime=0;
 			_sen = sen;
 		}
@@ -145,7 +161,7 @@
 		cGC.fillText("现在时间是："+d,50,50);
 	} 
 	setInterval(toDraw,time);
-	toDraw();
+	// toDraw();
 	//时间格式化
 	</script>
 </body>	

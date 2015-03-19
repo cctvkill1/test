@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>canvas入门-操作元素</title>
+	<style>
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	body,html{
+		height: 100%;
+	}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" width="800" height="800"> 
+	</canvas>
+	<script type="text/javascript">
+	window.onload = function () {
+		var c = document.getElementById("canvas");
+		var img = document.getElementById("img");
+		var ct = c.getContext("2d");
+		c.width = document.body.offsetWidth;
+		c.height = document.body.offsetHeight;
+		// ct.beginPath();
+		// ct.arc(200,200,100,0,360*Math.PI/180,false);//圆
+		// ct.closePath();
+		// ct.fill();
+		// ct.beginPath();
+		// ct.arc(300,300,100,0,360*Math.PI/180,false);//圆
+		// ct.closePath();
+		// ct.stroke();
+		// c.onclick = function(e){
+		// 	 var e= e || window.event;
+		// 	 var x = e.clientX - c.offsetLeft;
+		// 	 var y = e.clientY - c.offsetTop;
+		// 	 //判断坐标是否在再元素内(只针对最后一个)
+		// 	 if(ct.isPointInPath(x,y)){
+		// 	 	alert(1)
+		// 	 }
+		// }
+		var  c1 = new Shape(100,100,50);
+		var  c2 = new Shape(200,200,50);
+		c.onclick = function(e){
+			var e=e || window.event;
+			var point ={
+				x:e.clientX - c.offsetLeft,
+				y:e.clientY - c.offsetTop
+			}
+			c1.reDraw(point);
+			c2.reDraw(point);
+		}
+		//增加点击事件回调
+		c1.click = function(){
+			alert(123)
+		}
+		c2.click = function(){
+			alert(456)
+		}
+		//构造函数 面对对象编程
+		function Shape(x,y,r){
+			this.x=x;
+			this.y=y;
+			this.r=r;
+			ct.beginPath();
+			ct.arc(this.x,this.y,this.r,0,360*Math.PI/180,false);
+			ct.closePath();
+			ct.fill();
+		}
+
+		Shape.prototype.reDraw = function (point){
+			ct.beginPath();
+			ct.arc(this.x,this.y,this.r,0,360*Math.PI/180,false);
+			ct.closePath();
+			ct.fill();
+			if(ct.isPointInPath(point.x,point.y))
+				this.click();
+		}
+	}
+	</script>
+</body>
+</html>

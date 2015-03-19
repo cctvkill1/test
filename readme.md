@@ -2,6 +2,12 @@ test
 ========
 上传一些小实验
 ------------
+###2015-3-19
+今天做的不多 学了下canvas 合成 输出base64图 保存可以借助其他js <br>
+然后修改了前两天做的时钟bug 0-1秒不走 及其他时刻走字不准确
+然后加了声音 <br>然后学了下基础操作元素 添加事件等
+js canvas有些类库 <a href="http://jcscript.com/">http://jcscript.com/</a>   jCanvaScript 还有 Fabric.js<br> 
+看了下其他特效 空了研究下并自己写写特效游戏之类的	
 ###2015-3-18
 今天没做什么 看了下视频 了解canvas去操作像素 可以以做倒立渐变反色 马赛克<br/>
 其中有个问题 canvas 需要加载 图片操作像素时 遇到getImageData 报错 查找了些资料<br/>
