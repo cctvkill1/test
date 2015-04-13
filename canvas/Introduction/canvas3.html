@@ -19,7 +19,7 @@
 	</canvas>
 	<audio src="1.wav" id="audio"></audio>
 	<script>
-	//时间函数
+	//时间函数 时间格式化
 	Date.prototype.format =function(format)
 	{
 		var o = {
@@ -67,8 +67,8 @@
 	var senTime  = 0 ;
 	var _sen  = 0;	
 	function toDraw() {
-		var x =550;
-		var y =450;
+		var x =650;
+		var y =500;
 		var r =400;
 		//清空画布
 		cGC.clearRect(0,0,c.width,c.height);
@@ -121,6 +121,21 @@
 		}
 		cGC.closePath();
 		cGC.stroke();
+
+		//画数字
+		var numbers = [1,2,3,4,5,6,7,8,9,10,11,12],
+		agle = 0,
+		numberWidth = 0;
+		numbers.forEach(function(number){
+			// console.log(number)
+			angle = Math.PI/6 * (number - 3);
+			numberWidth = cGC.measureText(number).width;
+			// console.log(numberWidth)
+			cGC.fillStyle="#000";
+			cGC.font="30px 微软雅黑";
+			cGC.textBaseline="top";
+			cGC.fillText(number,x-numberWidth/2 + Math.cos(angle)*(r+numberWidth),y-20 + Math.sin(angle)*(r+20) )
+		})
 		//画圆盘 覆盖半径
 		cGC.beginPath();
 		cGC.moveTo(x,y);
@@ -145,7 +160,7 @@
 		cGC.closePath();
 		cGC.stroke();
 
-		//画分针
+		//画秒针
 		cGC.lineWidth=1;
 		cGC.beginPath();
 		cGC.moveTo(x,y);
@@ -162,7 +177,6 @@
 	} 
 	setInterval(toDraw,time);
 	// toDraw();
-	//时间格式化
 	</script>
 </body>	
 </html>

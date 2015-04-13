@@ -21,15 +21,16 @@
 	var c=document.getElementById("canvas");
 	c.width = document.body.offsetWidth;
 	c.height = document.body.offsetHeight;
-	console.log(document.body.clientHeight+"--"+document.body.offsetHeight+"--"+window.screen.height+"--"+window.screen.availHeight)
+	// console.log(document.body.clientHeight+"--"+document.body.offsetHeight+"--"+window.screen.height+"--"+window.screen.availHeight)
 	var cGC=c.getContext("2d");  
+	console.profile('测试画布性能');
 	var x = y = x1 = y1 = x2 = y2 = r = g = b = 0;
 	cGC.fillStyle = '#DB4141';
 	cGC.fillRect(0,0,100,100);
 	//1秒30帧
 	var time = 30;
 	setInterval(function(){
-		console.log(x+"|"+x1+"|"+x2)
+		// console.log(x+"|"+x1+"|"+x2)
 		if((x>=x2&&x2>=x1)||(x<x2&&x2<x1)){
 			x = x1 = x2;
 			y = y1 = y2;
@@ -63,25 +64,25 @@
 	 var curColor = getRGB('#33FFAA');
 	 var bo = true;
 	 var rate = getRate(begin, end);
-
-	 function blink()
-	 {
-	 	window.setInterval(function(){
-	 		curColor.r = getCur(begin.r, end.r, curColor.r, bo, rate.r);
-	 		curColor.g = getCur(begin.g, end.g, curColor.g, bo, rate.g);
-	 		curColor.b = getCur(begin.b, end.b, curColor.b, bo, rate.b);
-	 		document.getElementById('div1').style.color = getColor(curColor);
-	 		document.getElementById('span1').innerHTML = getColor(curColor);
-	 		if(curColor.r == begin.r && curColor.g == begin.g && curColor.b == begin.b)
-	 		{
-	 			bo = true;
-	 		}
-	 		if(curColor.r == end.r && curColor.g == end.g && curColor.b == end.b)
-	 		{
-	 			bo = false;
-	 		}
-	 	} , 100);
-	 }
+	 console.profileEnd();
+	 // function blink()
+	 // {
+	 // 	window.setInterval(function(){
+	 // 		curColor.r = getCur(begin.r, end.r, curColor.r, bo, rate.r);
+	 // 		curColor.g = getCur(begin.g, end.g, curColor.g, bo, rate.g);
+	 // 		curColor.b = getCur(begin.b, end.b, curColor.b, bo, rate.b);
+	 // 		document.getElementById('div1').style.color = getColor(curColor);
+	 // 		document.getElementById('span1').innerHTML = getColor(curColor);
+	 // 		if(curColor.r == begin.r && curColor.g == begin.g && curColor.b == begin.b)
+	 // 		{
+	 // 			bo = true;
+	 // 		}
+	 // 		if(curColor.r == end.r && curColor.g == end.g && curColor.b == end.b)
+	 // 		{
+	 // 			bo = false;
+	 // 		}
+	 // 	} , 100);
+	 // }
 
 	 function getCur(beginValue, endValue, curValue, bo, rateValue)
 	 {
