@@ -26,14 +26,15 @@
 	 // cGC.strokeStyle  = 'rgb(128, 100, 162)'; 
 	 cGC.lineWidth=1;
 
-	 var grd=cGC.createLinearGradient(0,0,175,50);
+	 var grd=cGC.createLinearGradient(0,0,200,200);
 	 //三阶段色
 	 grd.addColorStop(0,"#FF0000");
 	 grd.addColorStop(0.5,"#00FF00");
 	 grd.addColorStop(1,"#00FF00");
 	 c.onmousedown = function(e){
+	 		// cGC.save();	
 	 	var e= e || window.event;
-	 	// cGC.beginPath();
+	 	cGC.beginPath();
 	 	r=Math.floor(Math.random()*255);
 	 	g=Math.floor(Math.random()*255);
 	 	b=Math.floor(Math.random()*255);
@@ -43,12 +44,13 @@
 	 		var e=e||window.event;
 	 		//目标点
 	 		cGC.lineTo(e.clientX-c.offsetLeft,e.clientY-c.offsetTop);
+	 		// cGC.strokeStyle=grd;
 	 		cGC.strokeStyle='rgb(' + r + ',' + g +  ',' + b + ')';
 	 		cGC.stroke();
-	 		// cGC.restore();
+	 		oGC.closePath();
 	 	}
-	 	document.onmouseup = function(){	 		
-	 		// oGC.closePath();
+	 	document.onmouseup = function(){	
+	 		// cGC.restore(); 	
 	 		document.onmousemove = null;
 	 		document.onmouseup   = null;
 	 	}

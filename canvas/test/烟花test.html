@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width"/>
+<title>烟花</title>
+<style type="text/css">
+  body{
+    background-color: black;
+    margin: 0;
+  }
+  #canvas{
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script type="text/javascript">
+    window.requestAnimFrame = (function () {
+      return window.requestAnimFrame ||
+             window.webkitRequestAnimationFrame ||
+             window.mozRequestAnimationFrame ||
+             window.oRequestAnimationFrame || 
+             window.msRequestAnimationFrame ||
+             function(callback){
+                window.setTimeout(callback,1000 / 60);
+             };
+    })();
+    Function.prototype.extend = function (oContext, bIsStatic) { 
+        var oThis = (typeof bIsStatic != 'undefined' && bIsStatic)? this: this.prototype; 
+        for ( var prop in oContext) { 
+            oThis[prop] = oContext[prop]; 
+        } 
+    }
+    var opt = {
+      canvas : document.getElementById('canvas'),
+      ctx: document.getElementById('canvas').getContext('2d'),
+      w: window.innerWidth,
+      h: window.innerHeight,
+      fireworks: [],//烟花
+      grains: [],//粒子
+      x: 0,
+      y: 0,
+      mousedown: false,
+      hue: 0,//色调
+      totalLimite: 5,
+      limite: 0,
+      totalTime: 80,
+      time: 0
+    };
+    opt.canvas.width = opt.w;
+    opt.canvas.height = opt.h;
+    function random(min,max){
+      return Math.random()*(max-min)+min;
+    }
+    function calcuDis(x1,y1,x2,y2){
+      return Math.sqrt(Math.pow(x1-x2,2)+Math.sqrt(y1-y2,2));
+    }
+    function Firework( x1, y1, x2, y2 ) {
+      this.x = this.x1 = x1;
+      this.y = this.y1 = y1;
+      this.x2 = x2;
+      this.y2 = y2;
+      this.target = calcuDis( x1, y1, x2, y2 );
+      this.distance = 0;
+      this.position = [];
+      for(var i = 2; i >= 0; i--)  {
+        this.position.push( [ this.x, this.y ] );
+      }
+      this.angle = Math.atan2( y2 - y1, x2 - x1 );
+      this.speed = 2;
+      this.acceleration = 1.05;//加速度
+      this.lightness = random( 50, 70 );
+      this.targetRadius = 1;
+    }
+    Firework.extend({ 
+        update: function(index) { 
+            this.position.pop();
+            this.position.unshift( [ this.x, this.y ] );
+            if( this.targetRadius < 8 ) {
+              this.targetRadius += 0.3;
+            } else {
+              this.targetRadius = 1;
+            }
+            this.speed *= this.acceleration;
+            var x = Math.cos( this.angle ) * this.speed,
+                y = Math.sin( this.angle ) * this.speed;
+            this.distance = calcuDis( this.x1, this.y1, this.x + x, this.y + y );
+            if( this.distance >= this.target ) {
+              for(var i = 50; i >= 0; i--) {
+                opt.grains.push( new Grain( this.x2, this.y2 ) );
+              }
+              opt.fireworks.splice( index, 1 );
+            } else {
+              this.x += x;
+              this.y += y;
+            }
+        }, 
+        draw: function() { 
+            opt.ctx.beginPath();
+            opt.ctx.moveTo( this.position[ this.position.length - 1][ 0 ], this.position[ this.position.length - 1][ 1 ] );
+            opt.ctx.lineTo( this.x, this.y );
+            opt.ctx.strokeStyle = 'hsl(' + opt.hue + ', 100%, ' + this.lightness + '%)';
+            opt.ctx.stroke();
+            opt.ctx.closePath();
+            opt.ctx.beginPath();
+            opt.ctx.arc( this.x2, this.y2, this.targetRadius, 0, Math.PI * 2 );
+            opt.ctx.stroke();
+            opt.ctx.closePath();
+        } 
+    });
+    function Grain( x, y ) {
+      this.x = x;
+      this.y = y;
+      this.position = [];
+      for(var i = 4; i >= 0; i--) {
+        this.position.push( [ this.x, this.y ] );
+      }
+      this.angle = random( 0, Math.PI * 2 );
+      this.speed = random( 1, 10 );
+      this.friction = 0.95;
+      this.gravity = 1;
+      this.hue = random( opt.hue - 10, opt.hue + 10 );
+      this.lightness = random( 50, 80 );
+      this.alpha = 1;
+      this.decay = random( 0.01, 0.03 );
+    }
+    Grain.extend({ 
+        update: function(index) { 
+            this.position.pop();
+            this.position.unshift( [ this.x, this.y ] );
+            this.speed *= this.friction;
+            this.x += Math.cos( this.angle ) * this.speed;
+            this.y += Math.sin( this.angle ) * this.speed + this.gravity;
+            this.alpha -= this.decay;
+            if( this.alpha <= this.decay ) {
+              opt.grains.splice( index, 1 );
+            }
+        }, 
+        draw: function() { 
+            opt.ctx.beginPath();
+            opt.ctx.moveTo( this.position[ this.position.length - 1 ][ 0 ], this.position[ this.position.length - 1 ][ 1 ] );
+            opt.ctx.lineTo( this.x, this.y );
+            opt.ctx.strokeStyle = 'hsla(' + this.hue + ', 100%, ' + this.lightness + '%, ' + this.alpha + ')';
+            opt.ctx.stroke();
+            opt.ctx.closePath();
+        } 
+    });
+    function loop(){
+      opt.ctx.globalCompositeOperation = 'destination-out';
+      opt.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      opt.ctx.fillRect( 0, 0, opt.w, opt.h );
+      opt.ctx.globalCompositeOperation = 'lighter';
+      opt.hue += 0.5;
+      var i = opt.fireworks.length;
+      while( i-- ) {
+        opt.fireworks[ i ].draw();
+        opt.fireworks[ i ].update( i );
+      }
+      i = opt.grains.length;
+      while( i-- ) {
+        opt.grains[ i ].draw();
+        opt.grains[ i ].update( i );
+      }
+      if( opt.time >= opt.totalTime ) {
+        if( !opt.mousedown ) {
+          opt.fireworks.push( new Firework( opt.w / 2, opt.h, random( 0, opt.w ), random( 0, opt.h / 2 ) ) );
+          opt.time= 0;
+        }
+      } else {
+        opt.time++;
+      }
+      if( opt.limite >= opt.totalLimite ) {
+        if( opt.mousedown ) {
+          opt.fireworks.push( new Firework( opt.w / 2, opt.h, opt.x, opt.y ) );
+          opt.limite = 0;
+        }
+      } else {
+        opt.limite++;
+      }
+      requestAnimFrame(loop);
+    }
+    opt.canvas.onmousemove = function(e){
+      opt.x = e.pageX - opt.canvas.offsetLeft;
+      opt.y = e.pageY - opt.canvas.offsetTop;
+    }
+    opt.canvas.onmousedown = function(e){
+      opt.mousedown = true;
+    }
+    opt.canvas.onmouseup = function(e){
+      opt.mousedown = false;
+    }
+    window.onload= function(){
+      loop();
+    };
+  </script>
+</body>
+</html>
