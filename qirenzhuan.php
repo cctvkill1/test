@@ -174,7 +174,7 @@
  // 	echo "<br>";
  // }
 
-
+ 
 
 
  $pageendtime = microtime(); 
@@ -184,4 +184,5 @@
  $timecost 	 = sprintf("%s",$totaltime*1000);  
  echo "<br>运行时间: $timecost 毫秒<br>";   
  echo "<br>平均时间: ".($timecost/10)." 毫秒<br>"; 
+
  ?>
