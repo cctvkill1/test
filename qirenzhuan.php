@@ -1,6 +1,6 @@
  <?php  
  //七人转 
-
+//优化是个问题哦 速度太慢了
  $pagestartime=microtime(); 
  $all = array(1,2,3,4,5,6,7);
  $count = count($all);
@@ -9,13 +9,76 @@
  		$arr[] = $i*10+$j;
  	}
  } 
-
-
- function recursion($arr,$count){ 
+//后3.5会死循环 出不来结果
+ function changeReusult($result,$tArr,$arr,$count,$countR){ 
+ 	$cArr = array();
+ 	shuffle($arr);
+ 	$arrCount = count($arr);
+ 	$cArr[] = $result[10][0]*10+$result[10][1];  
+ 	// for ($i=$countR; $i < $count*2; $i++) { 
+ 	// 	for ($j=0; $j < 4; $j++) { 
+ 	// 		$result[$i][$j] = 0;
+ 	// 	}
+ 	// } 
+ 	for ($i=$countR; $i < $countR+4; $i++) {
+ 		for ($j=($i==$countR?1:0); $j < 2; $j++) {
+ 			for ($k=0; $k <  $arrCount; $k++) {
+ 				$temp = $arr[$k];
+ 				$t1 = intval($temp/10);
+ 				$t2 = $temp % 10;
+ 				if(!in_array($temp,$cArr)&&!in_array($t1,$result[$i])&&!in_array($t2,$result[$i])&&$dArr[$t1]<2&&$dArr[$t2]<2){
+ 					$y = count($result[$i]);
+ 					$z = $y/2;
+ 					if($z==1){
+ 						$x1 = $result[$i][0];
+ 						$x2 = $result[$i][1]; 
+ 						$flag = $tArr[$temp][$x1]>=$tArr[$temp][$x2]?$tArr[$temp][$x1]:$tArr[$temp][$x2]; 
+ 						if($flag>=1) continue; 
+ 					} 
+ 					$cArr[] = $temp;
+ 					$result[$i][] = $t1;
+ 					$result[$i][] = $t2;
+ 					$dArr[$t1]++;
+ 					$dArr[$t2]++;
+ 					break; 
+ 				}
+ 			} 
+ 		}  
+ 		//记录对手次数
+ 		for ($x = $i; $x < $i+1; $x++) {
+ 			$x1 = $result[$x][0];
+ 			$x2 = $result[$x][1];
+ 			$x3 = $result[$x][2];
+ 			$x4 = $result[$x][3];  
+ 			if($x1&&$x2&&$x3&&$x4){
+ 				$tArr[$x1*10+$x2][$x3]++;
+ 				$tArr[$x1*10+$x2][$x4]++; 
+ 				$tArr[$x3*10+$x4][$x1]++;
+ 				$tArr[$x3*10+$x4][$x2]++;  
+ 			}
+ 		}
+ 	}  
+ 	$isOk = true; 
+ 	for ($i=0; $i < $count*2; $i++) {
+ 		for ($j=0; $j < 4; $j++) { 
+ 			if(!$result[$i][$j]){
+ 				$isOk = false;
+ 				break 2;
+ 			}
+ 		}
+ 	} 
+ 	if(!$isOk){
+ 		$result = changeReusult($result,$tArr,$arr,$count,$countR);  		
+ 		return $result;
+ 	} 
+ 	return $result;
+ }
+ function recursion($arr,$count){
  	$result = $cArr = $tArr = $dArr = array();
+ 	$arrCount = count($arr);
  	for ($i=0; $i < $count*2; $i++) {
  		for ($j=0; $j < 2; $j++) {
- 			for ($k=0; $k < count($arr); $k++) {
+ 			for ($k=0; $k < $arrCount; $k++) {
  				$temp = $arr[$k];
  				$t1 = intval($temp/10);
  				$t2 = $temp % 10;
@@ -43,15 +106,37 @@
  		}
  	}
 
- 	// var_dump($tArr);echo "<br>";
+ 	// $result = array(
+ 	// 	1 2 3 4 
+ 	// 	1 3 2 4 
+ 	// 	1 4 2 3 
+ 	// 	1 5 2 6 
+ 	// 	1 6 2 5 
+ 	// 	1 7 3 5 
+ 	// 	2 7 3 6 
+ 	// 	3 7 4 5 
+ 	// 	4 6 5 7 
+ 	// 	4 7 5 6 
+ 	// 	6 7
+ 	// 	);
+
 	//上面生成了10.5对阵
-	//再增加3.5个对阵 
+	//再增加3.5个对阵  
+
+ 	// $result = changeReusult($result,$tArr,$arr,$count,$countR);
+
  	$cArr = array();
  	shuffle($arr);
- 	$cArr[] = $result[10][0]*10+$result[10][1];
- 	for ($i=$countR; $i < $countR+4; $i++) { 	
+ 	$arrCount = count($arr);
+ 	$cArr[] = $result[10][0]*10+$result[10][1];  
+ 	// for ($i=$countR; $i < $count*2; $i++) { 
+ 	// 	for ($j=0; $j < 4; $j++) { 
+ 	// 		$result[$i][$j] = 0;
+ 	// 	}
+ 	// } 
+ 	for ($i=$countR; $i < $countR+4; $i++) {
  		for ($j=($i==$countR?1:0); $j < 2; $j++) {
- 			for ($k=0; $k < count($arr); $k++) {
+ 			for ($k=0; $k <  $arrCount; $k++) {
  				$temp = $arr[$k];
  				$t1 = intval($temp/10);
  				$t2 = $temp % 10;
@@ -72,9 +157,9 @@
  					break; 
  				}
  			} 
- 		} 
+ 		}  
  		//记录对手次数
- 		for ($x = $i; $x < $i+1; $x++) { 
+ 		for ($x = $i; $x < $i+1; $x++) {
  			$x1 = $result[$x][0];
  			$x2 = $result[$x][1];
  			$x3 = $result[$x][2];
@@ -86,9 +171,9 @@
  				$tArr[$x3*10+$x4][$x2]++;  
  			}
  		}
- 	} 
- 	$isOk = true;
- 	for ($i=0; $i < $count*2; $i++) { 
+ 	}  
+ 	$isOk = true; 
+ 	for ($i=0; $i < $count*2; $i++) {
  		for ($j=0; $j < 4; $j++) { 
  			if(!$result[$i][$j]){
  				$isOk = false;
@@ -97,9 +182,10 @@
  		}
  	} 
  	if(!$isOk){
- 		$result = recursion($arr,$count); 
+ 		// $result = changeReusult($result,$tArr,$arr,$count,$countR);
+ 		$result = recursion($arr,$count);  		
  		return $result;
- 	}else{ 
+ 	} else {
  		//一个组合的单个对手出现一次
  		for ($x=0; $x < count($result); $x++) {
  			$x1 = $result[$x][0];
@@ -139,7 +225,8 @@
  			}
  		}
  		if(!$isOk){
- 			$result = recursion($arr,$count);  
+ 			// $result = changeReusult($result,$tArr,$arr,$count,$countR);
+ 			$result = recursion($arr,$count);  		
  			return $result;
  		}else  
  		return $result;
@@ -239,9 +326,9 @@
  }
 
 //运气好20MS 平均2000MS
- $result = recursion($arr,$count); 
+ // $result = recursion($arr,$count); 
  //太慢咯 运气好30多秒 运气不好超时
- // $result = endResult($arr,$count);
+ $result = endResult($arr,$count);
 
  for ($i=0; $i < $count*2; $i++) {  
  	for ($j=0; $j < 4; $j++) {  
@@ -265,11 +352,11 @@
 
 
 
-$pageendtime = microtime(); 
-$starttime   = explode(" ",$pagestartime); 
-$endtime     = explode(" ",$pageendtime); 
-$totaltime   = $endtime[0]-$starttime[0]+$endtime[1]-$starttime[1]; 
-$timecost 	 = sprintf("%s",$totaltime*1000);  
-echo "<br>运行时间: $timecost 毫秒<br>";   
+ $pageendtime = microtime(); 
+ $starttime   = explode(" ",$pagestartime); 
+ $endtime     = explode(" ",$pageendtime); 
+ $totaltime   = $endtime[0]-$starttime[0]+$endtime[1]-$starttime[1]; 
+ $timecost 	 = sprintf("%s",$totaltime*1000);  
+ echo "<br>运行时间: $timecost 毫秒<br>";   
  // echo "<br>平均时间: ".($timecost/10)." 毫秒<br>"; 
-?>
+ ?>
