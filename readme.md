@@ -1,12 +1,21 @@
 test
 ========
 上传一些小实验
-------------
+------------ 
+###2016-7-12
+网上找了个py抓妹子图试试看<br/>
+将py2 改成py3，# import urllib, urllib2//被淘汰了<br/>
+try:
+    import urllib.request as urllib2
+except ImportError:
+    import urllib2<br/>
+    py3 正则匹配改一下编码
+    data = urllib2.urlopen(url_index).read()
+    data = data.decode('GBK')<br/> 
 ###2016-7-3
 投票测试脚本<br/>
 先随机生成ip，然后curl post 参数 伪装IP就OK了<br/>
-用命令行 跑会快些<br/>
-------------
+用命令行 跑会快些<br/> 
 ###2016-6-17
 七人转生成对阵算法（21个组合）<br/>
 首先两两搭档 生成10.5个对阵<br/>
