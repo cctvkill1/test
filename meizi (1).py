@@ -48,7 +48,7 @@ def downloadImage(image, store_file):
 
 def BeginDownload(page):
 
-    pool = multiprocessing.Pool(24)
+    pool = multiprocessing.Pool(50)
     store_dir = 'D:/test/meizitu_3/'
 
     image_items = getImageUrls(page)
@@ -95,3 +95,4 @@ if __name__ == '__main__':
     else:
         print ('Error input!')
         sys.exit(-1)
+        # 106秒 240张

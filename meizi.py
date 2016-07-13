@@ -19,6 +19,7 @@ try:
 except ImportError:
     import urllib2
 
+count = 0
 
 def getPageA(page, store_dir):
     print('第', page, '页开始抓取')
@@ -33,20 +34,21 @@ def getPageA(page, store_dir):
     data = data.decode('GBK')
     index_items = re.findall(prog_index, data)
 
-    pool = multiprocessing.Pool(100)
+    poolGetPic = multiprocessing.Pool(20)
 
     for index, item in enumerate(index_items):
         # image_items[index] = image_item
-        pool.apply_async(getImageUrl(item, store_dir))
-    pool.close()
-    pool.join()
+        poolGetPic.apply_async(getImageUrl, (item, store_dir))
+        # getImageUrl(item, store_dir)
+    poolGetPic.close()
+    poolGetPic.join()
 
     # return image_items
 
 
 def getImageUrl(item, store_dir):
     prog_pages = r'<img alt=.*src="(.*)" /><br />'
-    pool = multiprocessing.Pool(100)
+    # pool = multiprocessing.Pool(20)
     dataItem = urllib2.urlopen(item).read()
     print('获取图片链接成功')
     dataItem = dataItem.decode('GBK')
@@ -57,16 +59,15 @@ def getImageUrl(item, store_dir):
         picUrl = img[1].replace("/", "-")
         print(picUrl)
         store_file = store_dir + str(picUrl) + '.jpg'
-        pool.apply_async(downloadImage, (image, store_file))
-    pool.close()
-    pool.join()
-
+        # pool.apply_async(downloadImage, (image, store_file))
+        downloadImage(image, store_file)
+    # pool.close()
+    # pool.join()
 
 def downloadImage(image, store_file):
     if not os.path.exists(store_file):
         print('----pic start download----')
         urllib2.urlretrieve(image, store_file, call_back)
-        count += 1
     else:
         print('pic is exists')
 
@@ -84,23 +85,24 @@ def BeginDownload(page):
     getPageA(page, store_dir)
     # pool = multiprocessing.Pool(5)
     # for x in range(1,page+1):
-    #     pool.apply_async(getPageA,(x,store_dir))
+    #     pool.apply_async(getPageA(x,store_dir))
     # pool.close()
     # pool.join()
 
 
 def call_back(a, b, c):
+    global count
     per = 100 * a * b / c
     if per < 100:
         sys.stdout.write('%.2f%%\r' % per)
         sys.stdout.flush()
     else:
         print ('----pic download finish!----')
+        count += 1
 
 if __name__ == '__main__':
 
     start_time = time.time()
-    count = 0
     print ('''
              *************************************
              **       Welcome to use Spider     **
@@ -111,9 +113,17 @@ if __name__ == '__main__':
              *************************************
           ''')
 
-    page = 1
-    BeginDownload(page)
-    print ('All done!')
+    page = '5'
+    if '0' < page <= '88':
+        BeginDownload(page)
+        print ('All done!')
+    elif page == 'all':
+        for i in range(1, 89):
+            BeginDownload(i)
+            print ('Page %s done!' % i)
+        print ('All done!')
     print (count, "张图片")
-    print ("共耗时", time.time() - start_time, "s")
+    print ("共耗时%.2fs" % (time.time() - start_time))
     sys.exit(-1)
+    # 303.4秒240张 （异步下图）
+    # 64.5秒240张 （异步分页）
