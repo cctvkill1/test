@@ -9,79 +9,85 @@
 
 import re
 import string
+import time
 # import urllib, urllib2
-import os, sys
-import multiprocessing 
+import os
+import sys
+import multiprocessing
 try:
     import urllib.request as urllib2
 except ImportError:
     import urllib2
 
-def getPageA(page,store_dir):
+
+def getPageA(page, store_dir):
+    print('第', page, '页开始抓取')
     '''获取每个模块下的图片链接'''
     image_items = {}
     url_index = 'http://www.meizitu.com/a/list_1_%s.html' % page
     prog_index = r'<h3 class="tit"><a href="(.*)".*</a></h3>'
 
     data = urllib2.urlopen(url_index).read()
-    print('get page done')
+    print('获取网页成功')
 
     data = data.decode('GBK')
     index_items = re.findall(prog_index, data)
 
-    pool = multiprocessing.Pool(10)
+    pool = multiprocessing.Pool(100)
 
     for index, item in enumerate(index_items):
         # image_items[index] = image_item
-        pool.apply_async(getImageUrl(item,store_dir))      
+        pool.apply_async(getImageUrl(item, store_dir))
     pool.close()
     pool.join()
 
     # return image_items
 
-def getImageUrl(item,store_dir):  
+
+def getImageUrl(item, store_dir):
     prog_pages = r'<img alt=.*src="(.*)" /><br />'
-    pool = multiprocessing.Pool(20)  
+    pool = multiprocessing.Pool(100)
     dataItem = urllib2.urlopen(item).read()
-    print('get pic done')
+    print('获取图片链接成功')
     dataItem = dataItem.decode('GBK')
-    image_item = re.findall(prog_pages,dataItem)
-    print('re is done')
-    for i, image in enumerate(image_item): 
-        img = image.split('http://pic.meizitu.com/wp-content/uploads/');
-        picUrl = img[1].replace("/", "-");
+    image_item = re.findall(prog_pages, dataItem)
+    print('正则匹配完成')
+    for i, image in enumerate(image_item):
+        img = image.split('http://pic.meizitu.com/wp-content/uploads/')
+        picUrl = img[1].replace("/", "-")
         print(picUrl)
         store_file = store_dir + str(picUrl) + '.jpg'
-        pool.apply_async(downloadImage, (image, store_file))   
+        pool.apply_async(downloadImage, (image, store_file))
     pool.close()
     pool.join()
-    
+
+
 def downloadImage(image, store_file):
     if not os.path.exists(store_file):
-        print('---pic start download---')
+        print('----pic start download----')
         urllib2.urlretrieve(image, store_file, call_back)
+        count += 1
     else:
         print('pic is exists')
 
-def BeginDownload(page):
 
-    # pool = multiprocessing.Pool(24)
-    store_dir = 'D:/test/meizitu/'
+def BeginDownload(page):
+    page = int(page)
+    store_dir = 'D:/test/meizitu_1/'
 
     if os.path.exists(store_dir):
         pass
     else:
         os.makedirs(store_dir)
-        print('makedirs is done')
+        print('文件夹新建完成')
 
-    image_items = getPageA(page,store_dir)
-    print ('Page %s done!' % page)
-    # for index in image_items:
-    #     for i, image in enumerate(image_items[index]): 
-    #         store_file = store_dir + str(index) + '-' + str(i) + '.jpg'
-    #         pool.apply_async(downloadImage, (image, store_file))
+    getPageA(page, store_dir)
+    # pool = multiprocessing.Pool(5)
+    # for x in range(1,page+1):
+    #     pool.apply_async(getPageA,(x,store_dir))
     # pool.close()
     # pool.join()
+
 
 def call_back(a, b, c):
     per = 100 * a * b / c
@@ -89,11 +95,12 @@ def call_back(a, b, c):
         sys.stdout.write('%.2f%%\r' % per)
         sys.stdout.flush()
     else:
-        print ('---pic download finish!---')
+        print ('----pic download finish!----')
 
 if __name__ == '__main__':
- 
 
+    start_time = time.time()
+    count = 0
     print ('''
              *************************************
              **       Welcome to use Spider     **
@@ -104,14 +111,9 @@ if __name__ == '__main__':
              *************************************
           ''')
 
-    page = '2'
-    if '0' < page <= '88':
-        BeginDownload(page)
-        print ('All done!')
-    elif page == 'all':
-        for i in range(1, 89):
-            BeginDownload(i)
-        print ('All done!')
-    else:
-        print ('Error input!')
-        sys.exit(-1)
+    page = 1
+    BeginDownload(page)
+    print ('All done!')
+    print (count, "张图片")
+    print ("共耗时", time.time() - start_time, "s")
+    sys.exit(-1)
