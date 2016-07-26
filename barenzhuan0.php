@@ -91,8 +91,9 @@ class baren{
 		$i = intval(($step-1)/4);
 		$j = ($step-1)%4;
 		$arr    = $this->arr;
-		$tArr   = $this->tArr;
 		$result = $this->result;
+		$this->totalNum();
+		$tArr   = $this->tArr;
 		$this->calcTotal();
 		$cArr = $this->cArr;
 		for ($k=0; $k < count($arr); $k++) {
@@ -123,9 +124,12 @@ class baren{
 				// echo $i.'-'.$j;
 				// print_r($this->result);
 				// echo "<br>";
-				$this->totalNum();
 				$this->dfs($step+1);
 				$this->book[$step] = 0; 
+				$this->calcTotal();
+				$cArr = $this->cArr;
+				$this->totalNum();
+				$tArr = $this->tArr;
 			}
 		} 
 	}
