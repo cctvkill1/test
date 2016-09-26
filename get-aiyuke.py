@@ -71,22 +71,25 @@ def get_list(url):
     try: 
         op     = opener.open(url)
         data   = op.read()  
+        # print data 
+        # sys.exit(-1)
         print 'get list-page ok'
         index_items = re.findall(prog_index, data)    
         threads = []
         page_size = 5
         length = len(index_items)
-        num = int(length/page_size)
-        for x in range(num):          
-            # print index_items[x*page_size:(x+1)*page_size+1]
-            thread = Thread(target=get_child, args=(index_items[x*page_size:(x+1)*page_size+1],))
+        if length>0: 
+            num = int(length/page_size)
+            for x in range(num):          
+                # print index_items[x*page_size:(x+1)*page_size+1]
+                thread = Thread(target=get_child, args=(index_items[x*page_size:(x+1)*page_size+1],))
+                threads.append(thread)
+                thread.start() 
+            thread = Thread(target=get_child, args=(index_items[(x+1)*page_size:length-(x+1)*page_size-1],))
             threads.append(thread)
-            thread.start() 
-        thread = Thread(target=get_child, args=(index_items[(x+1)*page_size:length-(x+1)*page_size-1],))
-        threads.append(thread)
-        thread.start()  
-        for thread in threads:
-            thread.join()   
+            thread.start()  
+            for thread in threads:
+                thread.join()   
 
       
     except Exception, e:
@@ -94,11 +97,18 @@ def get_list(url):
 
 if __name__ == '__main__':
 
-    opener    = login("http://passport.tiyushe.com/?rc=SSO&ra=login&ajax=1",'cjjenter', 'cjj123456')
-    url       = 'http://yuleymq.tiyushe.com/?c=clubmanage&a=member&cid=1415&page={0}' 
-    childUrl  = 'http://yuleymq.tiyushe.com/?c=clubmanage&a=add_member&cid={0}&uid={1}'    
+    # 填写参数：用户名密码 俱乐部ID 和 俱乐部主域名 共多少页(这个选填)
+    username  = 'Joann.dec'
+    password  = 'lunyu1225'
+    clubid    = '1166'
+    host      = 'shlunyu'
+    totalPage = 36
+
+
+    opener    = login("http://passport.tiyushe.com/?rc=SSO&ra=login&ajax=1",username, password)
+    url       = 'http://'+host+'.tiyushe.com/?c=clubmanage&a=member&cid='+clubid+'&page={0}' 
+    childUrl  = 'http://'+host+'.tiyushe.com/?c=clubmanage&a=add_member&cid={0}&uid={1}' 
     filename  = 'getData.csv'
-    totalPage = 50
     page_pool = ThreadPool(totalPage/2) 
     page_list = []
     for i in range(1, totalPage + 1):
