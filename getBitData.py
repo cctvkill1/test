@@ -73,63 +73,82 @@ def getBTCquarter_future_ticker(i=0):
 def get_data(i=0):  
     global count
     global row
+    global total_field
     if i == 0: 
         data = getBTCCNY()
-        print 'BTCCNY:',data 
+        # print 'BTCCNY:',data 
     elif i==1: 
         data = getExchange_rate()
-        print 'Exchange_rate:',data 
+        # print 'Exchange_rate:',data 
     elif i==2:
         data  = getBTCUSD()
-        print 'BTCUSD:',data
+        # print 'BTCUSD:',data
     elif i==3:
         data  = getBTCfuture_index()
-        print 'BTCfuture_index:',data
+        # print 'BTCfuture_index:',data
     elif i==4:
         data  = getBTCthis_future_ticker()
-        print 'BTCthis_future_ticker:',data
+        # print 'BTCthis_future_ticker:',data
     elif i==5:
         data = getBTCnext_future_ticker()
-        print 'BTCnext_future_ticker:',data
+        # print 'BTCnext_future_ticker:',data
     elif i==6:
         data = getBTCquarter_future_ticker()
-        print 'BTCquarter_future_ticker:',data
-    if i == 7: 
+        # print 'BTCquarter_future_ticker:',data
+    elif i==7: 
         data = getBTCCNY(1)
-        print 'LTCCNY:',data   
+        # print 'LTCCNY:',data   
     elif i==8: 
         data = getExchange_rate(1)
-        print 'ltc Exchange_rate:',data 
+        # print 'ltc Exchange_rate:',data 
     elif i==9:
         data  = getBTCUSD(1)
-        print 'LTCUSD:',data 
+        # print 'LTCUSD:',data 
     elif i==10:
         data  = getBTCfuture_index(1)
-        print 'LTCFuture_index:',data
+        # print 'LTCFuture_index:',data
     elif i==11:
         data  = getBTCthis_future_ticker(1)
-        print 'LTCthis_future_ticker:',data
+        # print 'LTCthis_future_ticker:',data
     elif i==12:
         data = getBTCnext_future_ticker(1)
-        print 'LTCnext_future_ticker:',data
+        # print 'LTCnext_future_ticker:',data
     elif i==13:
         data = getBTCquarter_future_ticker(1)
-        print 'LTCquarter_future_ticker:',data
+        # print 'LTCquarter_future_ticker:',data
 
-    row.insert(i, float(data));  
-    count += 1
-    if count==14:
+    row[i] = float(data)
+    count += 1 
+    # print '----',i,row[i],'==',count,'--',total_field
+    if count==total_field:
         print '=========================over========================='
-        insert_data(row)
+        # print '---row:',row
+        insert_data()
   
-def insert_data(row): 
-    print row
+def insert_data(): 
+    global row
     global cur
     global con
+    global total_field
 
-    cur.executemany("insert into data values (%s,%s,%s,%s,%s,%s,%s)", row) 
  
-    con.commit()
+    row[total_field] = float(time.time());  
+    flag = False
+    index_list = []  
+    for x in range(total_field):
+        if row[x]==0: 
+            flag = True
+            index_list.append(x)  
+    if flag:        
+        cur.execute('SELECT * FROM data ORDER BY id DESC LIMIT 1')  
+        results = cur.fetchall()
+        for index in index_list:
+            print '处理',index
+            row[index] = results[index+1]
+
+    print '=row:',row
+    cur.execute('insert into data values(NULL,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',row) 
+    con.commit() 
    
 
 if __name__ == '__main__':
@@ -137,28 +156,27 @@ if __name__ == '__main__':
     con = None
     try: 
         con = mdb.connect('localhost', 'root','', 'bit'); 
-        cur = con.cursor() 
-        row = [4328.14, 6.6728, 635.17, 26.17, 643.59, 645.35, 3.917, 646.56, 670.92, 6.6728, 3.893, 4.084, 3.84, 3.898]
-        # data = tuple(row)
-        print row[0]
-        T = ('1','1','10','1','10','1','atyu30','2','1','10','1','10','1','atyu30')
-        # cur.executemany("insert into data values ("+str(T)+")") 
-        cur.execute("INSERT INTO data VALUES(%f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f)" %  tuple(row))
-        # cur.execute("INSERT INTO data SET Data='%s'" %mdb.escape_string(img))
-        con.commit()
-        # totalPage = 14
-        # page_pool = ThreadPool(totalPage) 
-        # page_list = []
-        # for i in range(0, totalPage):  
-        #     page_list.append(i)
-        # while True:
-        #     count     = 0
-        #     row = []
-        #     page_pool.map_async(get_data, (page_list))
-        #     time.sleep(1)
+        cur = con.cursor()  
 
-        # page_pool.close()
-        # page_pool.join()
+        total_field   = 14
+        count         = 0
+        row           = []
+        thread_pool   = ThreadPool(total_field) 
+        thread_list   = []
+        for i in range(total_field):  
+            thread_list.append(i) 
+        while True:
+            count = 0
+            row   = [0]*(total_field+1)
+            thread_pool.map_async(get_data, (thread_list))
+            time.sleep(1)
+
+        cur.execute('SELECT * FROM data ORDER BY id DESC LIMIT 1')  
+        results = cur.fetchall()
+        print results
+
+        thread_pool.close()
+        thread_pool.join()
 
     finally:
       if con: 
