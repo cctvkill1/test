@@ -17,13 +17,13 @@ okcoinSpot = OKCoinSpot(okcoinRESTURL,apikey,secretkey)
 #期货API
 okcoinFuture = OKCoinFuture(okcoinRESTURL,apikey,secretkey)
 
-# print (u' 现货行情 ')
-# json = okcoinSpot.ticker('btc_usd')
-# json1 = okcoinSpot.ticker('ltc_usd')
-# print (json.get('ticker').get('last'))
-# print (json.get('date'),int(time.time())) 
-# print (json1.get('ticker').get('last'))
-# print (json1.get('date'),int(time.time()))
+print (u' 现货行情 ')
+json = okcoinSpot.ticker('btc_usd')
+json1 = okcoinSpot.ticker('ltc_usd')
+print (json.get('ticker').get('last'))
+print (json.get('date'),int(time.time())) 
+print (json1.get('ticker').get('last'))
+print (json1.get('date'),int(time.time()))
 
  
 # con = None
