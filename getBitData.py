@@ -153,32 +153,32 @@ def insert_data():
 
 if __name__ == '__main__':
 
-    con = None
-    try: 
-        con = mdb.connect('localhost', 'root','', 'bit'); 
-        cur = con.cursor()  
+    # con = None
+    # try: 
+    #     con = mdb.connect('localhost', 'root','', 'bit'); 
+    #     cur = con.cursor()  
 
-        total_field   = 14
-        count         = 0
-        row           = []
-        thread_pool   = ThreadPool(total_field) 
-        thread_list   = []
-        for i in range(total_field):  
-            thread_list.append(i) 
-        while True:
-            count = 0
-            row   = [0]*(total_field+1)
-            thread_pool.map_async(get_data, (thread_list))
-            time.sleep(1)
+    #     total_field   = 14
+    #     count         = 0
+    #     row           = []
+    #     thread_pool   = ThreadPool(total_field) 
+    #     thread_list   = []
+    #     for i in range(total_field):  
+    #         thread_list.append(i) 
+    #     while True:
+    #         count = 0
+    #         row   = [0]*(total_field+1)
+    #         thread_pool.map_async(get_data, (thread_list))
+    #         time.sleep(1)
 
-        cur.execute('SELECT * FROM data ORDER BY id DESC LIMIT 1')  
-        results = cur.fetchall()
-        print results
+    #     cur.execute('SELECT * FROM data ORDER BY id DESC LIMIT 1')  
+    #     results = cur.fetchall()
+    #     print results
 
-        thread_pool.close()
-        thread_pool.join()
+    #     thread_pool.close()
+    #     thread_pool.join()
 
-    finally:
-      if con: 
-        con.close()
+    # finally:
+    #   if con: 
+    #     con.close()
  
