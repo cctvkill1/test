@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<header>
+	<meta charset="utf-8"> 
+	<title>比特币数据</title>
+	<script src="{{echart}}"></script>
+	<script src="{{jquery}}"></script>
+</header>
+<body>
+	<h1>Hello 飞哥!</h1>
+	<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+	<div id="main" style="width: 100%;height:800px;"></div>
+
+	<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        var data_btc_cny = JSON.parse({{result[0]|tojson}}); 
+        var data_btc_exchange_rate = JSON.parse({{result[1]|tojson}}); 
+        var data_btc_future_index = JSON.parse({{result[2]|tojson}}); 
+        var data_btc_next_future_ticker = JSON.parse({{result[3]|tojson}}); 
+        var data_btc_quarter_future_ticker = JSON.parse({{result[4]|tojson}}); 
+        var data_btc_this_future_ticker = JSON.parse({{result[5]|tojson}}); 
+        var data_btc_usd = JSON.parse({{result[6]|tojson}}); 
+
+        var option = {
+        	backgroundColor: '#21202D',
+        	title: {
+        		text: '动态数据'
+        	},
+        	legend: {
+        		data: [ 'btc_cny', 'btc_exchange_rate' , 'btc_future_index' , 'btc_next_future_ticker' , 'btc_quarter_future_ticker' , 'btc_this_future_ticker' , 'btc_usd'],
+        		inactiveColor: '#777',
+        		textStyle: {
+        			color: '#fff'
+        		}
+        	},
+        	tooltip: {
+        		trigger: 'axis',
+        		axisPointer: { 
+        			lineStyle: {
+        				color: '#376df4',
+        				width: 1,
+        				opacity: 1
+        			}
+        		}
+        	},
+        	xAxis: {
+        		type: 'time', 
+        		axisLine: { lineStyle: { color: '#8392A5' } }
+        	},
+        	yAxis: { 
+        		type: 'value',
+        		axisLine: { lineStyle: { color: '#8392A5' } },
+        		boundaryGap: [0, '80%'],
+        		splitLine: {
+        			show: false
+        		},
+        		scale: true,
+        		splitArea: {
+        			show: true
+        		}
+        	},
+        	dataZoom: [{
+        		textStyle: {
+        			color: '#8392A5'
+        		},
+        		handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+        		handleSize: '100%',
+        		dataBackground: {
+        			areaStyle: {
+        				color: '#8392A5'
+        			},
+        			lineStyle: {
+        				opacity: 0.8,
+        				color: '#8392A5'
+        			}
+        		},
+        		handleStyle: {
+        			color: '#fff',
+        			shadowBlur: 3,
+        			shadowColor: 'rgba(0, 0, 0, 0.6)',
+        			shadowOffsetX: 2,
+        			shadowOffsetY: 2
+        		}
+        	}, {
+        		type: 'inside'
+        	}], 
+        	series: [ 
+        	{
+        		name: 'btc_cny',
+        		type: 'line',
+        		showSymbol: false,
+        		hoverAnimation: false,
+        		data: data_btc_cny 
+        	},
+        	{
+        		name: 'btc_exchange_rate',
+        		type: 'line',
+        		showSymbol: false,
+        		hoverAnimation: false,
+        		data: data_btc_exchange_rate 
+        	},
+        	{
+        		name: 'btc_future_index',
+        		type: 'line',
+        		showSymbol: false,
+        		hoverAnimation: false,
+        		data: data_btc_future_index 
+        	},
+        	{
+        		name: 'btc_next_future_ticker',
+        		type: 'line',
+        		showSymbol: false,
+        		hoverAnimation: false,
+        		data: data_btc_next_future_ticker 
+        	},
+        	{
+        		name: 'btc_quarter_future_ticker',
+        		type: 'line',
+        		showSymbol: false,
+        		hoverAnimation: false,
+        		data: data_btc_quarter_future_ticker 
+        	},
+        	{
+        		name: 'btc_this_future_ticker',
+        		type: 'line',
+        		showSymbol: false,
+        		hoverAnimation: false,
+        		data: data_btc_this_future_ticker 
+        	},
+        	{
+        		name: 'btc_usd',
+        		type: 'line',
+        		showSymbol: false,
+        		hoverAnimation: false,
+        		data: data_btc_usd 
+        	}
+        	]
+        }; 
+
+        setInterval(function () {
+        	$.post('/getData' , function(data) { 
+        		var json =  JSON.parse(data) 
+        		data_btc_cny.shift()
+        		data_btc_cny.push(json[0]);
+        		data_btc_exchange_rate.shift()
+        		data_btc_exchange_rate.push(json[1]);
+        		data_btc_future_index.shift()
+        		data_btc_future_index.push(json[2]);
+        		data_btc_next_future_ticker.shift()
+        		data_btc_next_future_ticker.push(json[3]);
+        		data_btc_quarter_future_ticker.shift()
+        		data_btc_quarter_future_ticker.push(json[4]);
+        		data_btc_this_future_ticker.shift()
+        		data_btc_this_future_ticker.push(json[5]);
+        		data_btc_usd.shift()
+        		data_btc_usd.push(json[6]);
+        		myChart.setOption({
+        			series: [
+        			{
+        				name: 'btc_cny',
+        				type: 'line',
+        				showSymbol: false,
+        				hoverAnimation: false,
+        				data:  data_btc_cny
+        			},
+        			{
+        				name: 'btc_exchange_rate',
+        				type: 'line',
+        				showSymbol: false,
+        				hoverAnimation: false,
+        				data: data_btc_exchange_rate 
+        			},
+        			{
+        				name: 'btc_future_index',
+        				type: 'line',
+        				showSymbol: false,
+        				hoverAnimation: false,
+        				data: data_btc_future_index 
+        			},
+        			{
+        				name: 'btc_next_future_ticker',
+        				type: 'line',
+        				showSymbol: false,
+        				hoverAnimation: false,
+        				data: data_btc_next_future_ticker 
+        			},
+        			{
+        				name: 'btc_quarter_future_ticker',
+        				type: 'line',
+        				showSymbol: false,
+        				hoverAnimation: false,
+        				data: data_btc_quarter_future_ticker 
+        			},
+        			{
+        				name: 'btc_this_future_ticker',
+        				type: 'line',
+        				showSymbol: false,
+        				hoverAnimation: false,
+        				data: data_btc_this_future_ticker 
+        			},
+        			{
+        				name: 'btc_usd',
+        				type: 'line',
+        				showSymbol: false,
+        				hoverAnimation: false,
+        				data: data_btc_usd 
+        			}
+        			]
+        		});
+});	
+}, 1000);
+
+myChart.setOption(option);
+</script> 
+
+</body>
+</html>
