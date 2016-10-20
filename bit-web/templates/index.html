@@ -61,7 +61,10 @@
         var option = {
         	backgroundColor: '#21202D',
         	title: {
-        		text: '动态数据'
+        		text: '动态数据',
+                        textStyle:{
+                                color: '#fff'
+                        }
         	},
         	legend: {
         		data: [ 'btc_cny', 'btc_exchange_rate' , 'btc_future_index' , 'btc_next_future_ticker' , 'btc_quarter_future_ticker' , 'btc_this_future_ticker' , 'btc_usd'],
@@ -96,7 +99,7 @@
         		},
         		scale: true,
         		splitArea: {
-        			show: true
+        			show: false
         		}
         	}, { 
                         type: 'value',
