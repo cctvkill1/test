@@ -41,6 +41,36 @@ def getDataLtc():
 
 
 
+# BTC图表：（先选择时间区间查看）
+# 美金指数修正：BTCfuture_index - （BTCCNY /Exchange_rate+BTCUSD）/2,横轴值：时间
+# 现货VS本周：竖轴值：BTCthis_future_ticker - （BTCCNY /Exchange_rate+BTCUSD）/2,横轴值：时间
+# 现货VS次周：竖轴值：BTCnext_future_ticker - （BTCCNY /Exchange_rate+BTCUSD）/2,横轴值：时间
+# 现货VS季度：竖轴值：BTCquarter_future_ticker - （BTCCNY /Exchange_rate+BTCUSD）/2,横轴值：时间
+# LTC图表：（先选择时间区间查看）
+# 美金指数修正：LTCfuture_index - （LTCCNY /Exchange_rate+LTCUSD）/2,横轴值：时间
+# 现货VS本周：竖轴值：LTCthis_future_ticker - （LTCCNY /Exchange_rate+LTCUSD）/2,横轴值：时间
+# 现货VS次周：竖轴值：LTCnext_future_ticker - （LTCCNY /Exchange_rate+LTCUSD）/2,横轴值：时间
+# 现货VS季度：竖轴值：LTCquarter_future_ticker - （LTCCNY /Exchange_rate+LTCUSD）/2,横轴值：时间
+
+@app.route('/btcTable')
+def btcTable(name=None): 
+	echart = url_for('static', filename='echarts.min.js')
+	jquery = url_for('static', filename='jquery.min.js')	   
+	result = data() 
+	return render_template('btcTable.html', name=name,echart=echart,jquery=jquery,result=result)
+
+@app.route('/getDataBtcTable',methods=['GET', 'POST'])
+def getDataBtcTable(): 	 
+	if request.method == 'POST':
+		result = data(1) 
+		result = json.dumps(result)   
+		return result
+	else:
+		return '405' 
+
+
+
+
 if __name__ == '__main__':
 	# app.run()
 	app.debug=True

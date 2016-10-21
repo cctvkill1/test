@@ -45,3 +45,4 @@ def dataltc(limit = '1000'):
  	result =  [ltc,ltc_exchange_rate,ltc_future_index,ltc_next_future_ticker,ltc_quarter_future_ticker,ltc_this_future_ticker,ltc_usd]
 
  	return  result
+ 
