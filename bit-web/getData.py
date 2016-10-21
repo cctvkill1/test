@@ -32,3 +32,16 @@ def data(limit = '1000'):
 
  	return  result
  
+def dataltc(limit = '1000'): 
+	limit                     = str(limit)
+	ltc                       = getSqlData('select `value`,ct from ltc_cny order by id desc limit 0,'+limit)
+	ltc_exchange_rate         = getSqlData('select `value`,ct from ltc_exchange_rate order by id desc limit 0,'+limit)   
+	ltc_future_index          = getSqlData('select `value`,ct from ltc_future_index order by id desc limit 0,'+limit)
+	ltc_next_future_ticker    = getSqlData('select `value`,ct from ltc_next_future_ticker order by id desc limit 0,'+limit)
+	ltc_quarter_future_ticker = getSqlData('select `value`,ct from ltc_quarter_future_ticker order by id desc limit 0,'+limit)
+	ltc_this_future_ticker    = getSqlData('select `value`,ct from ltc_this_future_ticker order by id desc limit 0,'+limit)
+	ltc_usd                   = getSqlData('select `value`,ct from ltc_usd order by id desc limit 0,'+limit) 
+
+ 	result =  [ltc,ltc_exchange_rate,ltc_future_index,ltc_next_future_ticker,ltc_quarter_future_ticker,ltc_this_future_ticker,ltc_usd]
+
+ 	return  result

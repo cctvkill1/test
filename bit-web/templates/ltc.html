@@ -43,17 +43,16 @@
         r = formatData(JSON.parse({{result[6]|tojson}}).reverse());
         data.push(r['data'])
  
-        
         var option = {
         	backgroundColor: '#21202D',
         	title: {
-        		text: 'BTC动态数据',
+        		text: 'LTC动态数据',
                         textStyle:{
                                 color: '#fff'
                         }
         	},
         	legend: {
-        		data: [ 'btc_cny', 'btc_exchange_rate' , 'btc_future_index' , 'btc_next_future_ticker' , 'btc_quarter_future_ticker' , 'btc_this_future_ticker' , 'btc_usd'],
+        		data: [ 'ltc_cny', 'ltc_exchange_rate' , 'ltc_future_index' , 'ltc_next_future_ticker' , 'ltc_quarter_future_ticker' , 'ltc_this_future_ticker' , 'ltc_usd'],
         		inactiveColor: '#777',
         		textStyle: {
         			color: '#fff'
@@ -79,7 +78,7 @@
                 { 
         		type: 'value',
         		axisLine: { lineStyle: { color: '#8392A5' } },
-        		boundaryGap: [0, '80%'],
+        		boundaryGap: ['50%', '80%'],
         		splitLine: {
         			show: true
         		},
@@ -121,14 +120,14 @@
         	}], 
         	series: [ 
         	{
-        		name: 'btc_cny',
+        		name: 'ltc_cny',
         		type: 'line',
         		showSymbol: false,
         		hoverAnimation: false,
         		data: data[0] 
         	},
         	// {
-        	// 	name: 'btc_exchange_rate',
+        	// 	name: 'ltc_exchange_rate',
         	// 	type: 'line',
          //                yAxisIndex:1,
         	// 	showSymbol: false,
@@ -136,7 +135,7 @@
          //                data: data[1] 
         	// },
         	{
-        		name: 'btc_future_index',
+        		name: 'ltc_future_index',
         		type: 'line',
                         yAxisIndex:1,
         		showSymbol: false,
@@ -144,7 +143,7 @@
                         data: data[2] 
         	},
         	{
-        		name: 'btc_next_future_ticker',
+        		name: 'ltc_next_future_ticker',
         		type: 'line',
                         yAxisIndex:1,
         		showSymbol: false,
@@ -152,7 +151,7 @@
                         data: data[3] 
         	},
         	{
-        		name: 'btc_quarter_future_ticker',
+        		name: 'ltc_quarter_future_ticker',
         		type: 'line',
                         yAxisIndex:1,
         		showSymbol: false,
@@ -160,7 +159,7 @@
                         data: data[4] 
         	},
         	{
-        		name: 'btc_this_future_ticker',
+        		name: 'ltc_this_future_ticker',
         		type: 'line',
                         yAxisIndex:1,
         		showSymbol: false,
@@ -168,7 +167,7 @@
                         data: data[5] 
         	},
         	{
-        		name: 'btc_usd',
+        		name: 'ltc_usd',
         		type: 'line',
                         yAxisIndex:1,
         		showSymbol: false,
@@ -179,7 +178,7 @@
         }; 
 
         setInterval(function () {
-        	$.post('/getData' , function(rdata) { 
+        	$.post('/getDataLtc' , function(rdata) { 
         		var json =  JSON.parse(rdata)   
                         var r = formatData(JSON.parse(json[0]))   
                         date.push(r['date'][0])
@@ -202,31 +201,31 @@
                                 },
         			series: [
         			{
-        				name: 'btc_cny', 
+        				name: 'ltc_cny', 
         				data:  data[0]
         			},
         			// {
-        			// 	name: 'btc_exchange_rate', 
+        			// 	name: 'ltc_exchange_rate', 
            //                              data:  data[1]
         			// },
         			{
-        				name: 'btc_future_index', 
+        				name: 'ltc_future_index', 
                                         data:  data[2]
         			},
         			{
-        				name: 'btc_next_future_ticker', 
+        				name: 'ltc_next_future_ticker', 
                                         data:  data[3]
         			},
         			{
-        				name: 'btc_quarter_future_ticker', 
+        				name: 'ltc_quarter_future_ticker', 
                                         data:  data[4]
         			},
         			{
-        				name: 'btc_this_future_ticker', 
+        				name: 'ltc_this_future_ticker', 
                                         data:  data[5]
         			},
         			{
-        				name: 'btc_usd', 
+        				name: 'ltc_usd', 
                                         data:  data[6]
         			}
         			]
