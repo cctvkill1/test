@@ -46,13 +46,13 @@
             for (var i = 0; i < data[0].length; i++) { 
                 var t  = 0 ;
                 var v = ( data[0][i] / data[1][i] + data[6][i] ) / 2
-                t  = data[2][i] - v 
+                t  = (data[2][i] - v).toFixed(4)
                 totalData[0].push(t)
-                t  = data[5][i] - v
+                t  = (data[5][i] - v).toFixed(4)
                 totalData[1].push(t)
-                t  = data[3][i] - v
+                t  = (data[3][i] - v).toFixed(4)
                 totalData[2].push(t)
-                t  = data[4][i] - v
+                t  = (data[4][i] - v).toFixed(4)
                 totalData[3].push(t) 
             }         
             return totalData
@@ -95,7 +95,8 @@
               data: [ '美金指数修正', '现货VS本周' , '现货VS次周' , '现货VS季度'  ],
               inactiveColor: '#777',
               textStyle: {
-                 color: '#fff'
+                 color: '#fff',
+                 fontSize: 22
              }
          }, 
          tooltip: {
@@ -120,19 +121,13 @@
                 lineStyle: { color: '#8392A5' }
             },
             boundaryGap: [0, '80%'],
-            splitLine: {
-                show: true
-            },
-            scale: true,
-            splitArea: {
-                show: false
-            }
+            scale: true
         }, { 
             type: 'value',
             scale: true,
             axisLine: { 
-                lineStyle: { color: '#8392A5' } 
-            }
+                lineStyle: { color: '#8392A5' }
+            },
         }],
         dataZoom: [{ 
             start: 80, 
@@ -171,15 +166,18 @@
         {
             name: '现货VS本周',
             type: 'line',
-            yAxisIndex:1,
             showSymbol: false,
-            hoverAnimation: false,
-            data: totalData[1] 
+            hoverAnimation: false, 
+            data: totalData[1] ,
+            lineStyle: {
+                normal: { 
+                    color: '#4FB573'
+                }
+            }
         },
         {
             name: '现货VS次周',
             type: 'line',
-            yAxisIndex:1,
             showSymbol: false,
             hoverAnimation: false,
             data: totalData[2] 
