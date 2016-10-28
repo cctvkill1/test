@@ -37,28 +37,14 @@ def getDataLtc():
 		return result
 	else:
 		return '405' 
-
-
-
-
-# BTC图表：（先选择时间区间查看）
-# 美金指数修正：BTCfuture_index - （BTCCNY /Exchange_rate+BTCUSD）/2,横轴值：时间
-# 现货VS本周：竖轴值：BTCthis_future_ticker - （BTCCNY /Exchange_rate+BTCUSD）/2,横轴值：时间
-# 现货VS次周：竖轴值：BTCnext_future_ticker - （BTCCNY /Exchange_rate+BTCUSD）/2,横轴值：时间
-# 现货VS季度：竖轴值：BTCquarter_future_ticker - （BTCCNY /Exchange_rate+BTCUSD）/2,横轴值：时间
-# LTC图表：（先选择时间区间查看）
-# 美金指数修正：LTCfuture_index - （LTCCNY /Exchange_rate+LTCUSD）/2,横轴值：时间
-# 现货VS本周：竖轴值：LTCthis_future_ticker - （LTCCNY /Exchange_rate+LTCUSD）/2,横轴值：时间
-# 现货VS次周：竖轴值：LTCnext_future_ticker - （LTCCNY /Exchange_rate+LTCUSD）/2,横轴值：时间
-# 现货VS季度：竖轴值：LTCquarter_future_ticker - （LTCCNY /Exchange_rate+LTCUSD）/2,横轴值：时间
-
-@app.route('/btcTable')
+ 
+# btc 实时变化图标
+@app.route('/btctt')
 def btcTable(name=None): 
 	echart = url_for('static', filename='echarts.min.js')
 	jquery = url_for('static', filename='jquery.min.js')	   
 	result = data() 
-	return render_template('btcTable.html', name=name,echart=echart,jquery=jquery,result=result)
-
+	return render_template('btctt.html', name=name,echart=echart,jquery=jquery,result=result)
 @app.route('/getDataBtcTable',methods=['GET', 'POST'])
 def getDataBtcTable(): 	 
 	if request.method == 'POST':
@@ -69,9 +55,9 @@ def getDataBtcTable():
 		return '405' 
 
 
-
+# SELECT FROM_UNIXTIME(ct,'%Y-%m-%d %H:%i') tct , avg(`value`) 'value'  FROM btc_cny  where ct < 1477617431 GROUP BY tct
 
 if __name__ == '__main__':
 	# app.run()
 	app.debug=True
-	app.run('192.168.31.149')
+	app.run('port=80')
