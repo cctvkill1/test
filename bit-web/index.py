@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-from flask import Flask,render_template,url_for,request
+from flask import Flask,render_template,url_for,request,jsonify
 import datetime 
 import json  
-from getData import data,dataltc
+from getData import data,dataltc,getTotal
+from flask.ext.cache import Cache
 
 app = Flask(__name__) 
+cache = Cache(app,config={'CACHE_TYPE': 'simple'})
 
 @app.route('/')
 def index(name=None): 
@@ -39,12 +41,12 @@ def getDataLtc():
 		return '405' 
  
 # btc 实时变化图标
-@app.route('/btctt')
+@app.route('/btcTable')
 def btcTable(name=None): 
 	echart = url_for('static', filename='echarts.min.js')
 	jquery = url_for('static', filename='jquery.min.js')	   
 	result = data() 
-	return render_template('btctt.html', name=name,echart=echart,jquery=jquery,result=result)
+	return render_template('btcTable.html', name=name,echart=echart,jquery=jquery,result=result)
 @app.route('/getDataBtcTable',methods=['GET', 'POST'])
 def getDataBtcTable(): 	 
 	if request.method == 'POST':
@@ -55,9 +57,35 @@ def getDataBtcTable():
 		return '405' 
 
 
-# SELECT FROM_UNIXTIME(ct,'%Y-%m-%d %H:%i') tct , avg(`value`) 'value'  FROM btc_cny  where ct < 1477617431 GROUP BY tct
+# // # BTC图表：（先选择时间区间查看）
+# // # 美金指数修正：BTCfuture_index - （BTCCNY /Exchange_rate+BTCUSD）/2,横轴值：时间
+# // # 现货VS本周：竖轴值：BTCthis_future_ticker - （BTCCNY /Exchange_rate+BTCUSD）/2,横轴值：时间
+# // # 现货VS次周：竖轴值：BTCnext_future_ticker - （BTCCNY /Exchange_rate+BTCUSD）/2,横轴值：时间
+# // # 现货VS季度：竖轴值：BTCquarter_future_ticker - （BTCCNY /Exchange_rate+BTCUSD）/2,横轴值：时间
+# //   0    1                        2              3                      4                      5                       6
+# // [btc,btc_exchange_rate,btc_future_index,btc_next_future_ticker,btc_quarter_future_ticker,btc_this_future_ticker,btc_usd]
+
+		
+# btc 一周统计图
+@app.route('/btctt')
+@cache.cached(timeout=600) 
+def btctt(name=None): 
+	echart = url_for('static', filename='echarts.min.js')
+	jquery = url_for('static', filename='jquery.min.js') 
+	return render_template('btctt.html', name=name,echart=echart,jquery=jquery)
+ 
+
+# btc 一周统计图数据
+@app.route('/btcttData')
+@cache.cached(timeout=600) 
+def btcttData(name=None):  	   
+	result = getTotal() 
+	result = json.dumps(result)   
+	return result
+ 
+
 
 if __name__ == '__main__':
-	# app.run()
-	app.debug=True
-	app.run('port=80')
+	app.run()
+	# app.debug=True 
+	# app.run(host="123.57.225.230",port=80, debug=True)  
