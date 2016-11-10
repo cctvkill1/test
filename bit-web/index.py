@@ -86,6 +86,6 @@ def btcttData(name=None):
 
 
 if __name__ == '__main__':
-	app.run()
-	# app.debug=True 
-	# app.run(host="123.57.225.230",port=80, debug=True)  
+	#app.run()
+	#app.debug=True 
+	app.run(host="123.57.225.230",port=80)  
