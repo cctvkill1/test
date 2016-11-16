@@ -24,8 +24,7 @@
 }
 function postVote($ip){ 
   $headers['CLIENT-IP'] = $ip; 
-  $headers['X-FORWARDED-FOR'] = $ip;
-
+  $headers['X-FORWARDED-FOR'] = $ip; 
   $headerArr = array(); 
   foreach( $headers as $n => $v ) { 
    $headerArr[] = $n .':' . $v;  

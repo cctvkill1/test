@@ -6,7 +6,7 @@ import MySQLdb as mdb
 
 
 def getSqlData(sql):  
-	con     = mdb.connect('localhost', 'root','123456', 'bit'); 
+	con     = mdb.connect('localhost', 'root','', 'bit'); 
 	cur     = con.cursor()     
 	count   = cur.execute(sql)  
 	results = cur.fetchall()	
