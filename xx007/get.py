@@ -82,13 +82,28 @@ if __name__ == '__main__':
                 item_page = item_page.replace(' ','')  
                 dr = re.compile(r'<[^>]+>',re.S)
                 dd = dr.sub('',item_page)
+                print(dd)
+                get_bank_card = r'姓名：(.*?)\n' 
+                bank_card = re.findall(get_bank_card,dd)[0]  
+                print(bank_card) 
                 get_phone = r'手机：(\d{11})' 
                 phone = re.findall(get_phone,dd)[0] 
-                get_bank_card = r'农行：([0-9]{19})' 
-                bank_card = re.findall(get_bank_card,dd) 
-                print(dd)
                 print(phone)
+                get_bank_card = r'农行：([0-9]{19})' 
+                bank_card = re.findall(get_bank_card,dd)[0]  
                 print(bank_card)
+                get_bank_card = r'工行：([0-9]{19})' 
+                bank_card = re.findall(get_bank_card,dd)[0]  
+                print(bank_card)
+                get_bank_card = r'地址：(.*?)\n' 
+                bank_card = re.findall(get_bank_card,dd)[0]  
+                print(bank_card)  
+                # get_bank_card = r'QQ号：(.*?)\n' 
+                # bank_card = re.findall(get_bank_card,dd)[0]  
+                # print(bank_card) 
+                
+                #支付宝
+                # 电话：0431-88761800 
 
             break
         break
