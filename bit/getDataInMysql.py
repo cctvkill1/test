@@ -4,7 +4,7 @@ import MySQLdb as mdb
    
  
 def insert_data(table,rowData):   
-    con = mdb.connect('localhost', 'root','', 'bit'); 
+    con = mdb.connect('localhost', 'root','123456', 'bit'); 
     cur = con.cursor()    
     row = []
     row.append(float(rowData))  
