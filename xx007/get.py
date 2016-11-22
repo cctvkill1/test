@@ -17,7 +17,7 @@ def insert_db(row):
     global count  
     # print(row)
     try:
-        con = mdb.connect('localhost', 'root','', 'xx007'); 
+        con = mdb.connect('localhost', 'root','123456', 'xx007'); 
         cur = con.cursor()     
         cur.execute('insert into users values(NULL,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',row) 
         con.commit()  
@@ -224,7 +224,7 @@ if __name__ == '__main__':
 
     print ("开始抓取")
 
-    url              = 'http://www.xx007.cn/'
+    url              = 'http://www2.xx007.cn/'
     prog             = r'<div><a href="index.asp\?boardid=(.*)">.*</a>' 
     prog_board       = r'<div class="listtitle"><a href=\"(.*?)\".*?</a>'
     prog_page        = r'<div style="width:85%;overflow-x: hidden;">(.*?)</div>'
@@ -238,7 +238,7 @@ if __name__ == '__main__':
     data = data.decode('GBK')
     items = re.findall(prog, data)   
 
-    page_pool = ThreadPool(int(len(items)/7))
+    page_pool = ThreadPool(int(len(items)/2))
     page_list = []
     for item in items:  
         page_list.append(item)

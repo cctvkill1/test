@@ -9,7 +9,7 @@ def test():
         BaseManager.register('get_task')
         BaseManager.register('get_result')
 
-        conn = BaseManager(address = ('127.0.0.1',5000), authkey = b'123');
+        conn = BaseManager(address = ('123.56.9.210',5000), authkey = b'123');
 
         conn.connect()
     except:

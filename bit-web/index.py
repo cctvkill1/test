@@ -88,4 +88,4 @@ def btcttData(name=None):
 if __name__ == '__main__':
 	#app.run()
 	#app.debug=True 
-	app.run(host="123.57.225.230",port=80)  
+	app.run(host="123.56.9.210",port=80,threaded=True)  
