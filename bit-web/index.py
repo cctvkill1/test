@@ -2,7 +2,7 @@
 from flask import Flask,render_template,url_for,request,jsonify
 import datetime 
 import json  
-from getData import data,dataltc,getTotal
+import getData as gd
 from flask.ext.cache import Cache
 
 app = Flask(__name__) 
@@ -12,13 +12,13 @@ cache = Cache(app,config={'CACHE_TYPE': 'simple'})
 def index(name=None): 
 	echart = url_for('static', filename='echarts.min.js')
 	jquery = url_for('static', filename='jquery.min.js')	   
-	result = data() 
+	result = gd.data() 
 	return render_template('index.html', name=name,echart=echart,jquery=jquery,result=result)
 
 @app.route('/getData',methods=['GET', 'POST'])
 def getData(): 	 
 	if request.method == 'POST':
-		result = data(1) 
+		result = gd.data(1) 
 		result = json.dumps(result)   
 		return result
 	else:
@@ -28,13 +28,13 @@ def getData():
 def ltc(name=None): 
 	echart = url_for('static', filename='echarts.min.js')
 	jquery = url_for('static', filename='jquery.min.js')	   
-	result = dataltc() 
+	result = gd.dataltc() 
 	return render_template('ltc.html', name=name,echart=echart,jquery=jquery,result=result)
 
 @app.route('/getDataLtc',methods=['GET', 'POST'])
 def getDataLtc(): 	 
 	if request.method == 'POST':
-		result = dataltc(1) 
+		result = gd.dataltc(1) 
 		result = json.dumps(result)   
 		return result
 	else:
@@ -45,12 +45,12 @@ def getDataLtc():
 def btcTable(name=None): 
 	echart = url_for('static', filename='echarts.min.js')
 	jquery = url_for('static', filename='jquery.min.js')	   
-	result = data() 
+	result = gd.data() 
 	return render_template('btcTable.html', name=name,echart=echart,jquery=jquery,result=result)
 @app.route('/getDataBtcTable',methods=['GET', 'POST'])
 def getDataBtcTable(): 	 
 	if request.method == 'POST':
-		result = data(1) 
+		result = gd.data(1) 
 		result = json.dumps(result)   
 		return result
 	else:
@@ -79,13 +79,13 @@ def btctt(name=None):
 @app.route('/btcttData')
 @cache.cached(timeout=600) 
 def btcttData(name=None):  	   
-	result = getTotal() 
+	result = gd.getTotal() 
 	result = json.dumps(result)   
 	return result
- 
+  
 
 
 if __name__ == '__main__':
-	#app.run()
+	app.run()
 	#app.debug=True 
-	app.run(host="123.56.9.210",port=80,threaded=True)  
+	# app.run(host="172.17.9.119",port=80,threaded=True)  

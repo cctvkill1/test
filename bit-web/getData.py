@@ -36,7 +36,7 @@ def TotalSerialize(results):
 
 def data(limit = '1000'): 
 	limit                     = str(limit)
-	btc                       = serialize(getSqlData('select `value`,ct from btc_cny order by id desc limit 0,'+limit))
+	btc                       = serialize(getSqlData('SELECT btc_usd.`value`, btc_usd.ct, btc_this_future_ticker.`value`, btc_next_future_ticker.`value`, btc_quarter_future_ticker.`value` FROM btc_usd INNER JOIN btc_this_future_ticker ON btc_usd.ct = btc_this_future_ticker.ct INNER JOIN btc_next_future_ticker ON btc_usd.ct = btc_next_future_ticker.ct INNER JOIN btc_quarter_future_ticker ON btc_usd.ct = btc_quarter_future_ticker.ct ORDER BY	btc_usd.id DESC LIMIT 0,'+limit))
 	btc_exchange_rate         = serialize(getSqlData('select `value`,ct from btc_exchange_rate order by id desc limit 0,'+limit))   
 	btc_future_index          = serialize(getSqlData('select `value`,ct from btc_future_index order by id desc limit 0,'+limit))
 	btc_next_future_ticker    = serialize(getSqlData('select `value`,ct from btc_next_future_ticker order by id desc limit 0,'+limit))
