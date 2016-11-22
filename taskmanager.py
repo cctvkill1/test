@@ -51,6 +51,7 @@ def test():
         print('Manager error:',e);
     finally:
         #一定要关闭，否则会爆管道未关闭的错误
+        time.sleep(1);
         manager.shutdown();
         
 if __name__ == '__main__':
