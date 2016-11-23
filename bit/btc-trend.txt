@@ -1,0 +1,24 @@
+-- INSERT INTO btc_trend  (time,btc_future_index)
+-- SELECT  time,btc_future_index  FROM 
+--  ( 
+--   SELECT FROM_UNIXTIME(ct,'%Y-%m-%d %H:%i') as 'time' ,
+-- 	 avg(`value`) btc_quarter_future_ticker 
+--    FROM btc_quarter_future_ticker  GROUP BY  time   
+--  ) b ) 
+--  
+
+--   select count(id) from btc_future_index
+
+--  update btc_trend x, 
+--  (
+--  select a.time,a.btc_quarter_future_ticker from (
+--    SELECT FROM_UNIXTIME(ct,'%Y-%m-%d %H:%i') as 'time' ,
+-- 	 avg(`value`) btc_quarter_future_ticker 
+--    FROM btc_quarter_future_ticker  GROUP BY  time   
+-- ) a   left JOIN btc_trend b on a.time = b.time) y
+--   
+-- 
+--    set x.btc_quarter_future_ticker = y.btc_quarter_future_ticker
+--  where  x.time = y.time ;
+
+
