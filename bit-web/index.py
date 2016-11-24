@@ -9,10 +9,11 @@ app = Flask(__name__)
 cache = Cache(app,config={'CACHE_TYPE': 'simple'})
 
 @app.route('/')
-def index(name=None): 
+def index(name=None):  
 	echart = url_for('static', filename='echarts.min.js')
 	jquery = url_for('static', filename='jquery.min.js')	   
-	result = gd.data() 
+	result = gd.data()  
+	result = json.dumps(result)  
 	return render_template('index.html', name=name,echart=echart,jquery=jquery,result=result)
 
 @app.route('/getData',methods=['GET', 'POST'])
@@ -86,6 +87,6 @@ def btcttData(name=None):
 
 
 if __name__ == '__main__':
+	app.debug=True 
 	app.run()
-	#app.debug=True 
 	# app.run(host="172.17.9.119",port=80,threaded=True)  

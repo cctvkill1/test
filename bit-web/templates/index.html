@@ -6,232 +6,160 @@
 	<script src="{{echart}}"></script>
 	<script src="{{jquery}}"></script>
 </header>
-<body>
-	<h1>Hello 飞哥!</h1>
-	<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+<body> 
+	<h1>Hello 飞哥!</h1> 
 	<div id="main" style="width: 100%;height:800px;"></div>
 
-	<script type="text/javascript">
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('main'));
-        var date = [] 
-        var data = []
-        function formatData(json) {
-                var result = {}
-                var fData= [],fDate = []
-                for (var i = 0; i < json.length; i++) { 
-                        fDate.push(json[i][0])
-                        fData.push(json[i][1])
-                } 
-            result['date']=fDate
-            result['data']=fData
-            return result
+	<script type="text/javascript"> 
+    var myChart = echarts.init(document.getElementById('main'));
+    var date = [] 
+    var data = []
+    function formatData(json) {
+        var result = {}
+        var fData1= [],fData2= [],fData3= [],fDate = []
+        for (var i = 0; i < json.length; i++) { 
+            fDate.push(json[i][0])
+            fData1.push((json[i][2]-json[i][1]).toFixed(2))
+            fData2.push((json[i][3]-json[i][1]).toFixed(2))
+            fData3.push((json[i][4]-json[i][1]).toFixed(2)) 
         } 
-        var r = formatData(JSON.parse({{result[0]|tojson}}).reverse());
-        date=r['date']
-        data.push(r['data'])
-        r = formatData(JSON.parse({{result[1]|tojson}}).reverse());
-        data.push(r['data'])
-        r = formatData(JSON.parse({{result[2]|tojson}}).reverse());
-        data.push(r['data'])
-        r = formatData(JSON.parse({{result[3]|tojson}}).reverse());
-        data.push(r['data'])
-        r = formatData(JSON.parse({{result[4]|tojson}}).reverse());
-        data.push(r['data'])
-        r = formatData(JSON.parse({{result[5]|tojson}}).reverse());
-        data.push(r['data'])
-        r = formatData(JSON.parse({{result[6]|tojson}}).reverse());
-        data.push(r['data'])
- 
-        
-        var option = {
-        	backgroundColor: '#21202D',
-        	title: {
-        		text: 'BTC动态数据',
-                        textStyle:{
-                                color: '#fff'
-                        }
-        	},
-        	legend: {
-        		data: [ 'btc_cny', 'btc_exchange_rate' , 'btc_future_index' , 'btc_next_future_ticker' , 'btc_quarter_future_ticker' , 'btc_this_future_ticker' , 'btc_usd'],
-        		inactiveColor: '#777',
-        		textStyle: {
-        			color: '#fff'
-        		}
-        	}, 
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                    animation: false,
-                    lineStyle: {
-                        color: '#376df4',
-                        width: 2,
-                        opacity: 1
-                    }
-                }
-                },
-        	xAxis: {
-                        type: 'category',
-        		axisLine: { lineStyle: { color: '#8392A5' } },
-                        data : date
-        	},
-        	yAxis: [
-                { 
-        		type: 'value',
-        		axisLine: { lineStyle: { color: '#8392A5' } },
-        		boundaryGap: [0, '80%'],
-        		splitLine: {
-        			show: true
-        		},
-        		scale: true,
-        		splitArea: {
-        			show: false
-        		}
-        	}, { 
-                        type: 'value',
-                        scale: true,
-                        axisLine: { lineStyle: { color: '#8392A5' } }
-                }
-                ],
-        	dataZoom: [{ 
-                        start: 80, 
-                        textStyle: {
-                            color: '#8392A5'
-                        },
-                        handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-                        handleSize: '80%',
-                        dataBackground: {
-                            areaStyle: {
-                                color: '#8392A5'
-                            },
-                            lineStyle: {
-                                opacity: 0.8,
-                                color: '#8392A5'
-                            }
-                        },
-                        handleStyle: {
-                            color: '#fff',
-                            shadowBlur: 3,
-                            shadowColor: 'rgba(0, 0, 0, 0.6)',
-                            shadowOffsetX: 2,
-                            shadowOffsetY: 2
-                        }
-        	}, {
-        		type: 'inside'
-        	}], 
-        	series: [ 
-        	{
-        		name: 'btc_cny',
-        		type: 'line',
-        		showSymbol: false,
-        		hoverAnimation: false,
-        		data: data[0] 
-        	},
-        	// {
-        	// 	name: 'btc_exchange_rate',
-        	// 	type: 'line',
-         //                yAxisIndex:1,
-        	// 	showSymbol: false,
-        	// 	hoverAnimation: false,
-         //                data: data[1] 
-        	// },
-        	{
-        		name: 'btc_future_index',
-        		type: 'line',
-                        yAxisIndex:1,
-        		showSymbol: false,
-        		hoverAnimation: false,
-                        data: data[2] 
-        	},
-        	{
-        		name: 'btc_next_future_ticker',
-        		type: 'line',
-                        yAxisIndex:1,
-        		showSymbol: false,
-        		hoverAnimation: false,
-                        data: data[3] 
-        	},
-        	{
-        		name: 'btc_quarter_future_ticker',
-        		type: 'line',
-                        yAxisIndex:1,
-        		showSymbol: false,
-        		hoverAnimation: false,
-                        data: data[4] 
-        	},
-        	{
-        		name: 'btc_this_future_ticker',
-        		type: 'line',
-                        yAxisIndex:1,
-        		showSymbol: false,
-        		hoverAnimation: false,
-                        data: data[5] 
-        	},
-        	{
-        		name: 'btc_usd',
-        		type: 'line',
-                        yAxisIndex:1,
-        		showSymbol: false,
-        		hoverAnimation: false,
-                        data: data[6] 
-        	}
-        	]
-        }; 
+        result['date']=fDate
+        result['data'] = []
+        result['data'].push(fData1)
+        result['data'].push(fData2)
+        result['data'].push(fData3)
+        return result
+    } 
+    var r = formatData(JSON.parse({{result|tojson}}).reverse());
+    date=r['date']
+    data=r['data']  
 
-        setInterval(function () {
-        	$.post('/getData' , function(rdata) { 
-        		var json =  JSON.parse(rdata)   
-                        var r = formatData(JSON.parse(json[0]))   
-                        date.push(r['date'][0])
-                        data[0].push(r['data'][0])
-                        // var r = formatData(JSON.parse(json[1]))   
-                        // data[1].push(r['data'][0])
-                        var r = formatData(JSON.parse(json[2]))   
-                        data[2].push(r['data'][0])
-                        var r = formatData(JSON.parse(json[3]))   
-                        data[3].push(r['data'][0])
-                        var r = formatData(JSON.parse(json[4]))   
-                        data[4].push(r['data'][0])
-                        var r = formatData(JSON.parse(json[5]))   
-                        data[5].push(r['data'][0])
-                        var r = formatData(JSON.parse(json[6]))   
-                        data[6].push(r['data'][0]) 
-        		myChart.setOption({
-                                xAxis: { 
-                                        data : date
-                                },
-        			series: [
-        			{
-        				name: 'btc_cny', 
-        				data:  data[0]
-        			},
-        			// {
-        			// 	name: 'btc_exchange_rate', 
-           //                              data:  data[1]
-        			// },
-        			{
-        				name: 'btc_future_index', 
-                                        data:  data[2]
-        			},
-        			{
-        				name: 'btc_next_future_ticker', 
-                                        data:  data[3]
-        			},
-        			{
-        				name: 'btc_quarter_future_ticker', 
-                                        data:  data[4]
-        			},
-        			{
-        				name: 'btc_this_future_ticker', 
-                                        data:  data[5]
-        			},
-        			{
-        				name: 'btc_usd', 
-                                        data:  data[6]
-        			}
-        			]
-        		});
-});	
+    var option = {
+       backgroundColor: '#21202D',
+       title: {
+          text: 'BTC现货期货差值',
+          textStyle:{
+            color: '#fff'
+        }
+    },
+    legend: {
+      data: [ '本周vs指数', '次周vs指数' , '季度vs指数'],
+      inactiveColor: '#777',
+      textStyle: {
+         color: '#fff'
+     }
+ }, 
+ tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+        animation: false,
+        lineStyle: {
+            color: '#376df4',
+            width: 2,
+            opacity: 1
+        }
+    }
+},
+xAxis: {
+    type: 'category',
+    axisLine: { lineStyle: { color: '#8392A5' } },
+    data : date
+}, 
+yAxis: [{ 
+    type: 'value',
+    axisLine: { 
+        lineStyle: { color: '#8392A5' }
+    },
+    boundaryGap: [0, '80%'],
+    scale: true
+}, { 
+    type: 'value',
+    scale: true,
+    axisLine: { 
+        lineStyle: { color: '#8392A5' }
+    },
+    splitLine: {
+        show:false
+    }
+}],
+dataZoom: [{  
+    textStyle: {
+        color: '#8392A5'
+    },
+    handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z', 
+    dataBackground: {
+        areaStyle: {
+            color: '#8392A5'
+        },
+        lineStyle: {
+            opacity: 0.8,
+            color: '#8392A5'
+        }
+    },
+    handleStyle: {
+        color: '#fff',
+        shadowBlur: 3,
+        shadowColor: 'rgba(0, 0, 0, 0.6)',
+        shadowOffsetX: 2,
+        shadowOffsetY: 2
+    }
+}, {
+    type: 'inside'
+}], 
+series: [ 
+{
+  name: '本周vs指数',
+  type: 'line',
+  showSymbol: false,
+  hoverAnimation: false,
+  data: data[0] 
+},
+{
+  name: '次周vs指数',
+  type: 'line', 
+  showSymbol: false,
+  hoverAnimation: false,
+  data: data[1] 
+},
+{
+  name: '季度vs指数',
+  type: 'line', 
+  showSymbol: false,
+  hoverAnimation: false,
+  data: data[2] 
+}
+]
+}; 
+
+setInterval(function () {
+   $.post('/getData' , function(rdata) { 
+      var rd = [rdata]  
+      var r = formatData(JSON.parse(rd));
+      console.log(r)
+      date.push(r['date'])
+      data[0].push(r['data'][0][0])
+      data[1].push(r['data'][1][0]) 
+      data[2].push(r['data'][2][0])
+      myChart.setOption({
+        xAxis: { 
+            data : date
+        },
+        series: [
+        {
+            name: 'btc_cny', 
+            data:  data[0]
+        },
+        {
+            name: 'btc_exchange_rate', 
+            data:  data[1]
+        },
+        {
+            name: 'btc_future_index', 
+            data:  data[2]
+        }, 
+        ]
+    });
+  });	
 }, 1000);
 
 myChart.setOption(option);

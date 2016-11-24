@@ -1,3 +1,4 @@
+
 import asyncio
 
 async def hello():
@@ -5,8 +6,8 @@ async def hello():
     r = await asyncio.sleep(1)
     print("Hello again!")
 
-# 获取EventLoop:
+# get EventLoop:
 loop = asyncio.get_event_loop()
-# 执行coroutine
+# exec coroutine
 loop.run_until_complete(hello())
 loop.close()
