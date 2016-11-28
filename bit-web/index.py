@@ -9,12 +9,12 @@ app = Flask(__name__)
 cache = Cache(app,config={'CACHE_TYPE': 'simple'})
 
 @app.route('/')
-def index(name=None):  
+def index():  
 	echart = url_for('static', filename='echarts.min.js')
 	jquery = url_for('static', filename='jquery.min.js')	   
 	result = gd.data()  
 	result = json.dumps(result)  
-	return render_template('index.html', name=name,echart=echart,jquery=jquery,result=result)
+	return render_template('index.html',echart=echart,jquery=jquery,result=result)
 
 @app.route('/getData',methods=['GET', 'POST'])
 def getData(): 	 
@@ -25,29 +25,25 @@ def getData():
 	else:
 		return '405' 
 
-@app.route('/ltc')
-def ltc(name=None): 
+@app.route('/trend')
+def trend(): 
 	echart = url_for('static', filename='echarts.min.js')
-	jquery = url_for('static', filename='jquery.min.js')	   
-	result = gd.dataltc() 
-	return render_template('ltc.html', name=name,echart=echart,jquery=jquery,result=result)
-
-@app.route('/getDataLtc',methods=['GET', 'POST'])
-def getDataLtc(): 	 
-	if request.method == 'POST':
-		result = gd.dataltc(1) 
-		result = json.dumps(result)   
-		return result
-	else:
-		return '405' 
+	jquery = url_for('static', filename='jquery.min.js')
+	return render_template('trend.html', echart=echart,jquery=jquery)
+ 
+@app.route('/getTrendData')
+def getTrendData(): 	  	   
+	result = gd.dataTrend() 
+	result = json.dumps(result)  
+	return result
  
 # btc 实时变化图标
 @app.route('/btcTable')
-def btcTable(name=None): 
+def btcTable(): 
 	echart = url_for('static', filename='echarts.min.js')
 	jquery = url_for('static', filename='jquery.min.js')	   
 	result = gd.data() 
-	return render_template('btcTable.html', name=name,echart=echart,jquery=jquery,result=result)
+	return render_template('btcTable.html', echart=echart,jquery=jquery,result=result)
 @app.route('/getDataBtcTable',methods=['GET', 'POST'])
 def getDataBtcTable(): 	 
 	if request.method == 'POST':
@@ -70,16 +66,16 @@ def getDataBtcTable():
 # btc 一周统计图
 @app.route('/btctt')
 @cache.cached(timeout=600) 
-def btctt(name=None): 
+def btctt(): 
 	echart = url_for('static', filename='echarts.min.js')
 	jquery = url_for('static', filename='jquery.min.js') 
-	return render_template('btctt.html', name=name,echart=echart,jquery=jquery)
+	return render_template('btctt.html',echart=echart,jquery=jquery)
  
 
 # btc 一周统计图数据
 @app.route('/btcttData')
 @cache.cached(timeout=600) 
-def btcttData(name=None):  	   
+def btcttData():  	   
 	result = gd.getTotal() 
 	result = json.dumps(result)   
 	return result

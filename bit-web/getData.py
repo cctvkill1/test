@@ -49,19 +49,42 @@ def data(limit = '1000'):
 	# data = json.dumps(results)    
  	return  data
  
-def dataltc(limit = '1000'): 
-	limit                     = str(limit)
-	ltc                       = serialize(getSqlData('select `value`,ct from ltc_cny order by id desc limit 0,'+limit))
-	ltc_exchange_rate         = serialize(getSqlData('select `value`,ct from ltc_exchange_rate order by id desc limit 0,'+limit)) 
-	ltc_future_index          = serialize(getSqlData('select `value`,ct from ltc_future_index order by id desc limit 0,'+limit))
-	ltc_next_future_ticker    = serialize(getSqlData('select `value`,ct from ltc_next_future_ticker order by id desc limit 0,'+limit))
-	ltc_quarter_future_ticker = serialize(getSqlData('select `value`,ct from ltc_quarter_future_ticker order by id desc limit 0,'+limit))
-	ltc_this_future_ticker    = serialize(getSqlData('select `value`,ct from ltc_this_future_ticker order by id desc limit 0,'+limit))
-	ltc_usd                   = serialize(getSqlData('select `value`,ct from ltc_usd order by id desc limit 0,'+limit)) 
-
- 	result =  [ltc,ltc_exchange_rate,ltc_future_index,ltc_next_future_ticker,ltc_quarter_future_ticker,ltc_this_future_ticker,ltc_usd]
-
- 	return  result
+def dataTrend():  
+	results                       = getSqlData('select time,btc_future_index,btc_this_future_ticker,btc_next_future_ticker,btc_quarter_future_ticker,btc_cny,btc_exchange_rate,btc_usd from btc_trend order by id')  
+	data    = []
+	for r in results: 
+		row = []
+		row.append(r[0].strftime('%Y-%m-%d %H:%M'))
+		if r[1]:
+			row.append(float(r[1])) 
+		else:
+			row.append(0)
+		if r[2]:
+			row.append(float(r[2])) 
+		else:
+			row.append(0)
+		if r[3]:
+			row.append(float(r[3])) 
+		else:
+			row.append(0)
+		if r[4]:
+			row.append(float(r[4])) 
+		else:
+			row.append(0)   
+		if r[5]:
+			row.append(float(r[5])) 
+		else:
+			row.append(0)
+		if r[6]:
+			row.append(float(r[6])) 
+		else:
+			row.append(0)
+		if r[7]:
+			row.append(float(r[7])) 
+		else:
+			row.append(0)
+		data.append(row)   
+ 	return  data
  
 
 def getTotal():
