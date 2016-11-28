@@ -58,10 +58,49 @@ def runSql():
 	set x.btc_quarter_future_ticker = y.btc_quarter_future_ticker
 	where  x.time = y.time ;
 	'''
+
+	update_btc_cny_sql = '''  
+	update btc_trend x, 
+	(
+	select a.time,a.btc_cny from (
+	SELECT FROM_UNIXTIME(ct,'%Y-%m-%d %H:%i') as 'time' ,
+	avg(`value`) btc_cny 
+	FROM btc_cny where ct>'''+lastTime+'''  GROUP BY  time   
+	) a   left JOIN btc_trend b on a.time = b.time) y 
+	set x.btc_cny = y.btc_cny
+	where  x.time = y.time ;
+	'''
+
+	update_btc_exchange_rate_sql = '''  
+	update btc_trend x, 
+	(
+	select a.time,a.btc_exchange_rate from (
+	SELECT FROM_UNIXTIME(ct,'%Y-%m-%d %H:%i') as 'time' ,
+	avg(`value`) btc_exchange_rate 
+	FROM btc_exchange_rate where ct>'''+lastTime+'''  GROUP BY  time   
+	) a   left JOIN btc_trend b on a.time = b.time) y 
+	set x.btc_exchange_rate = y.btc_exchange_rate
+	where  x.time = y.time ;
+	'''
+	update_btc_usd_sql = '''  
+	update btc_trend x, 
+	(
+	select a.time,a.btc_usd from (
+	SELECT FROM_UNIXTIME(ct,'%Y-%m-%d %H:%i') as 'time' ,
+	avg(`value`) btc_usd 
+	FROM btc_usd where ct>'''+lastTime+'''  GROUP BY  time   
+	) a   left JOIN btc_trend b on a.time = b.time) y 
+	set x.btc_usd = y.btc_usd
+	where  x.time = y.time ;
+	'''
+
 	commitSqlData(insert_btc_future_index_sql) 
 	commitSqlData(update_btc_this_future_ticker_sql)
 	commitSqlData(update_btc_next_future_ticker_sql)
 	commitSqlData(update_btc_quarter_future_ticker_sql)
+	commitSqlData(update_btc_cny_sql)
+	commitSqlData(update_btc_exchange_rate_sql)
+	commitSqlData(update_btc_usd_sql)
  	
  	print 'ok';
 if __name__ == '__main__':
