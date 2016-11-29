@@ -8,6 +8,7 @@ import base64
 import config 
 import asyncio 
 from threading import Thread
+from getDataInMysql import insert_data
 
 def on_open(self): 
     try: 
@@ -17,8 +18,7 @@ def on_open(self):
 
         threads = []
         channels = ['ok_sub_spotusd_btc_ticker','ok_sub_futureusd_btc_ticker_this_week','ok_sub_futureusd_btc_ticker_next_week','ok_sub_futureusd_btc_ticker_quarter','ok_sub_futureusd_btc_index'] 
-        for x in range(len(channels)):    
-            # print(x)
+        for x in range(len(channels)):     
             thread = Thread(target=run, args=(channels[x],))
             threads.append(thread)
             thread.start()  
@@ -29,9 +29,21 @@ def on_open(self):
  
 def on_message(self,evt):
     data = inflate(evt)  
+    print(data)
     data = str(data, "utf-8")
     json_dict = json.loads(data)
-    print( json_dict[0]['data']['last'])
+    channel = json_dict[0]['channel']
+    if channel == 'ok_sub_spotusd_btc_ticker':
+        insert_data('btc_usd',json_dict[0]['data']['last'])
+    if channel == 'ok_sub_futureusd_btc_ticker_this_week':
+        insert_data('btc_this_future_ticker',json_dict[0]['data']['last'])
+    if channel == 'ok_sub_futureusd_btc_ticker_next_week':
+        insert_data('btc_next_future_ticker',json_dict[0]['data']['last'])
+    if channel == 'ok_sub_futureusd_btc_ticker_quarter':
+        insert_data('btc_quarter_future_ticker',json_dict[0]['data']['last'])
+    if channel == 'ok_sub_futureusd_btc_index':
+        insert_data('btc_future_index',json_dict[0]['data']['futureIndex']) 
+
 
 def inflate(data):
     decompress = zlib.decompressobj(-zlib.MAX_WBITS)
@@ -49,10 +61,15 @@ def on_close(self):
 def get_data(): 
     try:
         url        = config.url       
+        url_cny        = config.url_cny       
         websocket.enableTrace(False) 
         ws         = websocket.WebSocketApp(url,on_message = on_message,on_error = on_error,on_close = on_close)
         ws.on_open = on_open 
         ws.run_forever()
+
+        ws_cny         = websocket.WebSocketApp(url_cny,on_message = on_message,on_error = on_error,on_close = on_close)
+        ws_cny.on_open = on_open 
+        ws_cny.run_forever()
     except Exception as e:
         print(e)
 
