@@ -5,6 +5,8 @@ import json
 import hashlib
 import zlib
 import base64
+import config
+  
 
 #business
 def buildMySign(params,secretKey):
@@ -90,16 +92,16 @@ def futureRealTrades(api_key,secretkey):
 
 def futureusdUserinfo(api_key,secretkey):
     params = {'api_key':api_key}
-    sign = buildMySign(params,secretkey)
+    sign = buildMySign(params,secretkey) 
     # ok_futureusd_userinfo
-    return "{'event':'addChannel', 'channel':'ok_spotusd_userinfo','parameters': {'api_key':"+api_key+",'sign':'"+sign+"'},'binary':'true'}"
+    return "{'event':'addChannel', 'channel':'ok_spotusd_userinfo','parameters': {'api_key':'"+api_key+"','sign':'"+sign+"'},'binary':'true'}"
 
 def on_open(self):
     #subscribe okcoin.com spot ticker
     # self.send("{'event':'addChannel','channel':'ok_sub_spotusd_btc_ticker','binary':'true'}")
 
-    #subscribe okcoin.com future this_week  quarter
-    self.send("{'event':'addChannel','channel':'ok_sub_futureusd_btc_ticker_quarter','binary':'true'}")
+    #subscribe okcoin.com future this_week, next_week, quarter
+    # self.send("{'event':'addChannel','channel':'ok_sub_futureusd_X_ticker_next_week','binary':'true'}")
 
     #subscribe okcoin.com future depth
     # self.send("{'event':'addChannel','channel':'ok_sub_futureusd_ltc_depth_next_week_20','binary':'true'}")
@@ -132,8 +134,8 @@ def on_open(self):
 
 
     # 查询合约账户信息
-    # futureusdUserinfoMsg = futureusdUserinfo(api_key,secret_key)
-    # self.send(futureusdUserinfoMsg)
+    futureusdUserinfoMsg = futureusdUserinfo(api_key,secret_key)
+    self.send(futureusdUserinfoMsg)
  
 def on_message(self,evt):
     data = inflate(evt) #data decompress
@@ -153,16 +155,15 @@ def on_close(self):
     print ('DISCONNECT')
 
 if __name__ == "__main__":
-    url = "wss://real.okcoin.com:10440/websocket/okcoinapi"      
-    # url = "wss://real.okcoin.cn:10440/websocket/okcoinapi" 
-
-    api_key='da99af6b-e727-4228-868d-6f0e68122997'
-    secret_key = "49B408110BBE189693C258A976E55EBC"
+    url = config.url     
+  
+    api_key = config.api_key
+    secret_key = config.secret_key 
     websocket.enableTrace(False)
     if len(sys.argv) < 2:
         host = url
     else:
-        host = sys.argv[1]
+        host = sys.argv[1]  
     ws = websocket.WebSocketApp(host,
                                 on_message = on_message,
                                 on_error = on_error,
