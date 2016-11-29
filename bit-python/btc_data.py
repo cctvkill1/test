@@ -42,7 +42,7 @@ def on_message(self,evt):
     if channel == 'ok_sub_futureusd_btc_ticker_quarter':
         insert_data('btc_quarter_future_ticker',json_dict[0]['data']['last'])
     if channel == 'ok_sub_futureusd_btc_index':
-        insert_data('btc_future_index',json_dict[0]['data']['futureIndex']) 
+        insert_data('btc_future_index',json_dict[0]['data']['futureIndex'])  
 
 
 def inflate(data):
@@ -56,23 +56,16 @@ def on_error(self,evt):
 
 def on_close(self):
     print ('DISCONNECT')
-
-
+ 
 def get_data(): 
     try:
-        url        = config.url       
-        url_cny        = config.url_cny       
-        websocket.enableTrace(False) 
+        url        = config.url        
         ws         = websocket.WebSocketApp(url,on_message = on_message,on_error = on_error,on_close = on_close)
         ws.on_open = on_open 
         ws.run_forever()
-
-        ws_cny         = websocket.WebSocketApp(url_cny,on_message = on_message,on_error = on_error,on_close = on_close)
-        ws_cny.on_open = on_open 
-        ws_cny.run_forever()
     except Exception as e:
-        print(e)
+        print(e) 
 
 if __name__ == "__main__":
-    get_data();
+    get_data(); 
 
