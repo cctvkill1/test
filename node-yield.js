@@ -1,31 +1,6 @@
  
-
-var start = Date.now();
-var a = [];
-for (i = 0; i < 10000000; i++) {
-	a[i] = i;
-} 
-var end = Date.now();
-console.log(end - start);
-
-// var co = require('hprose').co;
-
-
-// co(function*() {
-// 	try {
-// 		var start = Date.now();
-// 		var a = [];
-// 		for (i = 0; i < 10000000; i++) {
-// 			a[i] = i;
-// 		}
-// 		yield a;
-// 		var end = Date.now();
-// 		console.log(end - start);
-// 	}
-// 	catch (e) {
-// 		console.error(e);
-// 	}
-// });
+var co = require('hprose').co;
+ 
 
 // var co = require('co');
 // var co = require('hprose').co;
@@ -69,21 +44,22 @@ console.log(end - start);
 //     }
 // });
 
-// (async function() {
-//     try {
-//         var a = [];
-//         for (i = 0; i < 1000000; i++) {
-//             a[i] = i;
-//         }
-//         var start = Date.now();
-//         await a;
-//         var end = Date.now();
-//         console.log(end - start);
-//     }
-//     catch (e) {
-//         console.error(e);
-//     }
-// })();
+(async function() {
+    try {
+        var a = [];
+        for (i = 0; i < 1000000; i++) {
+            a[i] = i;
+        }
+        var start = Date.now();
+        await a;
+        var end = Date.now();
+        console.log(end - start);
+    }
+    catch (e) {
+        console.error(e);
+    }
+})();
+
 
 // (async function() {
 //     try {

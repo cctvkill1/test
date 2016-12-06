@@ -4,8 +4,8 @@ import MySQLdb as mdb
    
  
 def insert_data(table,rowData):   
-	if rowData==None: 
-		return False
+    if rowData==None:
+        return False
     con = mdb.connect('localhost', 'root','123456', 'bit'); 
     cur = con.cursor()    
     row = []
