@@ -7,26 +7,20 @@ import sys
 import time 
 from getDataInMysql import insert_data
 
-  
 def getData():   
 	try:            
-	    table = 'btc_cny'
-	    url = 'https://www.okcoin.cn/api/v1/ticker.do?symbol=btc_cny' 
-	    data      = urllib2.urlopen(url).read() 
-	    json_dict = json.loads(data)   
-	    insert_data(table,json_dict.get('ticker').get('last'))
-	    return json_dict.get('ticker').get('last')
+		table = 'btc_cny'
+		url = 'https://www.okcoin.cn/api/v1/ticker.do?symbol=btc_cny' 
+		data      = urllib2.urlopen(url).read() 
+		json_dict = json.loads(data)   
+		insert_data(table,json_dict.get('ticker').get('last'))
+		return json_dict.get('ticker').get('last')
 	except Exception, e:
-		print e
-        getData() 
-  
-  
-   
+		# print e
+		getData() 
 
 if __name__ == '__main__':
-    
+	while True:   
+		getData()
+		time.sleep(5)
 
-    while True:   
-        getData()
-        time.sleep(1)
- 

@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 import urllib2
 import json  
@@ -8,8 +7,6 @@ import sys
 import time
 import MySQLdb as mdb 
 from getDataInMysql import insert_data
-
-  
 def getData():    
 	try:         
 		table = 'btc_next_future_ticker'
@@ -19,12 +16,10 @@ def getData():
 		insert_data(table,json_dict.get('ticker').get('last'))
 		return json_dict.get('ticker').get('last')   
 	except Exception, e:
-		print e
-        getData() 
-   
+		# print e
+		getData() 
 
 if __name__ == '__main__': 
-
-    while True:   
-        getData()
-        time.sleep(1)
+	while True:   
+		getData()
+		time.sleep(5)
