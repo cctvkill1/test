@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2016-12-16 00:34:44
+Date: 2016-12-17 00:55:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,5 +29,8 @@ CREATE TABLE `house` (
   `total` int(11) DEFAULT '0',
   `lng` varchar(255) DEFAULT NULL,
   `lat` varchar(255) DEFAULT NULL,
+  `area` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `xiaoqu` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=68491 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=71491 DEFAULT CHARSET=utf8;
