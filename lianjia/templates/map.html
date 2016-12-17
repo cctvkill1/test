@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>成都房源成交数据</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <style type="text/css">
+  html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    background:#ffffff;
+  }
+  #map{
+    width:100%;
+    height:100%;
+  }
+  #panel {
+    position: absolute;
+    top:30px;
+    left:10px;
+    z-index: 999;
+    color: #fff;
+  }
+  #login{
+    position:absolute;
+    width:300px;
+    height:40px;
+    left:50%;
+    top:50%;
+    margin:-40px 0 0 -150px;
+  }
+  #login input[type=password]{
+    width:200px;
+    height:30px;
+    padding:3px;
+    line-height:30px;
+    border:1px solid #000;
+  }
+  #login input[type=submit]{
+    width:80px;
+    height:38px;
+    display:inline-block;
+    line-height:38px;
+  }
+  </style>
+  <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/jquery/jquery.js"></script>
+  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+  <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/data/points-sample-data.js"></script>
+</head>
+<body>
+  <div id="map"></div>
+  <script type="text/javascript">
+  var map = new BMap.Map("map", {});                      
+  map.centerAndZoom(new BMap.Point(104.06, 30.67), 13);    
+  map.enableScrollWheelZoom();                      
+  if (document.createElement('canvas').getContext) {  
+    $.post('/getDataInfo', function (data) {
+      data = eval(data)
+      var points = [];   
+      for (var i = 0; i < data.length; i++) { 
+        var p = new BMap.Point(data[i][0], data[i][1])
+        p.title = data[i][2]
+        p.info = '单价:'+data[i][3]+' 总价:'+(data[i][4]/10000)+'万 '+data[i][5]+data[i][6]
+        points.push(p);
+
+      }  
+      var pointCollection = new BMap.PointCollection(points);  
+      pointCollection.addEventListener('mouseover', function (e) { 
+        var opts = {
+          width : 200,     
+          height: 100,     
+          title : e.point.title  
+        }
+        var infoWindow = new BMap.InfoWindow(e.point.info, opts);  
+        map.openInfoWindow(infoWindow,e.point);  
+      });
+      map.addOverlay(pointCollection); 
+    })
+  } else {
+    alert('请在chrome、safari、IE8+以上浏览器查看本示例');
+  } 
+
+  </script>
+</body>
+</html>
+

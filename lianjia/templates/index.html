@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+ <meta charset="utf-8">
+ <title>
+   成都房源成交热力图-链家数据
+ </title>
+</head>
+<body style="height: 100%; margin: 0">
+ <div id="container" style="height: 100%"></div>
+
+ <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/jquery/jquery.js"></script>
+ <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
+ <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+ <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+ <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+ <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+ <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+ <script type="text/javascript">
+ var dom = document.getElementById("container");
+ var myChart = echarts.init(dom);
+ var app = {};
+ option = null;
+ app.title = '热力图与百度地图扩展';
+
+ $.post('/getData', function (data) {
+  data = eval(data)
+  var points = []
+  data.map(function (track) {
+    points.push([track[0],track[1]],track[2]);
+  }); 
+  myChart.setOption(option = {
+    animation: false,
+    bmap: {
+      center: [104.06, 30.67],
+      zoom: 14,
+      roam: true
+    },
+    visualMap: {
+      show: false,
+      top: 'top',
+      min: 0,
+      max: 5,
+      seriesIndex: 0,
+      calculable: true,
+      inRange: {
+        color: ['blue', 'blue', 'green', 'yellow', 'red']
+      }
+    },
+    series: [{
+      type: 'heatmap',
+      coordinateSystem: 'bmap',
+      data: points,
+      pointSize: 5,
+      blurSize: 20
+    }]
+  });
+  if (!app.inNode) {
+        // 添加百度地图插件
+        var bmap = myChart.getModel().getComponent('bmap').getBMap();
+        bmap.addControl(new BMap.MapTypeControl());  
+        //分区
+        var bdary = new BMap.Boundary(); 
+        var city = '成都市'
+        var areaList = ['双流','天府新区','成华','新都','武侯','温江','郫县','金堂','金牛','锦江','青羊','高新','龙泉驿']
+        for (var i = 0; i < areaList.length; i++) { 
+          bdary.get(city+areaList[i], function(rs){   
+            var count = rs.boundaries.length;  
+            for(var i = 0; i < count; i++){
+              var ply = new BMap.Polygon(rs.boundaries[i], {strokeWeight: 2, strokeColor: "#ff0000",strokeOpacity:0.0, fillOpacity: 0.0, fillColor: "none"});  
+              bmap.addOverlay(ply);   
+            }        
+          });   
+        };
+      }
+    });
+;
+if (option && typeof option === "object") {
+  myChart.setOption(option, true);
+}
+</script>
+</body>
+</html>
