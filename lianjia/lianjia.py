@@ -19,13 +19,21 @@ def insert_db(row):
     try:
         con = mdb.connect('localhost', 'root','', 'lianjia'); 
         cur = con.cursor()     
-        cur.execute('insert into house values(NULL,%s,%s,%s,%s,%s,%s)',row) 
+        cur.execute('insert into house values(NULL,%s,%s,%s,%s,%s,%s,null,null,null,null,null)',row) 
         con.commit()  
         con.close()
         count += 1
         print('插入',count,'条数据')
     except Exception as e:
         print(e) 
+
+def getSqlData(sql):  
+    con     = mdb.connect('localhost', 'root','', 'lianjia'); 
+    cur     = con.cursor()     
+    count   = cur.execute(sql)  
+    results = cur.fetchall()    
+    con.close()
+    return results
 
 # async def http_get(url):  
 def http_get(url):  
@@ -47,6 +55,10 @@ def http_get(url):
     for i in range(len(li)):  
         row    = []
         link   = re.findall(re_link, li[i],re.S)[0]   
+        find_result = getSqlData('select id,link from house WHERE house.link = "'+link+'"; ') 
+        # print(find_result) 
+        if len(find_result)>0:
+            return 
         name   = re.findall(re_name, li[i],re.S)[0]   
         info   = re.findall(re_info, li[i],re.S)[0]   
         prices = re.findall(re_price, li[i],re.S)
@@ -64,6 +76,7 @@ def http_get(url):
         row.append(total)   
         # await insert_db(row)
         insert_db(row)
+
     # print(url)
     # print(len(li))
     # print(items)
@@ -76,12 +89,13 @@ def async_get(urls):
     loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
 
-print('抓取链家数据--协程')
+print('抓取链家数据')
 count            = 0
-page_pool = ThreadPool(30) 
+total_page = 100
+page_pool = ThreadPool(total_page) 
 urls = []
 link = 'http://cd.lianjia.com/chengjiao/pg%s'
-for x in range(1,2):
+for x in range(1,total_page+1):
     url = link % (x)
     urls.append(url)
 # print(urls) 

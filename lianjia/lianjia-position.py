@@ -10,30 +10,11 @@ try:
     import urllib.request as urllib2
 except ImportError:
     import urllib2
- 
-# 插入数据
-# async def insert_db(row):  
-def insert_db(row):  
-    global count  
-    # print(row)
-    try:
-        con = mdb.connect('localhost', 'root','', 'lianjia'); 
-        cur = con.cursor()     
-        cur.execute('insert into house values(NULL,%s,%s,%s,%s,%s,%s)',row) 
-        con.commit()  
-        con.close()
-        count += 1
-        print('插入',count,'条数据')
-    except Exception as e:
-        print(e) 
-
-# async def http_get(url):  
+  
 def http_get(url):   
     data_id = url[0]
     url = url[1]
-    print(data_id)
-    # res            = await aiohttp.request('GET', url) 
-    # data           = await res.read() 
+    print(data_id) 
     data            = urllib2.urlopen(url).read()  
     data            = data.decode('utf-8') 
     re_link         = r'<div class="info fr">.*?<a href="(.*?)" class="name"'    
@@ -73,12 +54,8 @@ print('抓取链家数据小区坐标--协程')
 count            = 0
 page_pool = ThreadPool(100)  
 urls = getSqlData('select id,link from house WHERE house.lng IS  null ') 
-# print(urls)  
+print(len(urls))
 page_pool.map_async(http_get, (urls))
 page_pool.close()
 page_pool.join()   
-
-# print('3个连接由一个线程通过coroutine并发完成')
-
-# x = b'\xe9\x93\xbe\xe5\xae\xb6\xe7\xbd\x91\xe7\xad\xbe\xe7\xba\xa6'
-# print(x.decode('utf-8'))
+ 

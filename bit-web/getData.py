@@ -2,7 +2,7 @@
 import datetime
 import json  
 import time
-import MySQLdb as mdb
+import pymysql as mdb
 
 
 def getSqlData(sql):  
@@ -47,7 +47,7 @@ def data(limit = '1000'):
 		row.append(float(r[4]))   
 		data.append(row) 
 	# data = json.dumps(results)    
- 	return  data
+	return  data
  
 def dataTrend():  
 	results                       = getSqlData('select time,btc_future_index,btc_this_future_ticker,btc_next_future_ticker,btc_quarter_future_ticker,btc_cny,btc_exchange_rate,btc_usd from btc_trend order by id')  
@@ -84,7 +84,7 @@ def dataTrend():
 		else:
 			row.append(0)
 		data.append(row)   
- 	return  data
+	return  data
  
 
 def getTotal():
@@ -98,5 +98,5 @@ def getTotal():
 	btc_this_future_ticker    = TotalSerialize(getSqlData("SELECT FROM_UNIXTIME(ct,'%Y-%m-%d %H:%i') tct , avg(`value`) 'value'  FROM btc_this_future_ticker  where ct < "+timeEnd+" && ct > "+ timeStart+" GROUP BY tct"))
 	btc_usd                   = TotalSerialize(getSqlData("SELECT FROM_UNIXTIME(ct,'%Y-%m-%d %H:%i') tct , avg(`value`) 'value'  FROM btc_usd  where ct < "+timeEnd+" && ct > "+ timeStart+"  GROUP BY tct")) 
  
- 	result =  [btc,btc_exchange_rate,btc_future_index,btc_next_future_ticker,btc_quarter_future_ticker,btc_this_future_ticker,btc_usd]
- 	return result;
+	result =  [btc,btc_exchange_rate,btc_future_index,btc_next_future_ticker,btc_quarter_future_ticker,btc_this_future_ticker,btc_usd]
+	return result;
