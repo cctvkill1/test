@@ -51,6 +51,7 @@
 <body>
   <div id="map"></div>
   <script type="text/javascript">
+
   var map = new BMap.Map("map", {});                      
   map.centerAndZoom(new BMap.Point(104.06, 30.67), 13);    
   map.enableScrollWheelZoom();                      
@@ -58,12 +59,19 @@
     $.post('/getDataInfo', function (data) {
       data = eval(data)
       var points = [];   
-      for (var i = 0; i < data.length; i++) { 
+      for (var i = 0; i < data.length; i++) {  
+        for (var j = i; j < data.length; j++) {
+          if(data[j][0]==data[i][0]&&data[j][1]==data[i][1]){
+            console.log( parseFloat(data[j][0])  )
+            data[j][0] =  parseFloat(data[j][0]) + (Math.random()/10000)
+            data[j][1] =  parseFloat(data[j][1]) + (Math.random()/10000)
+            // console.log(data[j][0]+'--' +data[j][1] )
+          }
+        };
         var p = new BMap.Point(data[i][0], data[i][1])
         p.title = data[i][2]
         p.info = '单价:'+data[i][3]+' 总价:'+(data[i][4]/10000)+'万 '+data[i][5]+data[i][6]
         points.push(p);
-
       }  
       var pointCollection = new BMap.PointCollection(points);  
       pointCollection.addEventListener('mouseover', function (e) { 
