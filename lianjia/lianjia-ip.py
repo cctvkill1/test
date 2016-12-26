@@ -39,7 +39,7 @@ def getOpener(head):
 # 首先是http://captcha.lianjia.com/ 这个页面 通过http://captcha.lianjia.com/human/ 获取 4张图和uuid 然后uuid写到 form表单里 表单里还有个bitvalue和_csrf
 # _csrf是个验证的随机字符串  bitvalue 是用户选择图片的二进制数字 bitvalue ^= 1 << index;  1<<index 就是1向左移动index位 （1<<1 就是10 十进制是2 1<<2 就是100 十进制4……）
 # 然后bitvalue做位异或运算 （例子：a的值为二进制的1010，b的值为二进制的1100，那么a^b = 0110） 大致效果就是 0000 4位中 选择了的补1  0001 0010 0011……然后转十进制
-# 最后$.post('/human/' 服务器会写好cookie sessionstorage localstorage 再访问其他页面就OK了
+# 最后$.post('/human/' 服务器会写好cookie sessionstorage localstorage 再访问其他页面就OK了 
 # 分析完了 实践部分还没搞
 
 # 下面是cookie 抓取的例子
