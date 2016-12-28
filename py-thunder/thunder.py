@@ -114,6 +114,7 @@ if len(down_movies)>0:
 		copy += m['downurl']+'\n'
 		output.write('{"name":"'+m['name']+'","rating_nums":"'+str(m['rating_nums'])+'"}\n')
 	output.close()
+	
 # linux才可以fork分支
 # pid = os.fork()
 # if pid == 0:
