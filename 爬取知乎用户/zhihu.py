@@ -191,16 +191,16 @@ def spider(turl):
 
 
 
-tot_count = 0
-
-signin_url='http://www.zhihu.com/#signin'
-login_url='http://www.zhihu.com/login/email'
+tot_count   = 0 
+signin_url  = 'http://www.zhihu.com/#signin'
+login_url   = 'http://www.zhihu.com/login/email'
 captcha_url = 'https://www.zhihu.com/captcha.gif'
-gz_url = 'https://www.zhihu.com/node/ProfileFolloweesListV2'
-url = 'https://www.zhihu.com/people/zhang-jia-wei/followees' 
-email = '1097422313@qq.com'
-password = 'mvp511747'
-opener    = get_opener(login_url,email, password)
+gz_url      = 'https://www.zhihu.com/node/ProfileFolloweesListV2'
+url         = 'https://www.zhihu.com/people/zhang-jia-wei/followees' 
+email       = '1097422313@qq.com'
+password    = 'mvp511747'
+opener      = get_opener(login_url,email, password)
+op          = opener.open(url).read()  
 
 # s = requests.Session()
 # response = s.get(signin_url)
