@@ -1,1 +1,9 @@
+{"name":"会计刺客","rating_nums":"7.3"}
+{"name":"血迷宫","rating_nums":"7.9"}
 {"name":"精灵王座","rating_nums":"7.4"}
+{"name":"逗鸟外传：萌宝满","rating_nums":"7.6"}
+{"name":"魔发精灵","rating_nums":"7.6"}
+{"name":"逗鸟外传：萌宝满","rating_nums":"7.6"}
+{"name":"迷失:消失的女人","rating_nums":"8.7"}
+{"name":"怨灵地下室","rating_nums":"8.2"}
+{"name":"海贼王特别篇：黄","rating_nums":"7.3"}
