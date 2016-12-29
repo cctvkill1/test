@@ -73,7 +73,7 @@ def get_user_json(next_url):
                     row.append(u.get('url_token').encode('utf-8'))  
                     r   = insert_data(row)
                     if r:
-                        item_spider = {'url':url%(u.get('urlToken')),'token':u.get('urlToken')}
+                        item_spider = {'url':url%(u.get('url_token')),'token':u.get('url_token')}
                         next_spider.append(item_spider) 
 
         if len(next_spider)>0:
