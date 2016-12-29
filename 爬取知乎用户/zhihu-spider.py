@@ -9,6 +9,7 @@ import sys
 import math
 import random
 import time
+import threading
 
 
 def get_data(_xsrf,captcha):
@@ -54,26 +55,40 @@ def get_mysql_con():
 def get_user_json(next_url):
     global url
     # time.sleep(1)
-    print(next_url)
-    res = s.get(next_url) 
-    data = json.loads(res.text) 
-    next = data.get('paging').get('next')
-    user_list = data.get('data')
-    for u in user_list: 
-        if u.get('name') and u.get('avatar_url') and u.get('url_token'):
-            avatarUrl = u.get('avatar_url') 
-            avatarUrl = avatarUrl.replace('_is','_xl') 
-            if avatarUrl!='https://pic1.zhimg.com/da8e974dc_is.jpg':
-                row = []            
-                row.append(u.get('name').encode('utf-8'))
-                row.append(avatarUrl.encode('utf-8'))
-                row.append(u.get('url_token').encode('utf-8'))  
-                r = insert_data(row)
-                if r:
-                    spider(url%(u.get('url_token')),u.get('url_token'))
-    if next and len(user_list)>0:
-        get_user_json(next)
+    try: 
+        print(next_url)
+        res         = s.get(next_url) 
+        data        = json.loads(res.text) 
+        next        = data.get('paging').get('next')
+        user_list   = data.get('data')
+        next_spider = []
+        for u in user_list: 
+            if u.get('name') and u.get('avatar_url') and u.get('url_token'):
+                avatarUrl = u.get('avatar_url') 
+                avatarUrl = avatarUrl.replace('_is','_xl') 
+                if avatarUrl!='https://pic1.zhimg.com/da8e974dc_is.jpg':
+                    row = []            
+                    row.append(u.get('name').encode('utf-8'))
+                    row.append(avatarUrl.encode('utf-8'))
+                    row.append(u.get('url_token').encode('utf-8'))  
+                    r   = insert_data(row)
+                    if r:
+                        item_spider = {'url':url%(u.get('urlToken')),'token':u.get('urlToken')}
+                        next_spider.append(item_spider) 
+
+        if len(next_spider)>0:
+            for item_spider in next_spider: 
+                t = threading.Thread(target=spider(item_spider['url'],item_spider['token']))
+                t.setDaemon(True)
+                t.start()
+                t.join(30)
+
+        if next and len(user_list)>0:
+            get_user_json(next) 
  
+
+    except Exception as e:
+        print(e)  
 
 def is_exist(sql):
     count   = cursor.execute(sql)   
@@ -102,31 +117,40 @@ def spider(turl,token):
     try:
         print(turl)
         response = s.get(turl)
+        soup     = BeautifulSoup(response.text, "html.parser") 
+        div      = soup.find(id='data')
+        if div:
+            json_data   = json.loads(div['data-state']) 
+            users       = json_data.get('entities').get('users')
+            next_spider = []
+            for u in users:
+                if users[u].get('name') and users[u].get('avatarUrl') and users[u].get('urlToken'):
+                    avatarUrl = users[u].get('avatarUrl') 
+                    if avatarUrl!='https://pic1.zhimg.com/da8e974dc_is.jpg':
+                        avatarUrl = avatarUrl.replace('_is','_xl')  
+                        row       = []
+                        row.append(users[u].get('name').encode('utf-8'))
+                        row.append(avatarUrl.encode('utf-8'))
+                        row.append(users[u].get('urlToken').encode('utf-8')) 
+                        r         = insert_data(row)
+                        if r:
+                            item_spider = {'url':url%(users[u].get('urlToken')),'token':users[u].get('urlToken')}
+                            next_spider.append(item_spider) 
+
+            next = json_data.get('people').get('followersByUser')
+            next_url = next[token].get('next')
+            if next_url: 
+                get_user_json(next_url)  
+
+            if len(next_spider)>0:
+                for item_spider in next_spider: 
+                    t = threading.Thread(target=spider(item_spider['url'],item_spider['token']))
+                    t.setDaemon(True)
+                    t.start()
+                    t.join(30)
+             
     except Exception as e:
         print(e)  
-    soup = BeautifulSoup(response.text, "html.parser") 
-    div = soup.find(id='data')
-    if div:
-        json_data = json.loads(div['data-state']) 
-        users = json_data.get('entities').get('users')
-        for u in users:
-            if users[u].get('name') and users[u].get('avatarUrl') and users[u].get('urlToken'):
-                avatarUrl = users[u].get('avatarUrl') 
-                if avatarUrl!='https://pic1.zhimg.com/da8e974dc_is.jpg':
-                    avatarUrl = avatarUrl.replace('_is','_xl')  
-                    row = []
-                    row.append(users[u].get('name').encode('utf-8'))
-                    row.append(avatarUrl.encode('utf-8'))
-                    row.append(users[u].get('urlToken').encode('utf-8')) 
-                    r = insert_data(row)
-                    if r:
-                        spider(url%(users[u].get('urlToken')),users[u].get('urlToken'))
-
-        next = json_data.get('people').get('followersByUser')
-        next_url = next[token].get('next')
-        if next_url: 
-            get_user_json(next_url)  
-             
 
 
 count       = 0
