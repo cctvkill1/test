@@ -48,35 +48,37 @@
             fData2.push((json[i][3]-json[i][1]).toFixed(4))
             fData3.push((json[i][4]-json[i][1]).toFixed(4)) 
             fData4.push((json[i][5]/json[i][6]-json[i][1]).toFixed(4))
-            fData5.push((json[i][1]-json[i][7]).toFixed(4)) 
-        } 
-        result['date']=fDate
+            fData5.push((json[i][4]-json[i][7]).toFixed(4))
+            fData6.push((json[i][4]-json[i][3]).toFixed(4))
+        }
+        result['date'] = fDate
         result['data'] = []
         result['data'].push(fData1)
         result['data'].push(fData2)
         result['data'].push(fData3)
         result['data'].push(fData4)
         result['data'].push(fData5)
+        result['data'].push(fData6)
         return result
     }  
 
 
     var option = {
-       backgroundColor: '#21202D',
-       title: {
-          text: 'BTC现货期货差值-历史数据',
-          textStyle:{
-            color: '#fff'
-        }
-    },
-    legend: {
-      data: [ '本周vs指数', '次周vs指数' , '季度vs指数','人民币现货/汇率 - 指数','指数-美金现货'],
-      inactiveColor: '#777',
-      textStyle: {
-         color: '#fff'
-     }
- }, 
- tooltip: {
+     backgroundColor: '#21202D',
+     title: {
+      text: 'BTC现货期货差值-历史数据',
+      textStyle:{
+        color: '#fff'
+    }
+},
+legend: {
+  data: [ '本周vs指数', '次周vs指数' , '季度vs指数','人民币现货/汇率 - 指数','季度-美金现货','季度-次周'],
+  inactiveColor: '#777',
+  textStyle: {
+   color: '#fff'
+}
+}, 
+tooltip: {
     trigger: 'axis',
     axisPointer: {
         animation: false,
@@ -198,7 +200,7 @@ markLine : {
 } 
 },
 {
-  name: '指数-美金现货',
+  name: '季度-美金现货',
   type: 'line', 
   showSymbol: false,
   hoverAnimation: false,
@@ -214,6 +216,25 @@ markLine : {
     {type : 'average', name: '平均值'}
     ]
 } 
+},
+{  
+  name: '季度-次周',
+  type: 'line', 
+  showSymbol: false,
+  hoverAnimation: false,
+  data: data[5] ,
+  markPoint : {
+    data : [
+    {type : 'max', name: '最多'},
+    {type : 'min', name: '最少'}
+    ]
+},
+markLine : {
+    data : [
+    {type : 'average', name: '平均值'}
+    ]
+} 
+
 }
 ]
 }; 
@@ -252,6 +273,9 @@ if(!sdate&&!sdata){
             },
             { 
                 data:  data[4]
+            },
+            { 
+                data:  data[5]
             }
             ]
         });
