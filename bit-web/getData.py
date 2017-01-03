@@ -50,9 +50,9 @@ def data(limit = '1000'):
 	return  data
  
 def dataTrend(skip='0',limit = '1000'):   
-	skip                      = str(skip)
-	limit                     = str(limit)
-	results                       = getSqlData('select time,btc_future_index,btc_this_future_ticker,btc_next_future_ticker,btc_quarter_future_ticker,btc_cny,btc_exchange_rate,btc_usd from btc_trend order by id desc limit '+skip+', '+limit)  
+	skip    = str(skip)
+	limit   = str(limit)
+	results = getSqlData('select time,btc_future_index,btc_this_future_ticker,btc_next_future_ticker,btc_quarter_future_ticker,btc_cny,btc_exchange_rate,btc_usd from btc_trend order by id desc limit '+skip+', '+limit)  
 	data    = []
 	for r in results: 
 		row = []
@@ -85,7 +85,8 @@ def dataTrend(skip='0',limit = '1000'):
 			row.append(float(r[7])) 
 		else:
 			row.append(0)
-		data.append(row)   
+		data.append(row)  
+	data.reverse() 
 	return  data
  
 

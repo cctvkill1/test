@@ -6,7 +6,7 @@ import getData as gd
 from flask.ext.cache import Cache
 
 app = Flask(__name__) 
-cache = Cache(app,config={'CACHE_TYPE': 'simple'})
+# cache = Cache(app,config={'CACHE_TYPE': 'simple'})
 
 @app.route('/')
 def index():  
@@ -72,7 +72,7 @@ def getDataBtcTable():
 		
 # btc 一周统计图
 @app.route('/btctt')
-@cache.cached(timeout=600) 
+# @cache.cached(timeout=600) 
 def btctt(): 
 	echart = url_for('static', filename='echarts.min.js')
 	jquery = url_for('static', filename='jquery.min.js') 
@@ -81,7 +81,7 @@ def btctt():
 
 # btc 一周统计图数据
 @app.route('/btcttData')
-@cache.cached(timeout=600) 
+# @cache.cached(timeout=600) 
 def btcttData():  	   
 	result = gd.getTotal() 
 	result = json.dumps(result)   
