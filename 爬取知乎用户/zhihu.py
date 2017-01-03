@@ -13,7 +13,6 @@ import queue
 from multiprocessing.managers import BaseManager
 from multiprocessing import freeze_support
  
-
 task_queue = queue.Queue();
 def gettask():
     return task_queue;
@@ -148,7 +147,6 @@ def spider(token):
         print(e)  
 
 if __name__ == '__main__':
-    
     print('知乎关注用户爬虫开始')
     count       = 0
     signin_url  = 'http://www.zhihu.com/#signin'
