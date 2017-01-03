@@ -152,14 +152,14 @@ def spider(turl,token):
     except Exception as e:
         print(e)  
 
-
+print('知乎关注用户爬虫开始')
 count       = 0
 signin_url  = 'http://www.zhihu.com/#signin'
 login_url   = 'http://www.zhihu.com/login/email'
 captcha_url = 'https://www.zhihu.com/captcha.gif'
 gz_url      = 'https://www.zhihu.com/node/ProfileFolloweesListV2'
 url         = 'https://www.zhihu.com/people/%s/followers'
-token        = 'zhang-jia-wei'
+token       = 'zhang-jia-wei'
 s           = requests.Session() 
 headers     = get_headers()
 s.headers   = headers
