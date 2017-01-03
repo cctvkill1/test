@@ -10,6 +10,7 @@ import math
 import random
 import time
 import threading
+from multiprocessing.dummy import Pool as ThreadPool
 
 
 def get_data(_xsrf,captcha):
@@ -77,11 +78,14 @@ def get_user_json(next_url):
                         next_spider.append(item_spider) 
 
         if len(next_spider)>0:
+            threads = []
             for item_spider in next_spider: 
                 t = threading.Thread(target=spider(item_spider['url'],item_spider['token']))
-                t.setDaemon(True)
+                # t.setDaemon(True)
                 t.start()
-                t.join(30)
+                threads.append(t)
+            for thread in threads:
+                thread.join()   
 
         if next and len(user_list)>0:
             get_user_json(next) 
@@ -112,7 +116,7 @@ def insert_data(row):
         print(e)  
     return False
 
-def spider(turl,token):
+def spider(turl,token,frist = False):
     global url
     try:
         print(turl)
@@ -142,12 +146,21 @@ def spider(turl,token):
             if next_url: 
                 get_user_json(next_url)  
 
+            # if frist and len(next_spider)>0: 
+            #     page_pool = ThreadPool(int(len(next_spider)/2)) 
+            #     page_pool.map_async(spider, (next_spider))
+            #     page_pool.close()
+            #     page_pool.join() 
+            # elif len(next_spider)>0:
             if len(next_spider)>0:
+                threads = []
                 for item_spider in next_spider: 
                     t = threading.Thread(target=spider(item_spider['url'],item_spider['token']))
-                    t.setDaemon(True)
+                    # t.setDaemon(True)
                     t.start()
-                    t.join(30)
+                    threads.append(t) 
+                for thread in threads:
+                    thread.join()   
              
     except Exception as e:
         print(e)  
@@ -187,7 +200,7 @@ s.headers   = headers
 cnx = get_mysql_con()
 cursor = cnx.cursor()    
 
-spider(url%(token),token)
+spider(url%(token),token,True)
 
 cursor.close()
 cnx.close()
