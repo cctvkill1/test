@@ -49,8 +49,10 @@ def data(limit = '1000'):
 	# data = json.dumps(results)    
 	return  data
  
-def dataTrend():  
-	results                       = getSqlData('select time,btc_future_index,btc_this_future_ticker,btc_next_future_ticker,btc_quarter_future_ticker,btc_cny,btc_exchange_rate,btc_usd from btc_trend order by id')  
+def dataTrend(skip='0',limit = '1000'):   
+	skip                      = str(skip)
+	limit                     = str(limit)
+	results                       = getSqlData('select time,btc_future_index,btc_this_future_ticker,btc_next_future_ticker,btc_quarter_future_ticker,btc_cny,btc_exchange_rate,btc_usd from btc_trend order by id desc limit '+skip+', '+limit)  
 	data    = []
 	for r in results: 
 		row = []

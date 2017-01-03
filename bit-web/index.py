@@ -32,8 +32,15 @@ def trend():
 	return render_template('trend.html', echart=echart,jquery=jquery)
  
 @app.route('/getTrendData')
-def getTrendData(): 	  	   
-	result = gd.dataTrend() 
+def getTrendData(): 	 
+	skip = request.args.get('page') 
+	if not skip: 
+		skip = '1'
+	limit = request.args.get('limit');
+	if not limit: 	   
+		limit = '1000'
+	skip = str((int(skip)-1)*int(limit))
+	result = gd.dataTrend(skip,limit) 
 	result = json.dumps(result)  
 	return result
  
