@@ -1,0 +1,83 @@
+[
+    {
+        "name": "workerman/workerman-for-win",
+        "version": "v3.3.9",
+        "version_normalized": "3.3.9.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/walkor/workerman-for-win.git",
+            "reference": "e0fb4694988c57d199e15ac08428b8ff3f04de9b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/walkor/workerman-for-win/zipball/e0fb4694988c57d199e15ac08428b8ff3f04de9b",
+            "reference": "e0fb4694988c57d199e15ac08428b8ff3f04de9b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3"
+        },
+        "time": "2017-02-15 03:00:56",
+        "type": "project",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Workerman\\": "./"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "walkor",
+                "email": "walkor@workerman.net",
+                "homepage": "http://www.workerman.net",
+                "role": "Developer"
+            }
+        ],
+        "description": "An asynchronous event driven PHP framework for easily building fast, scalable network applications.",
+        "homepage": "http://www.workerman.net",
+        "keywords": [
+            "asynchronous",
+            "event-loop"
+        ]
+    },
+    {
+        "name": "workerman/gateway-worker-for-win",
+        "version": "v3.0.1",
+        "version_normalized": "3.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/walkor/GatewayWorker-for-win.git",
+            "reference": "d5f38b6fc1af8780a9ebf64ee0eb85a21197acfc"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/walkor/GatewayWorker-for-win/zipball/d5f38b6fc1af8780a9ebf64ee0eb85a21197acfc",
+            "reference": "d5f38b6fc1af8780a9ebf64ee0eb85a21197acfc",
+            "shasum": ""
+        },
+        "require": {
+            "workerman/workerman-for-win": ">=3.1.8"
+        },
+        "time": "2017-01-13 09:33:01",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "GatewayWorker\\": "./src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "homepage": "http://www.workerman.net",
+        "keywords": [
+            "communication",
+            "distributed"
+        ]
+    }
+]

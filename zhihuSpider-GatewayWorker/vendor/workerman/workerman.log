@@ -1,0 +1,34 @@
+2017-03-01 17:26:20 Gateway: Worker->name conflict. Key:192.168.31.149:YourAppBusinessWorker:0
+2017-03-01 17:26:21 Gateway: Worker->name conflict. Key:192.168.31.149:YourAppBusinessWorker:0
+2017-03-01 17:26:22 Gateway: Worker->name conflict. Key:192.168.31.149:YourAppBusinessWorker:0
+2017-03-01 17:26:23 Gateway: Worker->name conflict. Key:192.168.31.149:YourAppBusinessWorker:0
+2017-03-01 17:26:24 Gateway: Worker->name conflict. Key:192.168.31.149:YourAppBusinessWorker:0
+2017-03-01 17:26:25 Gateway: Worker->name conflict. Key:192.168.31.149:YourAppBusinessWorker:0
+2017-03-01 17:26:26 Gateway: Worker->name conflict. Key:192.168.31.149:YourAppBusinessWorker:0
+2017-03-01 17:26:27 Gateway: Worker->name conflict. Key:192.168.31.149:YourAppBusinessWorker:0
+2017-03-01 17:26:28 Gateway: Worker->name conflict. Key:192.168.31.149:YourAppBusinessWorker:0
+2017-03-01 17:26:29 Gateway: Worker->name conflict. Key:192.168.31.149:YourAppBusinessWorker:0
+2017-03-01 17:26:30 Gateway: Worker->name conflict. Key:192.168.31.149:YourAppBusinessWorker:0
+2017-03-01 17:26:31 Gateway: Worker->name conflict. Key:192.168.31.149:YourAppBusinessWorker:0
+2017-03-01 17:26:32 Gateway: Worker->name conflict. Key:192.168.31.149:YourAppBusinessWorker:0
+2017-03-02 11:36:55 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2017-03-02 11:36:55 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2017-03-02 14:34:45 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2017-03-02 14:34:45 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2017-03-02 14:47:43 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2017-03-02 14:47:43 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2017-03-02 14:49:36 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2017-03-02 14:49:36 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
+2017-03-07 15:20:37 Gateway: Worker->name conflict. Key:192.168.31.149:BusinessWorker2:0
+2017-03-07 15:20:37 Gateway: Worker->name conflict. Key:127.0.0.1:BusinessWorker2:0
+2017-03-07 15:20:38 Gateway: Worker->name conflict. Key:192.168.31.149:BusinessWorker2:0
+2017-03-07 15:20:38 Gateway: Worker->name conflict. Key:127.0.0.1:BusinessWorker2:0
+2017-03-07 15:20:39 Gateway: Worker->name conflict. Key:192.168.31.149:BusinessWorker2:0
+2017-03-07 15:20:39 Gateway: Worker->name conflict. Key:127.0.0.1:BusinessWorker2:0
+2017-03-07 15:20:40 Gateway: Worker->name conflict. Key:192.168.31.149:BusinessWorker2:0
+2017-03-07 15:20:40 Gateway: Worker->name conflict. Key:127.0.0.1:BusinessWorker2:0
+2017-03-07 15:20:41 Gateway: Worker->name conflict. Key:192.168.31.149:BusinessWorker2:0
+2017-03-07 15:20:41 Gateway: Worker->name conflict. Key:127.0.0.1:BusinessWorker2:0
+2017-03-07 15:20:42 Gateway: Worker->name conflict. Key:192.168.31.149:BusinessWorker2:0
+2017-03-07 15:20:42 Gateway: Worker->name conflict. Key:127.0.0.1:BusinessWorker2:0
+2017-03-07 15:22:05 SendBufferToWorker fail. The connections between Gateway and BusinessWorker are not ready. See http://wiki.workerman.net/Error3 for detail
