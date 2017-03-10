@@ -23,12 +23,11 @@
  */ 
 // declare(ticks=1);
 
-use \GatewayWorker\Lib\Gateway;
-use \GatewayWorker\Common\Functions;
-use \GatewayWorker\Common\ZhihuSpider;
+use \Common\ZhihuSpider;
+use \Common\Functions;
+use \GatewayWorker\Lib\Gateway;   
 
-// 自动加载类
-// require_once __DIR__ . '/../../vendor/autoload.php';
+
 
 /**
  * 主逻辑
@@ -37,6 +36,14 @@ use \GatewayWorker\Common\ZhihuSpider;
  */
 class Events
 {
+
+  public static function onWorkerStart($worker)
+  {
+    ZhihuSpider::$pdo = new PDO("mysql:host=localhost;dbname=spider","root","cctv"); 
+    ZhihuSpider::$pdo -> exec("SET NAMES 'utf8';"); 
+    ZhihuSpider::$ip   = "192.168.31.199"; 
+    ZhihuSpider::$port = "7273"; 
+  }
 
     /**
      * 当客户端连接时触发
@@ -47,9 +54,9 @@ class Events
     public static function onConnect($client_id)
     {
         // 向当前client_id发送数据 
-      Gateway::sendToClient($client_id, "Hello $client_id\r\n");
+      Gateway::sendToClient($client_id, "Hello $client_id".PHP_EOL);
         // 向所有人发送
-      Gateway::sendToAll("$client_id login\r\n");
+      Gateway::sendToAll("$client_id login".PHP_EOL);
     }
     
    /**
@@ -60,13 +67,12 @@ class Events
    public static function onMessage($client_id, $message)
    {
     $req_data = json_decode($message, true);
-    echo Functions::udate('H:i:s.u')."---".$message."\r\n";
+    // echo PHP_EOL.Functions::udate('H:i:s.u')."---".$message.PHP_EOL;
     if($req_data['type']=='getUserFollow'){
-       ZhihuSpider::getUserFollow($req_data['username'],intval($req_data['page']));
+      ZhihuSpider::getUserFollow($req_data['username'],intval($req_data['page']));
     } 
 
   }
-
 
    /**
     * 当用户断开连接时触发

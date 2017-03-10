@@ -1,5 +1,5 @@
 <?php  
-namespace GatewayWorker\Common;
+namespace Common;
 
 class Functions
 {

@@ -1,19 +1,32 @@
 <?php
-namespace GatewayWorker\Common;   
+namespace Common;   
+use \Common\Functions;
 
 class ZhihuSpider{
 
+	public static $pdo = null; 
+	public static $ip  = null; 
+	public static $port = null; 
+	public static $i = 1; 
+
+
 	//获取关注者列表
 	public static  function getUserFollow($username,$page=1){
-		echo $username.PHP_EOL; 
 		if(!$username)
-			return ;   
-		// $result =  \Spider\Cache\Db::query(' SELECT users.id,users.username,users.avatar,users.gender,users.`key` FROM users WHERE users.username = "test" ;');
-		// var_dump($result);
-		// exit;
-		
+			return ;    
+		//test
+		$max = self::$i+10;
+		for (; self::$i < $max; self::$i++) { 
+			$arr = array('type'=>'getUserFollow','username'=>self::$i,'page'=>self::$i); 			
+			echo Functions::udate('H:i:s.u')."---". json_encode($arr).PHP_EOL;
+			$client = stream_socket_client('tcp://'.self::$ip.':'.self::$port); 
+			fwrite($client, json_encode($arr)."\n"); 
+		}
+		return;
+		$result = self::$pdo -> query('select * from users where username="'.$username.'"');   
+		if($result -> fetch()) 
+			return;
 		$url = "http://www.zhihu.com/people/{$username}/following?page={$page}"; 
-		// echo $url.PHP_EOL;   
 		$res = self::curlGet($url);
 		//第一页
 		$userInfo = self::getUserInfo($res);
@@ -26,13 +39,13 @@ class ZhihuSpider{
 			$totals    = intval($_data['people']['followingByUser'][$username]['totals']);
 			$totalPage = $totals%20==0?intval($totals/20):intval($totals/20)+1;
 			//第二页到最后一页
-			for ($i=1; $i < $totalPage; $i++) {
-				//workerman 异步处理
-				$page++;  
-				$arr = array('type'=>'getUserFollow','username'=>$username,'page'=>$page); 
-				echo json_encode($arr);
-				// $client = stream_socket_client('tcp://192.168.31.149:7273'); 
-				// fwrite($client, json_encode($arr)."\n");  
+			for ($i=2; $i < $totalPage; $i++) {
+				//workerman 异步处理 
+				$arr = array('type'=>'getUserFollow','username'=>$username,'page'=>$i); 
+				// echo Functions::udate('H:i:s.u')."---". json_encode($arr).PHP_EOL;
+				$client = stream_socket_client('tcp://'.self::$ip.':'.self::$port); 
+				fwrite($client, json_encode($arr)."\n"); 
+
 			} 
 		}
 	}
@@ -68,17 +81,18 @@ class ZhihuSpider{
 			$avatarUrl       = str_replace('_is', '_xl', $value['avatarUrl']); 
 			$row             = array();
 			$row['key']      = $key;
-			$row['username'] = $value['name'];
+			$row['username'] = $value['name']; 
 			$row['gender']   = intval($value['gender']);
 			$row['avatar']   = $avatarUrl;
 			//插入数据库
-			$data[]          = $row;
-			// var_dump($row);
+			// $data[]          = $row; 
+			if(self::$pdo -> exec("insert into users(username,`key`,gender,avatar) values('".$row['username']."','".$row['key']."',".$row['gender'].",'".$row['avatar'] ."')"))  
+				echo   Functions::udate('H:i:s.u')."---".$row['key']." insert successful".PHP_EOL; 
 			//查这个关注者 workerman 异步处理
 			$arr = array('type'=>'getUserFollow','username'=>$key,'page'=>1); 
-			echo json_encode($arr);
-			// $client = stream_socket_client('tcp://192.168.31.149:7273'); 
-			// fwrite($client, json_encode($arr)."\n"); 
+			// echo Functions::udate('H:i:s.u')."---". json_encode($arr).PHP_EOL;
+			$client = stream_socket_client('tcp://'.self::$ip.':'.self::$port); 
+			fwrite($client, json_encode($arr)."\n"); 
 		} 
 		return $data;
 	}
