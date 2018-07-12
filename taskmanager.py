@@ -6,7 +6,7 @@ from multiprocessing.managers import BaseManager
 from multiprocessing import freeze_support
 
 #任务个数
-task_number = 10;
+task_number = 100;
 
 #定义收发队列
 task_queue = queue.Queue(task_number);

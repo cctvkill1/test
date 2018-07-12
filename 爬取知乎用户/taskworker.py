@@ -21,7 +21,7 @@ def test():
         url = task.get(timeout=1); 
         print('run task %s...' % (url)) 
 
-        # time.sleep(1)
+        time.sleep(1)
 
     print('work over')
 

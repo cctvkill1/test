@@ -47,7 +47,7 @@
             fData1.push((json[i][2]-json[i][1]).toFixed(4))
             fData2.push((json[i][3]-json[i][1]).toFixed(4))
             fData3.push((json[i][4]-json[i][1]).toFixed(4)) 
-            fData4.push((json[i][5]/json[i][6]-json[i][1]).toFixed(4))
+            fData4.push((json[i][4]-json[i][5]/json[i][6]).toFixed(4))
             fData5.push((json[i][4]-json[i][7]).toFixed(4))
             fData6.push((json[i][4]-json[i][3]).toFixed(4))
         }
@@ -72,7 +72,7 @@
     }
 },
 legend: {
-  data: [ '本周vs指数', '次周vs指数' , '季度vs指数','人民币现货/汇率 - 指数','季度-美金现货','季度-次周'],
+  data: [ '本周vs指数', '次周vs指数' , '季度vs指数','季度期货-人民币现价/汇率','季度-美金现货','季度-次周'],
   inactiveColor: '#777',
   textStyle: {
    color: '#fff'
@@ -182,7 +182,7 @@ markLine : {
 } 
 },
 {
-  name: '人民币现货/汇率 - 指数',
+  name: '季度期货-人民币现价/汇率',
   type: 'line', 
   showSymbol: false,
   hoverAnimation: false,

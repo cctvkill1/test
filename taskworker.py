@@ -23,7 +23,7 @@ def test():
         n = task.get(timeout=1); 
         print('run task %d * %d...' % (n, n))
         r = '%d * %d = %d' % (n, n, n*n)  
-        # time.sleep(1)
+        # time.sleep(0.1)
         result.put(r) 
 
     print('work over')

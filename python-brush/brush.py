@@ -13,8 +13,7 @@ from multiprocessing.dummy import Pool as ThreadPool
 captcha_url = 'http://v5.10brandchina.com/api/captchar.vote.png.php?authType=5&rnd=40467543901241&id=54390&outb=0'
 vote_url = 'http://v4.10brandchina.com/api/captcha.check.2.php?captcha=%s&rnd=40467543901241&authType=5&id=54390'
 s           = requests.Session() 
-
-# 根本不需要登录 擦擦擦浪费时间 
+ 
 r = s.get(captcha_url)
 open('captcha.jpg','wb').write(r.content) 
 im=Image.open('captcha.jpg')
