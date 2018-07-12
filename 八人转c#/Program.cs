@@ -26,7 +26,7 @@ namespace BaRenZhuan
             1 7 2 8 3 6 4 5
             1 8 3 5 2 7 4 6 
             */
-
+            //验证正确否
             //BaRenZhuan1._result.Add(new int[] { 2, 3, 6, 8, 1, 4, 5, 7 });
             //BaRenZhuan1._result.Add(new int[] { 2, 4, 5, 8, 1, 3, 6, 7 });
             //BaRenZhuan1._result.Add(new int[] { 2, 6, 1, 5, 4, 7, 3, 8 });
