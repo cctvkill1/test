@@ -1,4 +1,4 @@
- <?php
+ <?php 
  set_time_limit(1800);
  function rand_ip(){
   $ip_long = array(
@@ -22,11 +22,7 @@
   $huoduan_ip= long2ip(mt_rand($ip_long[$rand_key][0], $ip_long[$rand_key][1]));
   return $huoduan_ip;
 }
-function brush($ip,$proxy){  
-  $key = '0eSGb-48475';
-  $arr = explode(":",$proxy);
-  $proxyIp = $arr[0];
-  $proxyProt  = $arr[1]; 
+function brush($ip,$proxy){    
   $header = array(
     "Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
     // "Accept-Encoding:gzip, deflate, sdch",
@@ -38,13 +34,13 @@ function brush($ip,$proxy){
     "CLIENT-IP:".$ip,
     "X-FORWARDED-FOR:".$ip
     );
- // var_dump($header);exit;
-  ob_start();
+ // var_dump($header);exit; 
   $ch = curl_init(); 
-  curl_setopt($ch,CURLOPT_URL, "http://115.28.115.64/s/".$key);
-  curl_setopt($ch,CURLOPT_REFERER, "http://115.28.115.64");  
+  $rnd = mt_rand(0,999999)/1000000; 
+  curl_setopt($ch,CURLOPT_URL, "http://v2.10brandchina.com/api/weixin/sdk.php?url=http://m.10brandchina.com/vote/startin.php?id=40467~rnd=".$rnd);
+  // curl_setopt($ch,CURLOPT_REFERER, "http://123.57.242.67");  
   curl_setopt($ch,CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
-  curl_setopt($ch,CURLOPT_PROXY, $proxy);  
+  // curl_setopt($ch,CURLOPT_PROXY, $proxy);  
   curl_setopt($ch,CURLOPT_HEADER, 1);   
   curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
   // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);  
@@ -58,17 +54,19 @@ function brush($ip,$proxy){
   curl_close ($ch); 
 }
  
-for ($i=0; $i <1 ; $i++) {  
+for ($i=0; $i <100 ; $i++) {  
  $ip  = rand_ip();  
- $handle = @fopen("proxy.txt", "r");
-if ($handle) {
-    while (!feof($handle)) {
-        $proxy = fgets($handle, 4096);
-        // echo $proxy.'<br>';
-        brush($ip,$proxy); 
-    }
-    fclose($handle);
-}
+        echo $ip.PHP_EOL;
+        brush($ip,null); 
+//  $handle = @fopen("proxy.txt", "r");
+// if ($handle) {
+//     while (!feof($handle)) {
+//         $proxy = fgets($handle, 4096);
+//         // echo $proxy.'<br>';
+//         brush($ip,$proxy); 
+//     }
+//     fclose($handle);
+// }
  // usleep(10000);   
  // sleep(1);
 }
