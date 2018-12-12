@@ -61,12 +61,20 @@ def handle(row):
 
 if __name__ == '__main__':
     print('开始值班表处理……')
-    rootdir = os.getcwd()
-    list = os.listdir(rootdir) 
-    for i in range(0,len(list)):
-           path = os.path.join(rootdir,list[i])
-           if os.path.isfile(path):
-                print(path)
+    
+    data = xlrd.open_workbook('储气库管理处值班人员信息.xls')
+    table = data.sheets()[0]   
+    nrows = table.nrows 
+    for i in range(2,nrows):
+        row = table.row_values(i)
+        print(row)
+    # rootdir = os.getcwd()
+    # list = os.listdir(rootdir) 
+    # for i in range(0,len(list)):
+    #        path = os.path.join(rootdir,list[i])
+    #        if os.path.isfile(path):
+    #             print(path)
+
     # workbook = xlwt.Workbook(encoding = 'ascii')
     # worksheet = workbook.add_sheet('Sheet1')
     # title = ['日    期','带班领导干部','联系方式','靖边值班人员','联系方式','银川值班人员','联系方式']

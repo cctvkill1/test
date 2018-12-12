@@ -20,6 +20,12 @@ def _init():
     _global_dict = {}
     _global_dict['count'] = 0 
     _global_dict['start_time'] = time.time() 
+    _global_dict['begin_flag_file_name'] = 'begin_flag.txt'
+    _global_dict['file_name_list'] = 'duowan_list.txt'
+    _global_dict['duowan_path'] = './download/'
+    _global_dict['write_obj'] = [] 
+    if not os.path.exists(_global_dict['duowan_path']):
+        os.mkdir(_global_dict['duowan_path'])
 
 def set_value(name, value):
     _global_dict[name] = value
@@ -31,54 +37,96 @@ def get_value(name, defValue=None):
         return defValue
         
 def getBeginStr():    
-    f = open('begin_flag.txt', 'r')
-    begin_str = f.read().split('：')[0]
+    global _global_dict  
+    f = open(_global_dict['begin_flag_file_name'], 'r+')
+    begin_str = f.read()
+    f.close()
     return begin_str
 
+def setBeginStr(flag):    
+    global _global_dict  
+    f = open(_global_dict['begin_flag_file_name'], 'w+')
+    f.write(flag)
+    f.close()
+
 def run(): 
-    global _global_dict    
+    global _global_dict 
     begin_str = getBeginStr()
-    print('http://tu.duowan.com/tu 从主页开始抓取')
-    image_items = []
-    url_index = 'http://tu.duowan.com/tu'
-    prog_index = r'<em><a href="(.*)" target="_blank">(.*)</a>'
-    data = urllib2.urlopen(url_index).read()
-    print('获取网页成功') 
-    data = data.decode('utf-8')
-    index_items = re.findall(prog_index, data)  
-    # pool = multiprocessing.Pool(5)
-    for i,item in enumerate(index_items): 
-        if begin_str in item[1]:
-            break
-        else:
-            id = re.sub(r'\D', "", item[0])
-            image_items.append(id)
-            getImageUrl(id)
-    #         pool.apply_async(getImageUrl, (id))
-    # print(image_items)
-    # pool.close()
-    # pool.join() 
-    clear_file()
-    print ('*'*20+"抓取完成共耗时%.3fs" % (time.time() - _global_dict['start_time']))
-    print ('*'*20+"共抓取%d个文件" %_global_dict['count']) 
+    print(begin_str)
+    try: 
+        print('http://tu.duowan.com/tu 从主页开始抓取')
+        image_items = []
+        url_index = 'http://tu.duowan.com/tu'
+        prog_index = r'<em><a href="(.*)" target="_blank">(.*)</a>'
+        data = urllib2.urlopen(url_index).read()
+        data = data.decode('utf-8')
+        index_items = re.findall(prog_index, data)  
+        flag = ''
+        print('获取网页成功')
+        
+        for i,item in enumerate(index_items): 
+            if i== 0 and begin_str and begin_str in item[1] :                                
+                return 
+            else: 
+                f = open(_global_dict['file_name_list'],'w+') 
+                f.close()
+        
+        # print(index_items)
+        # pool = multiprocessing.Pool(5)
+        for i,item in enumerate(index_items): 
+            if i==0:
+                flag = item[1]
+            if begin_str and begin_str in item[1]:
+                break
+            else:
+                id = re.sub(r'\D', "", item[0])
+                image_items.append(id)
+                getImageUrl(id) 
+        #         pool.apply_async(getImageUrl, (id))
+        # print(image_items)
+        # pool.close()
+        # pool.join()  
+        f.close()
+        setBeginStr(flag)
+        clear_file()
+        f = open(_global_dict['file_name_list'],'a+',encoding='utf-8')
+        f.writelines(json.dumps(_global_dict['write_obj']))
+        print ('*'*20+"抓取完成共耗时%.3fs" % (time.time() - _global_dict['start_time']))
+        print ('*'*20+"共抓取%d个文件" %_global_dict['count']) 
+    except Exception as err:
+        print(err)
 
 def getImageUrl(id):
-    url = 'http://tu.duowan.com/index.php?r=show/getByGallery/&gid='+id
-    print('---从%s 抓取图片'%url)
-    data = urllib2.urlopen(url).read()
-    json_data = json.loads(data)
-    # print(json_data['picInfo'][0]['source'])
-    for item in json_data['picInfo']:
-        if not item['source'].startswith('http:'):
-            item['source']= 'http:'+item['source']
-        download_image(item['source'],'./download/'+item['source'].split('/')[-1])
+    global _global_dict   
+    try:
+        url = 'http://tu.duowan.com/index.php?r=show/getByGallery/&gid='+id
+        print('---从%s 抓取图片'%url)
+        data = urllib2.urlopen(url).read()
+        data = data.decode('utf-8')
+        json_data = json.loads(data)
+        # print(json_data['picInfo'][0]['source'])
+        file_names = []
+        for index,item in enumerate(json_data['picInfo']):
+            if not item['source'].startswith('http:'):
+                item['source']= 'http:'+item['source']
+            file_name = _global_dict['duowan_path']+item['source'].split('/')[-1]
+            _global_dict['write_obj'].append({'title':'第%s个'%str(index+1)+"  "+item['add_intro'],'file_name':file_name})
+            file_names.append([item['source'],file_name])
+        for file_name in file_names:
+            download_file(file_name[0],file_name[1])
+    except Exception as err:
+        print(err)
+        f.close() 
 
-def download_image(image, store_file):
-    if not os.path.exists(store_file):
-        print('----%s start download----'%image)
-        urllib2.urlretrieve(image, store_file, call_back)
-    else:
-        print('file is exists')
+def download_file(image, store_file):
+    try: 
+        if not os.path.exists(store_file):
+            print('----%s start download----'%image)
+            urllib2.urlretrieve(image, store_file, call_back)
+        else:
+            print('file is exists')
+    except Exception as err:
+        print(err)
  
 
 def call_back(a, b, c):
@@ -91,28 +139,23 @@ def call_back(a, b, c):
         print ('----file download finish!----')        
         _global_dict['count'] += 1
 
+# 清理老文件 大文件（发gif图不能大于6M 发视频不能大于10M）
 def clear_file():
     global _global_dict
-    rootdir = './download/'
-    types = ['.jpg','.jpeg','.gif','.mp4'] 
-    file_list = os.listdir(rootdir) #列出文件夹下所有的目录与文件
-    for i in range(0,len(file_list)):
-        path = os.path.join(rootdir,file_list[i])
-        if os.path.isfile(path):
-            filename,filetype = os.path.splitext(path) 
-            t = os.path.getctime(path)
-            fsize = os.path.getsize(path)
-            fsize = round(fsize/float(1024*1024) ,2)
-            if filetype not in types or fsize>6:
-                os.remove(path)
-                print(filename+filetype+'   '+str(fsize))
-            elif t<_global_dict['start_time']-3600:
-                os.remove(path)
+    for i,item in enumerate(_global_dict['write_obj']):
+        path = item['file_name']
+        t = os.path.getctime(path)
+        fsize = os.path.getsize(path)
+        fsize = round(fsize/float(1024*1024) ,2)
+        if fsize<6 and t>_global_dict['start_time']-80000:
+            pass
+        else:
+            print('删除文件 %s'%path)
+            os.remove(path)
+            del _global_dict['write_obj'][i]
 
 if __name__ == '__main__': 
     _init()
     run()    
-
-                
 
             
