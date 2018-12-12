@@ -39,30 +39,31 @@ def run():
     global _global_dict
     try:
         date = time.strftime('%Y-%m-%d',time.localtime(time.time()))
-        url = 'http://kuaiyinshi.com/api/hot/videos/?source=dou-yin&page=1&st=week'
-        print('---获取快音视API:%s '%url)
-        data = urllib2.urlopen(url).read()
-        # data = data.decode('utf-8')
-        json_data = json.loads(data) 
         file_names = []
-        for index,item in enumerate(json_data['data']):
-            if not item['video_url'].startswith('http:'):
-                item['video_url']= 'http:'+item['video_url']
-            print(str(index+1)+"  "+item['desc']+"  "+item['video_url']) 
-            # 这里有个问题 抖音的视频源地址是amemv.com的 然后302到西瓜视频源 利用requests返回Location解决问题 一定要User-Agent
-            headers = {'Accept':     'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'Accept-Encoding': 'gzip, deflate, sdch, br',
-                'Accept-Language': 'zh-CN,zh;q=0.8',
-                'Connection': 'keep-alive',
-                'Host': 'api.amemv.com',
-                'Upgrade-Insecure-Requests': '1',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'}
-    
-            html = requests.get(item['video_url'], headers=headers, allow_redirects=False)
-            mp4url = html.headers['Location'] 
-            file_name = _global_dict['duowan_path']+date+' '+str(index+1)+'.mp4'
-            _global_dict['file_list'].append({'title':item['desc'],'file_name':file_name})
-            file_names.append([mp4url,file_name])
+        for num in range(1,3):
+            url = 'http://kuaiyinshi.com/api/hot/videos/?source=dou-yin&page=%s&st=week'%num
+            print('---获取快音视API:%s '%url)
+            data = urllib2.urlopen(url).read()
+            # data = data.decode('utf-8')
+            json_data = json.loads(data) 
+            for index,item in enumerate(json_data['data']):
+                if not item['video_url'].startswith('http:'):
+                    item['video_url']= 'http:'+item['video_url']
+                print(str(index+1+(num-1)*20)+"  "+item['desc']+"  "+item['video_url']) 
+                # 这里有个问题 抖音的视频源地址是amemv.com的 然后302到西瓜视频源 利用requests返回Location解决问题 一定要User-Agent
+                headers = {'Accept':     'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                    'Accept-Encoding': 'gzip, deflate, sdch, br',
+                    'Accept-Language': 'zh-CN,zh;q=0.8',
+                    'Connection': 'keep-alive',
+                    'Host': 'api.amemv.com',
+                    'Upgrade-Insecure-Requests': '1',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'}
+        
+                html = requests.get(item['video_url'], headers=headers, allow_redirects=False)
+                mp4url = html.headers['Location'] 
+                file_name = _global_dict['duowan_path']+date+' '+str(index+1+(num-1)*20)+'.mp4'
+                _global_dict['file_list'].append({'title':item['desc'],'file_name':file_name})
+                file_names.append([mp4url,file_name])
         for file_name in file_names:
             download_file(file_name[0],file_name[1])
         clear_file()
@@ -111,7 +112,7 @@ def clear_file():
 
 if __name__ == '__main__': 
     _init()
-    run()    
+    run()   
                 
 
             
