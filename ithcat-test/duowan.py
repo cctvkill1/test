@@ -67,7 +67,9 @@ def run():
         for i,item in enumerate(index_items): 
             if i==0:
                 flag = item[1]
-            if begin_str and begin_str in item[1]:
+            if i>=5:
+                break
+            elif begin_str and begin_str in item[1]:
                 break
             else:
                 id = re.sub(r'\D', "", item[0])
