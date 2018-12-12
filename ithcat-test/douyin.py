@@ -21,8 +21,7 @@ def _init():
     _global_dict['count'] = 0 
     _global_dict['start_time'] = time.time()
     _global_dict['duowan_path'] = './download/'
-    _global_dict['write_obj'] = []
-        
+    _global_dict['file_list'] = []
     if not os.path.exists(_global_dict['duowan_path']):
         os.mkdir(_global_dict['duowan_path'])
   
@@ -36,11 +35,6 @@ def get_value(name, defValue=None):
     except KeyError:
         return defValue
 
-def getBeginStr():    
-    f = open('begin_flag.txt', 'r')
-    begin_str = f.read().split('：')[0]
-    return begin_str
-    
 def run():
     global _global_dict
     try:
@@ -67,7 +61,7 @@ def run():
             html = requests.get(item['video_url'], headers=headers, allow_redirects=False)
             mp4url = html.headers['Location'] 
             file_name = _global_dict['duowan_path']+date+' '+str(index+1)+'.mp4'
-            _global_dict['write_obj'].append({'title':'第%s名'%str(index+1)+"  "+item['desc'],'file_name':file_name})
+            _global_dict['file_list'].append({'title':item['desc'],'file_name':file_name})
             file_names.append([mp4url,file_name])
         for file_name in file_names:
             download_file(file_name[0],file_name[1])
@@ -102,7 +96,7 @@ def call_back(a, b, c):
 # 清理老文件 大文件（发gif图不能大于6M 发视频不能大于10M）
 def clear_file():
     global _global_dict
-    for i,item in enumerate(_global_dict['write_obj']):
+    for i,item in enumerate(_global_dict['file_list']):
         path = item['file_name']
         t = os.path.getctime(path)
         fsize = os.path.getsize(path)
@@ -112,8 +106,8 @@ def clear_file():
         else:
             print('删除文件 %s'%path)
             os.remove(path)
-            del _global_dict['write_obj'][i]
-    # print(_global_dict['write_obj'])
+            del _global_dict['file_list'][i]
+    # print(_global_dict['file_list'])
 
 if __name__ == '__main__': 
     _init()

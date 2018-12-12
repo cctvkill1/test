@@ -21,9 +21,8 @@ def _init():
     _global_dict['count'] = 0 
     _global_dict['start_time'] = time.time() 
     _global_dict['begin_flag_file_name'] = 'begin_flag.txt'
-    _global_dict['file_name_list'] = 'duowan_list.txt'
     _global_dict['duowan_path'] = './download/'
-    _global_dict['write_obj'] = [] 
+    _global_dict['file_list'] = [] 
     if not os.path.exists(_global_dict['duowan_path']):
         os.mkdir(_global_dict['duowan_path'])
 
@@ -63,14 +62,6 @@ def run():
         index_items = re.findall(prog_index, data)  
         flag = ''
         print('获取网页成功')
-        
-        for i,item in enumerate(index_items): 
-            if i== 0 and begin_str and begin_str in item[1] :                                
-                return 
-            else: 
-                f = open(_global_dict['file_name_list'],'w+') 
-                f.close()
-        
         # print(index_items)
         # pool = multiprocessing.Pool(5)
         for i,item in enumerate(index_items): 
@@ -86,11 +77,8 @@ def run():
         # print(image_items)
         # pool.close()
         # pool.join()  
-        f.close()
         setBeginStr(flag)
         clear_file()
-        f = open(_global_dict['file_name_list'],'a+',encoding='utf-8')
-        f.writelines(json.dumps(_global_dict['write_obj']))
         print ('*'*20+"抓取完成共耗时%.3fs" % (time.time() - _global_dict['start_time']))
         print ('*'*20+"共抓取%d个文件" %_global_dict['count']) 
     except Exception as err:
@@ -110,13 +98,12 @@ def getImageUrl(id):
             if not item['source'].startswith('http:'):
                 item['source']= 'http:'+item['source']
             file_name = _global_dict['duowan_path']+item['source'].split('/')[-1]
-            _global_dict['write_obj'].append({'title':'第%s个'%str(index+1)+"  "+item['add_intro'],'file_name':file_name})
+            _global_dict['file_list'].append({'title':item['add_intro'],'file_name':file_name})
             file_names.append([item['source'],file_name])
         for file_name in file_names:
             download_file(file_name[0],file_name[1])
     except Exception as err:
         print(err)
-        f.close() 
 
 def download_file(image, store_file):
     try: 
@@ -142,7 +129,7 @@ def call_back(a, b, c):
 # 清理老文件 大文件（发gif图不能大于6M 发视频不能大于10M）
 def clear_file():
     global _global_dict
-    for i,item in enumerate(_global_dict['write_obj']):
+    for i,item in enumerate(_global_dict['file_list']):
         path = item['file_name']
         t = os.path.getctime(path)
         fsize = os.path.getsize(path)
@@ -152,7 +139,8 @@ def clear_file():
         else:
             print('删除文件 %s'%path)
             os.remove(path)
-            del _global_dict['write_obj'][i]
+            del _global_dict['file_list'][i]
+    print('---清理完成')
 
 if __name__ == '__main__': 
     _init()
