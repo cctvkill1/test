@@ -64,17 +64,26 @@ def run():
         # print('获取网页成功')
         # print(index_items)
         # pool = multiprocessing.Pool(5)
+        title_filter = ['爆笑视频','吐槽囧图','全球搞笑']
+        num = 0 
         for i,item in enumerate(index_items): 
+            title_flag = False
+            for title in title_filter:
+                if title in item[1]:
+                    title_flag = True
+            if not title_flag:
+                continue                
             if i==0:
                 flag = item[1]
-            if i>=5:
+            if num>4:
                 break
             elif begin_str and begin_str in item[1]:
                 break
             else:
                 id = re.sub(r'\D', "", item[0])
                 image_items.append(id)
-                getImageUrl(id) 
+                getImageUrl(id)
+            num += 1
         #         pool.apply_async(getImageUrl, (id))
         # print(image_items)
         # pool.close()
