@@ -123,7 +123,8 @@ def download_file(image, store_file):
             urllib2.urlretrieve(image, store_file, call_back)
         else:
             pass
-            # print('file is exists')     
+            # print('file is exists')      
+        _global_dict['count'] += 1
     except Exception as err:
         print(err)
  

@@ -82,9 +82,20 @@ def get_response(msg):
     }
     try:
         r = requests.post(apiUrl, data=data).json()
-        return r.get('text')
+        r_str =  r.get('text')
+        if r.get('list'):
+            l = r.get('list')
+            t = ''
+            for li in l:
+                t += li.get('name') or li.get('article')
+                t += '\n'
+                t += li.get('detailurl')
+            r_str = r_str  + t
+        if r.get('url'):
+            r_str = r_str +'\n'+ r.get('url')
+        return r_str
     except:
-        return "呵呵" #出问题就回复“呵呵”
+        return "未知错误，请联系群主" #出问题就回复“呵呵”
  
 # 定时任务
 def crontab(): 
