@@ -81,6 +81,7 @@ def download_file(image, store_file):
             urllib2.urlretrieve(image, store_file, call_back)
         else:
             # print('file is exists')
+            pass
     except Exception as err:
         print(err)
 

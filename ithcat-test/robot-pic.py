@@ -1,10 +1,12 @@
 import itchat
-from apscheduler.schedulers.blocking import BlockingScheduler
+from itchat.content import *
+from apscheduler.schedulers.background import BackgroundScheduler
 import time
 import duowan as dw
 import douyin as dy
 import json
 import os
+import requests
 
 
 # 发送多玩信息
@@ -62,6 +64,28 @@ def send_douyin_msg():
 
         print('抖音 fuck over 共%s条 成功%s条'%(len(file_list),success))
 
+# 收发消息
+@itchat.msg_register([TEXT], isGroupChat=True)
+def text_reply(msg):
+    if  msg.text.startswith('#'): 
+        # print('我收到: ' + msg.text[1:] )
+        reply = get_response(msg.text[1:]) 
+        msg.user.send(reply) 
+
+
+def get_response(msg):
+    apiUrl = 'http://www.tuling123.com/openapi/api'
+    data = {
+    'key' : 'e64ad48100081ab77b668aa3105fe552', 
+    'info' : msg,
+    'userid' : '123456', 
+    }
+    try:
+        r = requests.post(apiUrl, data=data).json()
+        return r.get('text')
+    except:
+        return "呵呵" #出问题就回复“呵呵”
+ 
 # 定时任务
 def crontab(): 
     print('定时任务开始')
@@ -75,10 +99,9 @@ def after_logout():
     sched.shutdown()
 
 if __name__ == '__main__':
-    sched = BlockingScheduler()
+    sched = BackgroundScheduler()
     itchat.auto_login(enableCmdQR=2,hotReload=True)
-    # itchat.auto_login(loginCallback=crontab, exitCallback=after_logout)
     crontab() 
-    # itchat.run()
+    itchat.run()
    
     # todo 做个全家生日播报
