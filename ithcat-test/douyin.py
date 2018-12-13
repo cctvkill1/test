@@ -49,7 +49,7 @@ def run():
             for index,item in enumerate(json_data['data']):
                 if not item['video_url'].startswith('http:'):
                     item['video_url']= 'http:'+item['video_url']
-                print(str(index+1+(num-1)*20)+"  "+item['desc']+"  "+item['video_url']) 
+                # print(str(index+1+(num-1)*20)+"  "+item['desc']+"  "+item['video_url']) 
                 # 这里有个问题 抖音的视频源地址是amemv.com的 然后302到西瓜视频源 利用requests返回Location解决问题 一定要User-Agent
                 headers = {'Accept':     'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
                     'Accept-Encoding': 'gzip, deflate, sdch, br',
@@ -72,15 +72,15 @@ def run():
         print(err)
 
     print ('*'*20+"抓取完成共耗时%.3fs" % (time.time() - _global_dict['start_time']))
-    print ('*'*20+"共抓取%d个文件" %_global_dict['count']) 
+    print ('*'*20+"共抓取%d个文件" % len(_global_dict['file_list'])) 
 
 def download_file(image, store_file):
     try:
         if not os.path.exists(store_file):
-            print('----%s start download----'%image)
+            # print('----%s start download----'%image)
             urllib2.urlretrieve(image, store_file, call_back)
         else:
-            print('file is exists')
+            # print('file is exists')
     except Exception as err:
         print(err)
 
@@ -91,7 +91,7 @@ def call_back(a, b, c):
         sys.stdout.write('%.2f%%\r' % per)
         sys.stdout.flush()
     else:
-        print ('----file download finish!----')        
+        # print ('----file download finish!----')        
         _global_dict['count'] += 1
 
 # 清理老文件 大文件（发gif图不能大于6M 发视频不能大于10M）
@@ -105,7 +105,7 @@ def clear_file():
         if fsize<6 and t>_global_dict['start_time']-80000:
             pass
         else:
-            print('删除文件 %s'%path)
+            # print('删除文件 %s'%path)
             os.remove(path)
             del _global_dict['file_list'][i]
     # print(_global_dict['file_list'])

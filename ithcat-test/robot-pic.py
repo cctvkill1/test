@@ -16,19 +16,23 @@ def send_dw_msg():
     for g in group:
         print(g['NickName'])
     user_info = itchat.search_chatrooms(name='垃圾程序猿高级交流会所') 
+    success = 0
     if len(user_info) > 0:
         user_name = user_info[0]['UserName']
         for item in file_list:
-            res = itchat.send_msg(item['title'], toUserName=user_name)
+            itchat.send_msg(item['title'], toUserName=user_name)
             filetype = item['file_name'].split('.')[-1]
             if filetype=='mp4':
                 res = itchat.send_video(item['file_name'], toUserName=user_name)
             else:
                 res = itchat.send_image(item['file_name'], toUserName=user_name)
             print('已经发送%s %s'%(res,item['file_name']))
+            if '请求成功' in res:
+                success+=1
             # break
+            time.sleep(2)
         
-        print('多玩 fuck all over')
+        print('多玩 fuck over 共%s条 成功%s条'%(len(file_list),success))
 
 # 发送抖音周热
 def send_douyin_msg():   
@@ -39,6 +43,7 @@ def send_douyin_msg():
     for g in group:
         print(g['NickName'])
     user_info = itchat.search_chatrooms(name='垃圾程序猿高级交流会所') 
+    success = 0
     if len(user_info) > 0:
         user_name = user_info[0]['UserName']
         for item in file_list:
@@ -49,9 +54,13 @@ def send_douyin_msg():
                 res = itchat.send_video(item['file_name'], toUserName=user_name)
             else:
                 res = itchat.send_image(item['file_name'], toUserName=user_name)
+            if '请求成功' in res:
+                success+=1
             print('已经发送%s %s'%(res,item['file_name']))
             # break
-        print('抖音 fuck all over')
+            time.sleep(2) 
+
+        print('抖音 fuck over 共%s条 成功%s条'%(len(file_list),success))
 
 # 定时任务
 def crontab(): 
@@ -59,7 +68,7 @@ def crontab():
     sched.add_job(send_dw_msg,'cron',day = '*',hour=7,minute=59,second=1)
     # sched.add_job(send_dw_msg,'interval', seconds=3)
     # 0,3,6 是星期1星期4星期天
-    sched.add_job(send_douyin_msg,'cron',day_of_week = '0,3,6' ,hour=9,minute=10,second=1)
+    sched.add_job(send_douyin_msg,'cron',day_of_week = '1,4' ,hour=9,minute=10,second=1)
     sched.start()
 
 def after_logout():
@@ -71,5 +80,5 @@ if __name__ == '__main__':
     # itchat.auto_login(loginCallback=crontab, exitCallback=after_logout)
     crontab() 
     # itchat.run()
-    
+   
     # todo 做个全家生日播报

@@ -61,7 +61,7 @@ def run():
         data = data.decode('utf-8')
         index_items = re.findall(prog_index, data)  
         flag = ''
-        print('获取网页成功')
+        # print('获取网页成功')
         # print(index_items)
         # pool = multiprocessing.Pool(5)
         for i,item in enumerate(index_items): 
@@ -82,7 +82,7 @@ def run():
         setBeginStr(flag)
         clear_file()
         print ('*'*20+"抓取完成共耗时%.3fs" % (time.time() - _global_dict['start_time']))
-        print ('*'*20+"共抓取%d个文件" %_global_dict['count']) 
+        print ('*'*20+"共抓取%d个文件" % len(_global_dict['file_list'])) 
     except Exception as err:
         print(err)
 
@@ -90,7 +90,7 @@ def getImageUrl(id):
     global _global_dict   
     try:
         url = 'http://tu.duowan.com/index.php?r=show/getByGallery/&gid='+id
-        print('---从%s 抓取图片'%url)
+        # print('---从%s 抓取图片'%url)
         data = urllib2.urlopen(url).read()
         data = data.decode('utf-8')
         json_data = json.loads(data)
@@ -110,10 +110,10 @@ def getImageUrl(id):
 def download_file(image, store_file):
     try: 
         if not os.path.exists(store_file):
-            print('----%s start download----'%image)
+            # print('----%s start download----'%image)
             urllib2.urlretrieve(image, store_file, call_back)
         else:
-            print('file is exists')
+            # print('file is exists')
     except Exception as err:
         print(err)
  
@@ -125,7 +125,7 @@ def call_back(a, b, c):
         sys.stdout.write('%.2f%%\r' % per)
         sys.stdout.flush()
     else:
-        print ('----file download finish!----')        
+        # print ('----file download finish!----')        
         _global_dict['count'] += 1
 
 # 清理老文件 大文件（发gif图不能大于6M 发视频不能大于10M）
@@ -139,10 +139,10 @@ def clear_file():
         if fsize<6 and t>_global_dict['start_time']-80000:
             pass
         else:
-            print('删除文件 %s'%path)
+            # print('删除文件 %s'%path)
             os.remove(path)
             del _global_dict['file_list'][i]
-    print('---清理完成')
+    # print('---清理完成')
 
 if __name__ == '__main__': 
     _init()
