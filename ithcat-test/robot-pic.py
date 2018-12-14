@@ -123,10 +123,10 @@ def after_logout():
 if __name__ == '__main__':
     sched = BackgroundScheduler()
     itchat.auto_login(enableCmdQR=2,hotReload=True)
-    # crontab() 
-    # itchat.run()
+    crontab() 
+    itchat.run()
     # test
-    send_dw_msg()
+    # send_dw_msg()
     # send_douyin_msg()
 
     # todo 做个全家生日播报
