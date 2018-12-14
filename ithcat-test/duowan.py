@@ -20,6 +20,7 @@ def _init():
     _global_dict = {}
     _global_dict['count'] = 0 
     _global_dict['start_time'] = time.time() 
+    _global_dict['begin_str'] = ''
     _global_dict['begin_flag_file_name'] = 'begin_flag.txt'
     _global_dict['duowan_path'] = './download/'
     _global_dict['file_list'] = [] 
@@ -37,14 +38,14 @@ def get_value(name, defValue=None):
         
 def getBeginStr():    
     global _global_dict  
-    f = open(_global_dict['begin_flag_file_name'], 'r+')
+    f = open(_global_dict['begin_flag_file_name'], 'r+',encoding='utf-8')
     begin_str = f.read()
     f.close()
     return begin_str
 
 def setBeginStr(flag):    
     global _global_dict  
-    f = open(_global_dict['begin_flag_file_name'], 'w+')
+    f = open(_global_dict['begin_flag_file_name'], 'w+',encoding='utf-8')
     f.write(flag)
     f.close()
 
@@ -52,6 +53,7 @@ def run():
     global _global_dict 
     begin_str = getBeginStr()
     print(begin_str)
+    _global_dict['begin_str'] = begin_str
     try: 
         print('http://tu.duowan.com/tu 从主页开始抓取')
         image_items = []
@@ -72,18 +74,18 @@ def run():
                 if title in item[1]:
                     title_flag = True
             if not title_flag:
-                continue                
-            if i==0:
-                flag = item[1]
-            if num>4:
+                continue
+            #只推一条
+            if num>0:
                 break
             elif begin_str and begin_str in item[1]:
-                break
+                continue
             else:
                 id = re.sub(r'\D', "", item[0])
                 image_items.append(id)
                 getImageUrl(id)
-            num += 1
+                num += 1
+                flag = item[1]
         #         pool.apply_async(getImageUrl, (id))
         # print(image_items)
         # pool.close()
@@ -144,19 +146,30 @@ def clear_file():
     global _global_dict
     for i,item in enumerate(_global_dict['file_list']):
         path = item['file_name']
-        t = os.path.getctime(path)
         fsize = os.path.getsize(path)
         fsize = round(fsize/float(1024*1024) ,2)
-        if fsize<6 and t>_global_dict['start_time']-80000:
+        if fsize<6:
             pass
         else:
             # print('删除文件 %s'%path)
             os.remove(path)
             del _global_dict['file_list'][i]
+    # 清理老文件
+    rootdir = _global_dict['duowan_path']
+    file_list = os.listdir(rootdir) 
+    for i in range(0,len(file_list)):
+        path = os.path.join(rootdir,file_list[i])
+        if os.path.isfile(path):
+            t = os.path.getctime(path)
+            if t<_global_dict['start_time']-3600:
+                os.remove(path)
+                # print('删除文件 %s'%path)
+
     # print('---清理完成')
 
 if __name__ == '__main__': 
     _init()
-    run()    
+    run() 
+    # clear_file()   
 
             
