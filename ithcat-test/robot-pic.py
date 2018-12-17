@@ -32,7 +32,7 @@ def send_dw_msg():
                     res = itchat.send_video(item['file_name'], toUserName=user_name)
                 else:
                     res = itchat.send_image(item['file_name'], toUserName=user_name)
-                print('已经发送%s %s'%(res,item['file_name']))
+                # print('已经发送%s %s'%(res,item['file_name']))
                 if '请求成功' in str(res):
                     success+=1
                     time.sleep(2)
@@ -64,11 +64,14 @@ def send_douyin_msg():
                     res = itchat.send_video(item['file_name'], toUserName=user_name)
                 else:
                     res = itchat.send_image(item['file_name'], toUserName=user_name)
-                if '请求成功' in res:
+                if '请求成功' in str(res):
                     success+=1
-                print('已经发送%s %s'%(res,item['file_name']))
+                    time.sleep(2)
+                else:
+                    itchat.send_msg('上一条发送失败了！让我静一静', toUserName=user_name)
+                    time.sleep(10)
+                # print('已经发送%s %s'%(res,item['file_name']))
                 # break
-                time.sleep(2) 
 
             # print('抖音 fuck over 共%d条 成功%d条'%(len(file_list),success))
             itchat.send_msg('---抖音视频播报结束--- 共%d条 成功%d条'%(len(file_list),success), toUserName=user_name)
