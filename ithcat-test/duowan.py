@@ -20,7 +20,7 @@ def _init():
     _global_dict = {}
     _global_dict['count'] = 0 
     _global_dict['start_time'] = time.time() 
-    _global_dict['begin_str'] = ''
+    _global_dict['column'] = ''
     _global_dict['begin_flag_file_name'] = 'begin_flag.txt'
     _global_dict['duowan_path'] = './download/'
     _global_dict['file_list'] = [] 
@@ -36,27 +36,27 @@ def get_value(name, defValue=None):
     except KeyError:
         return defValue
         
-def getBeginStr():    
+def getSendedList():    
     global _global_dict  
     f = open(_global_dict['begin_flag_file_name'], 'r+',encoding='utf-8')
-    begin_str = f.read()
+    sended_list = f.read()
     f.close()
-    return begin_str
+    return sended_list.split('^&*')
 
-def setBeginStr(flag):    
+def setSendedList(sended_list):    
     global _global_dict  
     f = open(_global_dict['begin_flag_file_name'], 'w+',encoding='utf-8')
-    f.write(flag)
+    f.write(str(sended_list))
     f.close()
 
 def run(): 
     global _global_dict 
-    begin_str = getBeginStr()
-    print(begin_str)
-    _global_dict['begin_str'] = begin_str
+    sended_list = getSendedList()  
+    if not sended_list or  len(sended_list)>2:
+        sended_list = []
+    # print(sended_list)
     try: 
         print('http://tu.duowan.com/tu 从主页开始抓取')
-        image_items = []
         url_index = 'http://tu.duowan.com/tu'
         prog_index = r'<em><a href="(.*)" target="_blank">(.*)</a>'
         data = urllib2.urlopen(url_index).read()
@@ -66,7 +66,7 @@ def run():
         # print('获取网页成功')
         # print(index_items)
         # pool = multiprocessing.Pool(5)
-        title_filter = ['爆笑视频','吐槽囧图','全球搞笑']
+        title_filter = ['爆笑视频','今日囧图','全球搞笑']
         num = 0 
         for i,item in enumerate(index_items): 
             title_flag = False
@@ -75,14 +75,14 @@ def run():
                     title_flag = True
             if not title_flag:
                 continue
-            #只推一条
+            #只推一个栏目的
             if num>0:
                 break
-            elif begin_str and begin_str in item[1]:
+            elif item[1] in sended_list :
                 continue
             else:
                 id = re.sub(r'\D', "", item[0])
-                image_items.append(id)
+                print(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))+" "+item[1])
                 getImageUrl(id)
                 num += 1
                 flag = item[1]
@@ -90,7 +90,9 @@ def run():
         # print(image_items)
         # pool.close()
         # pool.join()  
-        setBeginStr(flag)
+        _global_dict['column'] = flag
+        sended_list.append(flag)
+        setSendedList("^&*".join(sended_list))
         clear_file()
         print ('*'*20+"抓取完成共耗时%.3fs" % (time.time() - _global_dict['start_time']))
         print ('*'*20+"共抓取%d个文件" % len(_global_dict['file_list'])) 
@@ -166,6 +168,7 @@ def clear_file():
                 # print('删除文件 %s'%path)
 
     # print('---清理完成')
+    print(_global_dict['file_list'])
 
 if __name__ == '__main__': 
     _init()
