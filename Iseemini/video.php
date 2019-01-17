@@ -25,7 +25,7 @@ $movie = $movies[$id];
         color: #fff;
         padding: 50px 40px;
     }
-    .video-js{
+    #video{
         width: 100%;
         height: auto;
     }
@@ -35,15 +35,20 @@ $movie = $movies[$id];
 </style>
 </head>
 <body> 
-<p class="tip">建议在wifi下观看！初始加载要等一会！</p>
-<video id="my-video" autoplay="autoplay"  class="video-js" controls preload="auto" poster="image/<?php echo $movie['img'];?>"  >
-    <source src="movies/<?php echo $movie['m3u8'];?>" > 
-    <p class="vjs-no-js">
-        您的浏览器不支持 video 标签。
-    </p>
-  </video>
-
-  <script src="js/video.min.js"></script>
+<p class="tip">建议在wifi下观看！网速稍慢，耐心等待！</p>
+<script type="text/javascript" src="js/ckplayer.min.js"></script>
+<div id="video"></div>
+<script type="text/javascript">
+	var videoObject = {
+        poster:"image/<?php echo $movie['img'];?>",
+		container: '#video',//“#”代表容器的ID，“.”或“”代表容器的class
+		variable: 'player',//该属性必需设置，值等于下面的new chplayer()的对象
+		flashplayer:false,//如果强制使用flashplayer则设置成true
+		video:"movies/<?php echo $movie['m3u8'];?>"//视频地址
+	};
+	var player=new ckplayer(videoObject);
+</script>
+ 
     
 </body>
 
