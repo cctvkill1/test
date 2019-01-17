@@ -14,9 +14,8 @@ $movie = $movies[$id];
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title><?php echo $movie['title'];?> 田聪的私人影院</title>
-    <link rel="stylesheet" href="css/sti_style.css" type="text/css" media="screen">
-</head>
+    <title><?php echo $movie['title'];?> 田聪的私人影院</title> 
+    <link href="css/video-js.min.css" rel="stylesheet">
 <style>
     body{
         background: #000;
@@ -26,14 +25,26 @@ $movie = $movies[$id];
         color: #fff;
         padding: 50px 40px;
     }
-    video{
+    .video-js{
         width: 100%;
+        height: auto;
+    }
+    .tip{
+        color: #fff;
     }
 </style>
+</head>
 <body> 
-    <video src="movies/<?php echo $movie['m3u8'];?>" controls="controls"  poster="image/<?php echo $movie['img'];?>">
+<p class="tip">建议在wifi下观看！初始加载要等一会！</p>
+<video id="my-video" autoplay="autoplay"  class="video-js" controls preload="auto" poster="image/<?php echo $movie['img'];?>"  >
+    <source src="movies/<?php echo $movie['m3u8'];?>" > 
+    <p class="vjs-no-js">
         您的浏览器不支持 video 标签。
-    </video>
+    </p>
+  </video>
+
+  <script src="js/video.min.js"></script>
+    
 </body>
 
 </html>

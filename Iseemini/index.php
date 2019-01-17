@@ -1,7 +1,9 @@
 
-<?php
-
+<?php 
+$visitor_number = intval(file_get_contents('visitor_number.txt')) + 1;
 $movies = json_decode(file_get_contents('movies.json'), true);
+
+file_put_contents('visitor_number.txt', $visitor_number);
 ?>
 
 <!DOCTYPE HTML>
@@ -24,7 +26,7 @@ $movies = json_decode(file_get_contents('movies.json'), true);
                 <div class="sti_slide">
                     <?php 
                     foreach ($movies as $key => $value) {
-                        if ($key%2==0) {
+                        if (0 == $key % 2) {
                             ?>
                     <div class="sti_shelf_divider"></div>
                     <?php
@@ -34,7 +36,7 @@ $movies = json_decode(file_get_contents('movies.json'), true);
                         <img class="fx_shadow" src="img/fx_shadow.png" style="height: 150px;">
                         <img class="fx_leftside" src="img/fx_leftside.png" style="height: 150px;"> 
                         <?php 
-                        if ($key<2) {
+                        if ($key < 2) {
                             ?>
                         <i class="ribbon ribbon_red" title="Ribbon"></i>
                     <?php
@@ -46,9 +48,10 @@ $movies = json_decode(file_get_contents('movies.json'), true);
                     <div class="sti_shelf_divider_bottom"></div>
                 </div>
  
+            <p class='visitor'>总访客人数：<?php echo $visitor_number; ?></p>
         </div>
 
     </div>
 </body>
 
-</html>
+</html> 
