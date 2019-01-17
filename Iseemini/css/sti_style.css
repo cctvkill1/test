@@ -1,0 +1,134 @@
+﻿/* ----------------------------------------------------
+	sti slider
+---------------------------------------------------- */ 
+body{
+	padding: 0;
+	margin: 0;
+	font-family: Helvetica, Arial, sans-serif; 
+}
+.sti_container {
+	margin: 0px auto; 
+	min-height: 200px;
+	padding: 0px;
+	overflow: hidden;
+}
+
+.sti_container a {
+	text-decoration: none;
+	color: #2d75cd;
+	float: left;
+    display: block;
+}
+
+.ajax_content {
+	clear: both;
+}
+
+.sti_slider { 
+	overflow: hidden;
+	position: relative;
+	background: #f4f4f4;
+	margin: 0;
+}
+ 
+
+
+.sti_slide { 
+	width: 100%;
+	float: left;
+	padding: 0;
+	margin: 0;
+	background: #fff url(../img/texture_01.jpg);
+	position: relative;
+}
+
+.sti_slide img {
+	display: block;
+	border: none;
+	margin: 0;
+	padding: 0; 
+	max-height: none;
+	height: none;
+}
+
+
+/* ----------------------------------------------------
+	sti product
+---------------------------------------------------- */
+
+.sti_prod {
+	width: 110px;
+	height: 150px; 
+	margin: 22px 0px 0px 14%;
+	position: relative; 
+}
+
+.sti_prod img {
+	position: absolute;
+	bottom: 0;
+	display: block; 
+	margin: 0;
+	padding: 0;  
+}
+
+.sti_prod a.link {
+	position: absolute;
+	width: 32px;
+	height: 32px;
+	background: transparent url(../img/sprite_icons.png) no-repeat;
+	bottom: 0;
+	opacity: .8;
+	outline: none;
+	z-index: 2;
+}
+ 
+
+.sti_shelf_divider {
+	height: 30px;
+	clear: both;
+	background: url(../img/shelf_divider.png) repeat-x;
+}
+
+.sti_shelf_divider_bottom {
+	width: 100%;
+	height: 5px;
+	clear: both;
+	background: url(../img/shelf_divider_bottom.png) repeat-x;
+}
+
+.sti_prod .fx_shadow {
+	width: 11px;
+	height: 150px;
+	right: -11px;
+	bottom: 0;
+	position: absolute;
+	z-index: 0;
+}
+
+.sti_prod .fx_leftside {
+	width: 11px;
+	height: 150px;
+	left: 0;
+	bottom: 0;
+	position: absolute;
+}
+ 
+.sti_prod .ribbon_red {
+	background: url(../img/ribbon_red.png) no-repeat;
+	width: 51px;
+	height: 54px;
+	right: -6px;
+	top: -6px;
+	position: absolute;
+	z-index: 1;
+}
+ 
+.slider_description { 	
+	font-size: 28px;
+	color: #777;
+	letter-spacing: 1px;
+	font-family: Helvetica, Arial, sans-serif;
+	background: #f9f9f9;
+	padding: 50px 40px;
+}
+ 
